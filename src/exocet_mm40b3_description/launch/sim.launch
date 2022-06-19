@@ -1,0 +1,25 @@
+<launch>
+  <param name="robot_description" command="$(find xacro)/xacro $(find exocet_mm40b3_description)/urdf/exocet_mm40b3.xacro"/>
+
+  <!-- using basic launcher -->
+  <!-- <node name="spawn_missile" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model exocet_mm40b3 -z 2.0 -P -0.349066"/> -->
+  
+  <!-- using exocet launcher -->
+  <node name="spawn_missile" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model exocet_mm40b3 -x -0.409421 -z 1.695656 -P -0.349019"/>
+
+  <include file="$(find exocet_mm40b3_description)/launch/controller.launch"/>
+
+  <!-- <arg name="desc" default="$(find exocet_20deg_launcher)/20deg_launcher.urdf"/> -->
+  <arg name="desc" default="$(find exocet_launcher_half_description)/exocet_launcher_half.urdf"/>
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-file $(arg desc) -urdf -model launcher"/>
+  
+  
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="paused" value="true"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+    <arg name="verbose" value="true"/>
+  </include>
+</launch>

@@ -1,0 +1,41 @@
+<launch>
+  <arg name="world" default="empty"/>
+
+  <include file="$(find ros_ign_gazebo)/launch/ign_gazebo.launch">
+    <arg name="ign_args" value="$(arg world).sdf"/>
+  </include>
+
+  <param name="robot_description" command="$(find xacro)/xacro $(find exocet_mm40b3_description)/urdf/exocet_mm40b3.xacro"/>
+
+  <node
+    pkg="ros_ign_gazebo"
+    type="create"
+    name="missile"
+    output="screen"
+    args="-world $(arg world) -param robot_description -name my_bot_hmeme z 2.739144 -P -1.5708">
+  </node>
+
+  <!-- <node
+    pkg="ros_ign_gazebo"
+    type="create"
+    name="$(anon spawn_missile)"
+    output="screen"
+    args="-world $(arg world) -param robot_description -name missile -z 2.0 -P -0.349066">
+  </node> -->
+
+  <!-- <arg name="desc" default="$(find exocet_20deg_launcher)/20deg_launcher.urdf"/> -->
+  <!-- <arg name="desc" default="$(find exocet_launcher_half_description)/exocet_launcher_half.urdf"/>
+  <node
+    pkg="ros_ign_gazebo"
+    type="create"
+    name="$(anon spawn_launcher)"
+    output="screen"
+    args="-world $(arg world) -file $(arg desc) -name launcher -allow_renaming true">
+  </node> -->
+
+  <!-- <node pkg="ros_ign_gazebo" type="create" name="spawn_model" 
+  
+  args="-name missile -param robot_description -z 1.9 -P -0.349066"/> -->
+  
+  
+</launch>

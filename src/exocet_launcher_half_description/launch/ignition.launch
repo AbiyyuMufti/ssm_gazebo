@@ -1,0 +1,16 @@
+<launch>
+  <arg name="world" default="empty"/>
+
+  <include file="$(find ros_ign_gazebo)/launch/ign_gazebo.launch">
+    <arg name="ign_args" value="$(arg world).sdf"/>
+  </include>
+
+  <arg name="file_desc" default="$(find exocet_launcher_half_description)/exocet_launcher_half.urdf"/>
+  <node
+    pkg="ros_ign_gazebo"
+    type="create"
+    name="$(anon spawn_launcher)"
+    output="screen"
+    args="-world $(arg world) -file $(arg file_desc) -name exocet_launcher_half_description -allow_renaming true">
+  </node>
+</launch>
