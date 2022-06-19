@@ -5,14 +5,14 @@
     <arg name="ign_args" value="$(arg world).sdf"/>
   </include>
 
-  <param name="robot_description" command="$(find xacro)/xacro $(find exocet_mm40b3_description)/urdf/exocet_mm40b3.xacro"/>
+  <arg name="missile_file" default="$(find exocet_mm40b3_description)/exocet_mm40b3.urdf"/>
 
   <node
     pkg="ros_ign_gazebo"
     type="create"
     name="missile"
     output="screen"
-    args="-world $(arg world) -param robot_description -name my_bot_hmeme z 2.739144 -P -1.5708">
+    args="-world $(arg world) -file $(arg missile_file) -name missile z 2.739144 -P -1.5708">
   </node>
 
   <!-- <node
