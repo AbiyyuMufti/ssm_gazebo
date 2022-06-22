@@ -1,0 +1,173 @@
+<?xml version="1.0" ?>
+<robot name="launcher20deg_half" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find launcher20deg_half_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find launcher20deg_half_description)/urdf/launcher20deg_half.trans" />
+<xacro:include filename="$(find launcher20deg_half_description)/urdf/launcher20deg_half.gazebo" />
+
+<link name="base_link"/>
+<joint name="dummy_joint" type="fixed">
+  <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="launcher_platform" />
+</joint>
+
+<link name="launcher_platform">
+  <inertial>
+    <origin xyz="0.21956009217606984 4.3636388735968575e-16 0.6746334924440056" rpy="0 0 0"/>
+    <mass value="10722.621074762288"/>
+    <inertia ixx="3680.005759" iyy="13504.573497" izz="12126.040929" ixy="0.0" iyz="0.0" ixz="-2210.827735"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher20deg_half_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher20deg_half_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Canister_1">
+  <inertial>
+    <origin xyz="-1.3433186025729844 -5.829324127345314e-12 -0.694969038036306" rpy="0 0 0"/>
+    <mass value="831.8619039368604"/>
+    <inertia ixx="387.88388" iyy="2980.500638" izz="2660.044462" ixy="-0.0" iyz="-0.0" ixz="-953.284553"/>
+  </inertial>
+  <visual>
+    <origin xyz="-1.262326 0.0 -2.249618" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher20deg_half_description/meshes/Canister_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-1.262326 0.0 -2.249618" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher20deg_half_description/meshes/Canister_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<!-- <link name="Cup_3">
+  <inertial>
+    <origin xyz="-0.11139775043512579 -2.463237070333466e-09 0.2908251033198668" rpy="0 0 0"/>
+    <mass value="132.22389884749504"/>
+    <inertia ixx="6.690853" iyy="3.560945" izz="4.004812" ixy="0.0" iyz="0.0" ixz="1.127009"/>
+  </inertial>
+  <visual>
+    <origin xyz="-2.808743 0.0 -2.481602" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher20deg_half_description/meshes/Cup_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-2.808743 0.0 -2.481602" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher20deg_half_description/meshes/Cup_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link> -->
+
+<link name="Cup_1">
+  <inertial>
+    <origin xyz="0.1875705774787031 2.4632545340842703e-09 -0.686381472221144" rpy="0 0 0"/>
+    <mass value="132.22389884749504"/>
+    <inertia ixx="6.690933" iyy="3.560945" izz="4.004732" ixy="0.0" iyz="-0.0" ixz="1.126914"/>
+  </inertial>
+  <visual>
+    <origin xyz="3.177629 -0.0 -1.389734" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher20deg_half_description/meshes/Cup_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="3.177629 -0.0 -1.389734" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher20deg_half_description/meshes/Cup_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="CanisterHolder_1">
+  <inertial>
+    <origin xyz="-0.05951337321479344 1.4715522383126382e-16 0.16351174115532052" rpy="0 0 0"/>
+    <mass value="335.0395971576902"/>
+    <inertia ixx="43.686085" iyy="22.365267" izz="51.43432" ixy="0.0" iyz="0.0" ixz="-3.25077"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.419944 0.0 -0.847681" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher20deg_half_description/meshes/CanisterHolder_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="1.419944 0.0 -0.847681" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher20deg_half_description/meshes/CanisterHolder_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="CanisterHolder_2">
+  <inertial>
+    <origin xyz="-0.05951351085707057 1.4715522383126382e-16 0.16351217113232974" rpy="0 0 0"/>
+    <mass value="335.0395971576902"/>
+    <inertia ixx="43.686085" iyy="22.365267" izz="51.43432" ixy="0.0" iyz="0.0" ixz="-3.25077"/>
+  </inertial>
+  <visual>
+    <origin xyz="-1.399134 0.0 -1.873741" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher20deg_half_description/meshes/CanisterHolder_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-1.399134 0.0 -1.873741" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher20deg_half_description/meshes/CanisterHolder_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="CanisterToHolder2" type="fixed">
+  <origin xyz="-0.136808 0.0 0.375877" rpy="0 0 0"/>
+  <parent link="CanisterHolder_2"/>
+  <child link="Canister_1"/>
+</joint>
+
+<!-- <joint name="CupOpener" type="revolute">
+  <origin xyz="1.546417 0.0 0.231984" rpy="0 0 0"/>
+  <parent link="Canister_1"/>
+  <child link="Cup_3"/>
+  <axis xyz="0.0 1.0 0.0"/>
+  <limit upper="4.712389" lower="0.0" effort="100" velocity="100"/>
+</joint> -->
+
+<joint name="CupCloser" type="fixed">
+  <origin xyz="-4.439955 0.0 -0.859884" rpy="0 0 0"/>
+  <parent link="Canister_1"/>
+  <child link="Cup_1"/>
+</joint>
+
+<joint name="BaseToHolder1" type="fixed">
+  <origin xyz="-1.419944 0.0 0.847681" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="CanisterHolder_1"/>
+</joint>
+
+<joint name="BaseToHolder2" type="fixed">
+  <origin xyz="1.399134 0.0 1.873741" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="CanisterHolder_2"/>
+</joint>
+
+</robot>

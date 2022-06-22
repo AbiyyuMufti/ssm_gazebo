@@ -1,0 +1,11 @@
+<launch>
+    <arg name="urdf" default=""/>
+    <arg name="x" default="0.0"/>
+    <arg name="y" default="0.0"/>
+    <arg name="z" default="0.0"/>
+    <arg name="R" default="0.0"/>
+    <arg name="P" default="0.0"/>
+    <arg name="Y" default="0.0"/>
+    <node name="$(anon spawn_missile)" pkg="gazebo_ros" type="spawn_model" 
+    args="-file $(arg urdf) -urdf -model launcher -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</launch>

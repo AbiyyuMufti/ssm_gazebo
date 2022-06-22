@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<robot name="basic_launcher" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find launcher_basic_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find launcher_basic_description)/urdf/basic_launcher.gazebo" />
+
+<link name="base_link"/>
+<joint name="dummy_joint" type="fixed">
+  <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="launcher" />
+</joint>
+
+<link name="launcher">
+  <inertial>
+    <origin xyz="0.7438484910849467 0.0 0.7799578684960197" rpy="0 0 0"/>
+    <mass value="56624.52398127676"/>
+    <inertia ixx="21939.19016" iyy="136610.920255" izz="124823.861351" ixy="0.0" iyz="-0.0" ixz="-21355.751554"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher_basic_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="darkgrey"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://launcher_basic_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+</robot>
