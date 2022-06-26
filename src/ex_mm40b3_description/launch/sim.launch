@@ -14,7 +14,7 @@
     
     <arg name="y_miss" default="0.0"/>
 
-    <!-- using half canister -->
+    <!-- using exocet canister -->
     <arg name="x_miss" default="-0.342484"/>
     <arg name="z_miss" default="1.662578"/>
 
