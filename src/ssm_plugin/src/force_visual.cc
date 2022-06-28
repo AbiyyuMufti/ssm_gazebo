@@ -62,12 +62,11 @@ void ForceVisualPlugin::OnUpdate(ConstForcePtr& force_msg)
   ignition::math::Vector3d center;
   auto force_center_msg = force_msg->center();
   center.Set(force_center_msg.x(), force_center_msg.y(), force_center_msg.z());
-
+  
   // Note that if the visual is scaled, the center needs to be scaled, too,
   // such that the force appears on the visual surface control and not on
   // the actual joint (which will look weird).
-  // I am not sure what happens if both the visual and the joint are scaled,
-  // but I don't see a reason for doing that, like, ever.
+
   const auto scale = this->visual->Scale();
   center = center / scale;
 
@@ -80,7 +79,7 @@ void ForceVisualPlugin::UpdateVector(const ignition::math::Vector3d& center, con
 
   ignition::math::Vector3d begin = center;
   ignition::math::Vector3d end = center + force;
-
+  
   this->forceVector->SetPoint(0, begin);
   this->forceVector->SetPoint(1, end);
   this->forceVector->SetPoint(2, end);

@@ -6,7 +6,18 @@
     <robotNamespace>ex_mm40b3_controller</robotNamespace>
     <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
   </plugin>
+  <plugin name="BoosterThrust" filename="libSimpleThruster.so">
+    <link_name>Booster_1</link_name>
+    <forward_dir>1 0 0</forward_dir>
+    <thrust_origin>-0.820 0 0</thrust_origin>
+    <!-- -0.531 -->
+    <!-- -0.389 -->
+    <robotNamespace></robotNamespace>
+    <topic_name>booster_visual</topic_name>
+    <thrust_topic>booster_force</thrust_topic>
+  </plugin>
 </gazebo>
+
 <gazebo reference="base_link">
   <material>Gazebo/White</material>
   <mu1>0.2</mu1>
@@ -55,6 +66,12 @@
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
+  <visual>
+    <plugin name="SimpleThrustVisual" filename="libForceVisual.so">
+        <topic_name>booster_visual</topic_name>
+        <color>Gazebo/Green</color>
+    </plugin>
+  </visual>
 </gazebo>
 
 <gazebo reference="Wing1_2">

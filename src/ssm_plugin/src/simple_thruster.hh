@@ -13,6 +13,8 @@
 
 #include "Force.pb.h"
 
+#include <ros/ros.h>
+
 namespace gazebo
 {
     /// \brief A plugin that simulates simple thrust of a jet booster in one direction.

@@ -69,9 +69,12 @@ void PosePublisher::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     {
         namespace_ = _sdf->GetElement("robotNamespace")->Get<std::string>();
     } else {
-        namespace_ = "";
-        // gzerr << "[gazebo_simple_thruster] Please specify a robotNamespace.\n";
+        // namespace_ = "";
+        gzerr << "[gazebo_simple_thruster] Please specify a robotNamespace.\n";
     }
+    
+    node_handle_ = transport::NodePtr(new transport::Node());
+    node_handle_->Init(namespace_);
 
     if (_sdf->HasElement("topic_name")) {
         const auto pose_pub_topic = this->sdf->Get<std::string>("topic_name");

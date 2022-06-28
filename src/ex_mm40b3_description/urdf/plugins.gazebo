@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<robot name="ex_mm40b3" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+<gazebo>
+    <plugin name="BoosterThrust" filename="libSimpleThruster.so">
+        <link_name>Booster_1</link_name>
+        <forward_dir>1 0 0</forward_dir>
+        <thrust_origin>-0.389 0 0</thrust_origin>
+        <robotNamespace></robotNamespace>
+        <topic_name>booster_visual</topic_name>
+        <thrust_topic>booster_force</thrust_topic>
+    </plugin>
+</gazebo>
+
+</robot>

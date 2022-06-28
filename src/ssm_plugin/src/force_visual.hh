@@ -10,7 +10,7 @@
 
 namespace gazebo
 {
-  typedef const boost::shared_ptr<const physics_msgs::msgs::Force> ConstForcePtr;
+  typedef const boost::shared_ptr<const ssm_msgs::msgs::Force> ConstForcePtr;
 
   /// \brief A visual plugin that draws a force published on a topic
   class GAZEBO_VISIBLE ForceVisualPlugin : public VisualPlugin
@@ -39,6 +39,7 @@ namespace gazebo
     private: transport::SubscriberPtr subs;
     private: transport::NodePtr node;
     private: rendering::DynamicLinesPtr forceVector;
+    private: rendering::WrenchVisualPtr wrenchVector;
   };
 }
 

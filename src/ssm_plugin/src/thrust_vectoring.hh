@@ -14,6 +14,8 @@
 #include "Force.pb.h"
 #include "SphericalVector.pb.h"
 
+#include <ros/ros.h>
+
 namespace gazebo
 {
     /// \brief A plugin that simulates simple thrust of a jet booster in one direction.
@@ -32,7 +34,7 @@ namespace gazebo
         protected: virtual void OnUpdate();
 
         /// \brief Callback for incomming Thrust Message.
-        protected: void OnThrustVectoringMsgs(const boost::shared_ptr<const physics_msgs::msgs::SphericalVector> &msg);
+        protected: void OnThrustVectoringMsgs(const boost::shared_ptr<const ssm_msgs::msgs::SphericalVector> &msg);
 
         /// \brief Connection to World Update events.
         protected: event::ConnectionPtr updateConnection;

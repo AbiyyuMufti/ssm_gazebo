@@ -23,6 +23,8 @@ add_library(missile_control src/missile_control_plugin.cc)
 add_dependencies(missile_control exocet_msgs_generate_messages_cpp)
 target_link_libraries(missile_control ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
+add_library(Reroute src/world_plugin_tutorial.cc)
+target_link_libraries(Reroute ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
 catkin_package(
   CATKIN_DEPENDS exocet_msgs geometry_msgs std_msgs

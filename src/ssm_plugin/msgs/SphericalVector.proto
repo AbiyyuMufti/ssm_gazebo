@@ -1,7 +1,5 @@
 syntax = "proto2";
-package physics_msgs.msgs;
-
-import "vector3d.proto";
+package ssm_msgs.msgs;
 
 message SphericalVector
 {

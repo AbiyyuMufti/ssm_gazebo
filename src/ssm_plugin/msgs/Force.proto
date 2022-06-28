@@ -1,5 +1,5 @@
 syntax = "proto2";
-package physics_msgs.msgs;
+package ssm_msgs.msgs;
 
 import "vector3d.proto";
 

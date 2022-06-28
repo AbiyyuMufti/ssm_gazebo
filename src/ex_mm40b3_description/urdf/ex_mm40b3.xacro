@@ -4,6 +4,8 @@
 <xacro:include filename="$(find ex_mm40b3_description)/urdf/materials.xacro" />
 <xacro:include filename="$(find ex_mm40b3_description)/urdf/ex_mm40b3.trans" />
 <xacro:include filename="$(find ex_mm40b3_description)/urdf/ex_mm40b3.gazebo" />
+<!-- <xacro:include filename="$(find ex_mm40b3_description)/urdf/plugins.gazebo"/> -->
+
 <link name="base_link">
   <inertial>
     <origin xyz="0.5582187363868036 -9.491428765021313e-11 -7.544864658374226e-10" rpy="0 0 0"/>

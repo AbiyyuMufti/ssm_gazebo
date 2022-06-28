@@ -15,6 +15,13 @@ find_package(Boost 1.58 REQUIRED COMPONENTS system thread filesystem)
 find_package(gazebo REQUIRED)
 find_package(PkgConfig REQUIRED)
 
+find_package(catkin REQUIRED COMPONENTS 
+  roscpp 
+  gazebo_ros
+  geometry_msgs
+  std_msgs
+)
+
 pkg_search_module(GLIB REQUIRED glib-2.0)
 # Note: If using catkin, Python 2 is found since it points
 # to the Python libs installed with the ROS distro
@@ -86,6 +93,8 @@ include_directories(
   # ${TinyXML_INCLUDE_DIRS}
   )
 
+include_directories(${catkin_INCLUDE_DIRS})
+
 link_libraries(
   ${Boost_SYSTEM_LIBRARY_RELEASE}
   ${Boost_THREAD_LIBRARY_RELEASE}
@@ -101,15 +110,16 @@ link_directories(
   )
 
 
-set(physics_msgs
+set(ssm_msgs
   msgs/Force.proto
   msgs/SphericalVector.proto
 )
 
-PROTOBUF_GENERATE_CPP(PHY_PROTO_SRCS PHY_PROTO_HDRS ${physics_msgs})
 
-add_library(physics_msgs SHARED ${PHY_PROTO_SRCS})
-link_libraries(physics_msgs)
+PROTOBUF_GENERATE_CPP(SSM_PROTO_SRCS SSM_PROTO_HDRS ${ssm_msgs})
+
+add_library(ssm_msgs SHARED ${SSM_PROTO_SRCS})
+link_libraries(ssm_msgs)
 
 add_library(ForceVisual SHARED src/force_visual.cc)
 list(APPEND plugins ForceVisual)
@@ -125,7 +135,15 @@ list(APPEND plugins PosePublisher)
 
 foreach(plugin ${plugins})
   # add_dependencies(${plugin} mav_msgs nav_msgs std_msgs sensor_msgs)
-  add_dependencies(${plugin} physics_msgs)
+  add_dependencies(${plugin} ssm_msgs)
   # add_dependencies(${plugin} gazebo_msgs)
+  target_link_libraries(${plugin} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+  
 endforeach()
 
+catkin_package(
+  CATKIN_DEPENDS geometry_msgs std_msgs
+  DEPENDS 
+    roscpp 
+    gazebo_ros 
+)
