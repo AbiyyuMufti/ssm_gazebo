@@ -13,6 +13,8 @@
 #include "thrust_vectoring.hh"
 #include <boost/bind.hpp>
 
+#include <ros/ros.h>
+
 using namespace gazebo;
 
 GZ_REGISTER_MODEL_PLUGIN(ThrustVectoring)
@@ -192,7 +194,7 @@ void ThrustVectoring::OnUpdate()
 
         thrust_visual_pub_->Publish(force_msg);
         this->last_pub_time = current_time;
-        ROS_WARN_STREAM("vectoring force " << thrust_force);
+        // ROS_WARN_STREAM("vectoring force " << thrust_force);
     }
 
 }
