@@ -1,4 +1,5 @@
 #include "force_visual.hh"
+#include <ros/ros.h>
 
 using namespace gazebo;
 
@@ -67,9 +68,11 @@ void ForceVisualPlugin::OnUpdate(ConstForcePtr& force_msg)
   // such that the force appears on the visual surface control and not on
   // the actual joint (which will look weird).
 
+  ROS_WARN_STREAM("center rec " << center << " force rec " << force);
+
   const auto scale = this->visual->Scale();
   center = center / scale;
-
+  
   this->UpdateVector(center, force);
 }
 

@@ -2,10 +2,12 @@
 <robot name="ex_mm40b3" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
 <gazebo>
+  
   <plugin name="ex_mm40b3_controller" filename="libgazebo_ros_control.so">
     <robotNamespace>ex_mm40b3_controller</robotNamespace>
     <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
   </plugin>
+
   <plugin name="BoosterThrust" filename="libSimpleThruster.so">
     <link_name>Booster_1</link_name>
     <forward_dir>1 0 0</forward_dir>
@@ -16,6 +18,15 @@
     <topic_name>booster_visual</topic_name>
     <thrust_topic>booster_force</thrust_topic>
   </plugin>
+  <plugin name="ThrustVectoring" filename="libThrustVectoring.so">
+    <link_name>base_link</link_name>
+    <forward_dir>1 0 0</forward_dir>
+    <thrust_origin>-1.540 0 0</thrust_origin>
+    <robotNamespace></robotNamespace>
+    <topic_name>thrust_visual</topic_name>
+    <vector_topic>thrust_force</vector_topic>
+  </plugin>
+
 </gazebo>
 
 <gazebo reference="base_link">
@@ -24,6 +35,12 @@
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
   <gravity>true</gravity>
+  <visual>
+    <plugin name="SimpleThrustVisual" filename="libForceVisual.so">
+      <topic_name>thrust_visual</topic_name>
+      <color>Gazebo/RedBright</color>
+    </plugin>
+  </visual>
 </gazebo>
 
 <gazebo reference="FinHolder_1">

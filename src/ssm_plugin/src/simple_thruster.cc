@@ -13,7 +13,6 @@
 #include "simple_thruster.hh"
 #include <boost/bind.hpp>
 
-
 using namespace gazebo;
 
 GZ_REGISTER_MODEL_PLUGIN(SimpleThruster)

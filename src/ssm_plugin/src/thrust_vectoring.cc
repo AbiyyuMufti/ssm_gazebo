@@ -87,7 +87,7 @@ void ThrustVectoring::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     // Get the origin of thrust relative to the link object
     if (_sdf->HasElement("thrust_origin"))
         this->thurst_origin = _sdf->Get<ignition::math::Vector3d>("thrust_origin");
-    ROS_WARN_STREAM("origin" << this->thurst_origin);
+    ROS_WARN_STREAM("origin " << this->thurst_origin);
 
     // Use Additional Namespace if neede
     if (_sdf->HasElement("robotNamespace"))
@@ -102,7 +102,7 @@ void ThrustVectoring::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     node_handle_->Init(namespace_);
 
     // Create subscriber of thrust vectoring message
-    if (_sdf->HasElement("thrust_topic")) {
+    if (_sdf->HasElement("vector_topic")) {
         const auto thrust_topic_ = this->sdf->Get<std::string>("vector_topic");
       this->thrust_val_sub_ = this->node_handle_->Subscribe("~/" + thrust_topic_, &ThrustVectoring::OnThrustVectoringMsgs, this);
       gzdbg << "Subscribing on ~/" << thrust_topic_ << std::endl;
@@ -118,7 +118,6 @@ void ThrustVectoring::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
 void ThrustVectoring::OnUpdate()
 {
-
     GZ_ASSERT(this->link, "Link was NULL");
     
     // calculate current time
@@ -145,7 +144,7 @@ void ThrustVectoring::OnUpdate()
     double angle_to_rotate = acos(cos_angle_to_rotate);
 
     // --> calculate the rotation axis to rotate so that the z vector located in the forward direction
-    ignition::math::Vector3d axis_rotation = forwardI.Cross(z_vector);
+    ignition::math::Vector3d axis_rotation = z_vector.Cross(forwardI);
 
     // --> create quaternion for the rotation using the axis rotation and the angle
     ignition::math::Quaternion quat_rot(axis_rotation, angle_to_rotate);
@@ -160,6 +159,8 @@ void ThrustVectoring::OnUpdate()
     // Correct from inf and NaN
     thrust_force.Correct();
     this->thurst_origin.Correct();
+
+    
 
     // apply forces at thrust origin
     this->link->AddForceAtRelativePosition(thrust_force, this->thurst_origin);
@@ -191,16 +192,15 @@ void ThrustVectoring::OnUpdate()
 
         thrust_visual_pub_->Publish(force_msg);
         this->last_pub_time = current_time;
+        ROS_WARN_STREAM("vectoring force " << thrust_force);
     }
 
 }
 
 void ThrustVectoring::OnThrustVectoringMsgs(const boost::shared_ptr<const ssm_msgs::msgs::SphericalVector> &msg)
 {
-    
     this->thrust_magnitude = msg->r();
     this->thrust_vector_value.X(cos(msg->phi())*sin(msg->theta()));
     this->thrust_vector_value.Y(sin(msg->phi())*sin(msg->theta()));
-    this->thrust_vector_value.Z(cos(msg->theta()));
-    
+    this->thrust_vector_value.Z(cos(msg->theta()));    
 }
