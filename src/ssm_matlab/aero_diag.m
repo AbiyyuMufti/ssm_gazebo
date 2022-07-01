@@ -1,4 +1,4 @@
-clear; clc; close all;
+clear; clc; %close all;
 cla = 4.752798721;
 cda = 0.6417112299;
 cma = -1.8;
@@ -27,16 +27,16 @@ CL = [cl_bs, cl_as];
 CD = [cd_bs, cd_as];
 CM = [cm_bs, cm_as];
 
-figure(1);
-hold on;
-plot(rad2deg(Alp), CL);
-plot(rad2deg(Alp), CD);
-plot(rad2deg(Alp), CM);
-grid on;
-hold off;
+% figure(3);
+% hold on;
+% plot(rad2deg(Alp), CL);
+% plot(rad2deg(Alp), CD);
+% plot(rad2deg(Alp), CM);
+% grid on;
+% hold off;
 
 % Lets assume
-v = 20; % m/s or just barely mach 0.2
+v = 90; % m/s or just barely mach 0.2
 rho = 1.2041;
 S = 1.4575;
 % calculate dynamic pressure

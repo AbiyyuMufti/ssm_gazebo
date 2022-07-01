@@ -2,13 +2,14 @@
 #include <algorithm>
 #include <string>
 
-#include "common.h"
 #include "gazebo/common/Assert.hh"
 #include "gazebo/physics/physics.hh"
 #include "gazebo/sensors/SensorManager.hh"
 #include "gazebo/transport/transport.hh"
 #include "gazebo/msgs/msgs.hh"
-#include "liftdrag_plugin/liftdrag_plugin.h"
+#include "aerodynamic.hh"
+
+#include <ros/ros.h>
 
 #include "Force.pb.h"
 
@@ -19,31 +20,30 @@ GZ_REGISTER_MODEL_PLUGIN(Aerodynamic)
 /////////////////////////////////////////////////
 Aerodynamic::Aerodynamic() : cla(1.0), cda(0.01), cma(0.0), rho(1.2041)
 {
-  this->cp = ignition::math::Vector3d(0, 0, 0);
-  this->forward = ignition::math::Vector3d(1, 0, 0);
-  this->upward = ignition::math::Vector3d(0, 0, 1);
-  this->wind_vel_ = ignition::math::Vector3d(0.0, 0.0, 0.0);
-  this->area = 1.0;
-  this->alpha0 = 0.0;
-  this->alpha = 0.0;
-  this->sweep = 0.0;
-  this->velocityStall = 0.0;
+this->cp = ignition::math::Vector3d(0, 0, 0);
+this->forward = ignition::math::Vector3d(1, 0, 0);
+this->upward = ignition::math::Vector3d(0, 0, 1);
+this->area = 1.0;
+this->alpha0 = 0.0;
+this->alpha = 0.0;
+this->sweep = 0.0;
+this->velocityStall = 0.0;
 
-  // 90 deg stall
-  this->alphaStall = 0.5*M_PI;
-  this->claStall = 0.0;
+// 90 deg stall
+this->alphaStall = 0.5*M_PI;
+this->claStall = 0.0;
 
-  this->radialSymmetry = false;
+this->radialSymmetry = false;
 
-  /// \TODO: what's flat plate drag?
-  this->cdaStall = 1.0;
-  this->cmaStall = 0.0;
+/// \TODO: what's flat plate drag?
+this->cdaStall = 1.0;
+this->cmaStall = 0.0;
 
-  /// how much to change CL per every radian of the control joint value
-  this->controlJointRadToCL = 4.0;
+/// how much to change CL per every radian of the control joint value
+this->controlJointRadToCL = 4.0;
 
-  // How much Cm changes with a change in control surface deflection angle
-  this->cm_delta = 0.0;
+// How much Cm changes with a change in control surface deflection angle
+this->cm_delta = 0.0;
 }
 
 /////////////////////////////////////////////////
@@ -154,14 +154,14 @@ void Aerodynamic::Load(physics::ModelPtr _model,
 
   if (_sdf->HasElement("topic_name")) {
       const auto lift_force_topic = this->sdf->Get<std::string>("topic_name");
-      lift_force_pub_ = node_handle_->Advertise<physics_msgs::msgs::Force>("~/" + lift_force_topic);
+      lift_force_pub_ = node_handle_->Advertise<ssm_msgs::msgs::Force>("~/" + lift_force_topic);
       gzdbg << "Publishing to ~/" << lift_force_topic << std::endl;
   }
 
-  if (_sdf->HasElement("windSubTopic")){
-    this->wind_sub_topic_ = _sdf->Get<std::string>("windSubTopic");
-    wind_sub_ = node_handle_->Subscribe("~/" + wind_sub_topic_, &Aerodynamic::WindVelocityCallback, this);
-  }
+  // if (_sdf->HasElement("windSubTopic")){
+  //   this->wind_sub_topic_ = _sdf->Get<std::string>("windSubTopic");
+  //   wind_sub_ = node_handle_->Subscribe("~/" + wind_sub_topic_, &Aerodynamic::WindVelocityCallback, this);
+  // }
 
   if (_sdf->HasElement("control_joint_name"))
   {
@@ -180,10 +180,12 @@ void Aerodynamic::Load(physics::ModelPtr _model,
 /////////////////////////////////////////////////
 void Aerodynamic::OnUpdate()
 {
+
   GZ_ASSERT(this->link, "Link was NULL");
   // get linear velocity at cp in inertial frame
 #if GAZEBO_MAJOR_VERSION >= 9
-  ignition::math::Vector3d vel = this->link->WorldLinearVel(this->cp) - wind_vel_;
+  // ignition::math::Vector3d vel = this->link->WorldLinearVel(this->cp) - wind_vel_;
+  ignition::math::Vector3d vel = this->link->WorldLinearVel(this->cp);
   const common::Time current_time = this->world->SimTime();
 #else
   ignition::math::Vector3d vel = ignitionFromGazeboMath(this->link->GetWorldLinearVel(this->cp)) - wind_vel_;
@@ -435,17 +437,16 @@ void Aerodynamic::OnUpdate()
       force_vector_msg->set_y(force.Y());
       force_vector_msg->set_z(force.Z());
 
-      physics_msgs::msgs::Force force_msg;
+      ssm_msgs::msgs::Force force_msg;
       force_msg.set_allocated_center(force_center_msg);
       force_msg.set_allocated_force(force_vector_msg);
 
       lift_force_pub_->Publish(force_msg);
       this->last_pub_time = current_time;
   }
-}
 
-void Aerodynamic::WindVelocityCallback(const boost::shared_ptr<const physics_msgs::msgs::Wind> &msg) {
-  wind_vel_ = ignition::math::Vector3d(msg->velocity().x(),
-            msg->velocity().y(),
-            msg->velocity().z());
+  ROS_WARN_STREAM(" velocity: " << vel);
+  ROS_WARN_STREAM(" lift: " << lift);
+  ROS_WARN_STREAM(" drag: " << drag);
+  ROS_WARN_STREAM(" moment: " << moment);
 }

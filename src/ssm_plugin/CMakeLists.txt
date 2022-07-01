@@ -133,6 +133,9 @@ list(APPEND plugins ThrustVectoring)
 add_library(PosePublisher SHARED src/pose_publisher.cc)
 list(APPEND plugins PosePublisher)
 
+add_library(Aerodynamic SHARED src/aerodynamic.cc)
+list(APPEND plugins Aerodynamic)
+
 foreach(plugin ${plugins})
   # add_dependencies(${plugin} mav_msgs nav_msgs std_msgs sensor_msgs)
   add_dependencies(${plugin} ssm_msgs)

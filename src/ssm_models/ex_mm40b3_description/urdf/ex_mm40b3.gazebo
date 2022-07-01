@@ -28,6 +28,26 @@
     <vector_topic>thrust_force</vector_topic>
   </plugin>
 
+  <plugin name="FullBodyAerodynamic" filename="libAerodynamic.so">
+    <radial_symmetry>1</radial_symmetry>
+    <a0>0.0</a0>
+    <cla>4.752798721</cla>
+    <cda>0.6417112299</cda>
+    <cma>-1.8</cma>
+    <alpha_stall>0.3391428111</alpha_stall>
+    <cla_stall>-3.85</cla_stall>
+    <cda_stall>-0.9233984055</cda_stall>
+    <cma_stall>0</cma_stall>
+    <cp>0.0 0.0 0.0</cp>
+    <area>1.4575</area>
+    <air_density>1.2041</air_density>
+    <forward>1 0 0</forward>
+    <upward>0 0 1</upward>
+    <link_name>base_link</link_name>
+    <robotNamespace></robotNamespace>
+    <topic_name>lift_drag_visual</topic_name>
+  </plugin>
+
 </gazebo>
 
 <gazebo reference="base_link">
@@ -42,9 +62,13 @@
       <specular>0.5 0.5 0.5 1</specular>
       <emissive>0 0 0 1</emissive>
     </material>
-    <plugin name="SimpleThrustVisual" filename="libForceVisual.so">
+    <!-- <plugin name="SimpleThrustVisual" filename="libForceVisual.so">
       <topic_name>thrust_visual</topic_name>
       <color>Gazebo/RedBright</color>
+    </plugin> -->
+    <plugin name="LiftDragVisual" filename="libForceVisual.so">
+      <topic_name>lift_drag_visual</topic_name>
+      <color>Gazebo/Blue</color>
     </plugin>
   </visual>
 </gazebo>
@@ -90,10 +114,10 @@
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
   <visual>
-    <plugin name="SimpleThrustVisual" filename="libForceVisual.so">
+    <!-- <plugin name="SimpleThrustVisual" filename="libForceVisual.so">
         <topic_name>booster_visual</topic_name>
         <color>Gazebo/Green</color>
-    </plugin>
+    </plugin> -->
   </visual>
 </gazebo>
 
