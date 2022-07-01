@@ -18,6 +18,7 @@
     <topic_name>booster_visual</topic_name>
     <thrust_topic>booster_force</thrust_topic>
   </plugin>
+  
   <plugin name="ThrustVectoring" filename="libThrustVectoring.so">
     <link_name>base_link</link_name>
     <forward_dir>1 0 0</forward_dir>
@@ -30,12 +31,17 @@
 </gazebo>
 
 <gazebo reference="base_link">
-  <material>Gazebo/White</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
   <gravity>true</gravity>
   <visual>
+    <material>
+      <ambient>0.5 0.5 0.5 1</ambient>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+      <emissive>0 0 0 1</emissive>
+    </material>
     <plugin name="SimpleThrustVisual" filename="libForceVisual.so">
       <topic_name>thrust_visual</topic_name>
       <color>Gazebo/RedBright</color>

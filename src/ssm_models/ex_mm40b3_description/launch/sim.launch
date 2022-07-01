@@ -1,9 +1,11 @@
 <launch>
+
+    <arg name="sim_world" default="$(find ssm_worlds)/big_world.world"/>
     <!-- <arg name="launcher_file" default="$(find launcher_basic_description)/basic_launcher.urdf"/> -->
     <!-- <arg name="launcher_file" default="$(find launcher20deg_half_description)/launcher20deg_half.urdf"/> -->
     <arg name="launcher_file" default="$(find launcher20deg_description)/launcher20deg.urdf"/>
 
-    <arg name="x_launcher" default="0.0"/>
+    <arg name="x_launcher" default="-4000"/>
     <arg name="y_launcher" default="0.0"/>
     <arg name="z_launcher" default="0.0"/>
     <arg name="R_launcher" default="0.0"/>
@@ -11,7 +13,6 @@
     <arg name="Y_launcher" default="0.0"/>
 
     <arg name="miss_deg" default="-0.349029"/>
-    
     <arg name="y_miss" default="0.0"/>
 
     <!-- using exocet canister -->
@@ -42,11 +43,13 @@
     <include file="$(find ex_mm40b3_description)/launch/controller.launch"/>
 
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg sim_world)"/>
         <arg name="paused" value="true"/>
         <arg name="use_sim_time" value="true"/>
         <arg name="gui" value="true"/>
         <arg name="headless" value="false"/>
         <arg name="debug" value="false"/>
+        <arg name="verbose" value="true"/>
     </include>
 
 </launch>
