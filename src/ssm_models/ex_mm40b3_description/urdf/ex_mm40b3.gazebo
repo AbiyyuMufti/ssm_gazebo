@@ -2,7 +2,6 @@
 <robot name="ex_mm40b3" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
 <gazebo>
-  
   <plugin name="ex_mm40b3_controller" filename="libgazebo_ros_control.so">
     <robotNamespace>ex_mm40b3_controller</robotNamespace>
     <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
@@ -28,7 +27,7 @@
     <vector_topic>thrust_force</vector_topic>
   </plugin>
 
-  <plugin name="FullBodyAerodynamic" filename="libAerodynamic.so">
+  <!-- <plugin name="FullBodyAerodynamic" filename="libAerodynamic.so">
     <radial_symmetry>1</radial_symmetry>
     <a0>0.0</a0>
     <cla>4.752798721</cla>
@@ -46,7 +45,7 @@
     <link_name>base_link</link_name>
     <robotNamespace></robotNamespace>
     <topic_name>lift_drag_visual</topic_name>
-  </plugin>
+  </plugin> -->
 
 </gazebo>
 

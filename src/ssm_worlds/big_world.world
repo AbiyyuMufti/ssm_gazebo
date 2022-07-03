@@ -96,5 +96,9 @@
       </camera>
     </gui>
 
+    <plugin name="GazeboPlugin" filename="lib/libGazeboCoSimPlugin.so">
+      <portNumber>14581</portNumber>
+    </plugin>
+
   </world>
 </sdf>

@@ -443,10 +443,29 @@ void Aerodynamic::OnUpdate()
 
       lift_force_pub_->Publish(force_msg);
       this->last_pub_time = current_time;
+
+
+    ROS_WARN_STREAM("\n=============================");
+    ROS_WARN_STREAM("sensor: [" << this->GetHandle());
+    ROS_WARN_STREAM("Link: [" << this->link->GetName() << "] pose: [" << pose << "] dynamic pressure: [" << q << "]");
+    ROS_WARN_STREAM("spd: [" << vel.Length() << "] vel: [" << vel << "]");
+    ROS_WARN_STREAM("LD plane spd: [" << velInLDPlane.Length() << "] vel : [" << velInLDPlane << "]");
+    ROS_WARN_STREAM("forward (inertial): " << forwardI);
+    ROS_WARN_STREAM("upward (inertial): " << upwardI);
+    ROS_WARN_STREAM("lift dir (inertial): " << liftI);
+    ROS_WARN_STREAM("Span direction (normal to LD plane): " << spanwiseI);
+    ROS_WARN_STREAM("sweep: " << this->sweep);
+    ROS_WARN_STREAM("alpha: " << this->alpha);
+    ROS_WARN_STREAM("lift: " << lift);
+    ROS_WARN_STREAM("drag: " << drag << " cd: " << cd << " cda: " << this->cda);
+    ROS_WARN_STREAM("moment: " << moment);
+    ROS_WARN_STREAM("force: " << force);
+    ROS_WARN_STREAM("moment: " << moment);
+
   }
 
-  ROS_WARN_STREAM(" velocity: " << vel);
-  ROS_WARN_STREAM(" lift: " << lift);
-  ROS_WARN_STREAM(" drag: " << drag);
-  ROS_WARN_STREAM(" moment: " << moment);
+  // ROS_WARN_STREAM(" velocity: " << vel);
+  // ROS_WARN_STREAM(" lift: " << lift);
+  // ROS_WARN_STREAM(" drag: " << drag);
+  // ROS_WARN_STREAM(" moment: " << moment);
 }

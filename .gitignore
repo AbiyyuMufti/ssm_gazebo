@@ -3,3 +3,7 @@ devel
 install
 .vscode
 unused
++bus_conv_fcns
+slprj
+*.slxc
+

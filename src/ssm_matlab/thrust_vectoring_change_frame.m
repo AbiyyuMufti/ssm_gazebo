@@ -1,8 +1,8 @@
 clc;
-clear;
+% clear;
 close all;
 
-pos_rot = [0 1 0 deg2rad(20)];
+pos_rot = [0 1 0 deg2rad(0)];
 pos_quat = axang2quat(pos_rot);
 
 orig_tgt = [1 0 0];
@@ -13,12 +13,12 @@ tgt_v = quatrotate(pos_quat, orig_tgt);
 
 tgt_v = tgt_v/norm(tgt_v);
 
-azimth = 30;
-elevat = -5;
+azimth = 0;
+elevat = 30;
 
-d_x = cos(deg2rad(azimth))*sin(deg2rad(elevat));
-d_y = sin(deg2rad(azimth))*sin(deg2rad(elevat));
-d_z = cos(deg2rad(elevat));
+d_x = cos(deg2rad(azimth))*sin(deg2rad(elevat)); % becomes y
+d_y = sin(deg2rad(azimth))*sin(deg2rad(elevat)); % becomes z
+d_z = cos(deg2rad(elevat)); % becomes x
 
 
 [x, y, z] = sph2cart(deg2rad(azimth),deg2rad(90-elevat),1);
@@ -56,6 +56,7 @@ quiver3(0,0,0, dir_v(1), dir_v(2), dir_v(3), 'r');
 quiver3(0,0,0, goal(1), goal(2), goal(3), 'b','LineWidth',2);
 quiver3(0,0,0, goal_orig(1), goal_orig(2), goal_orig(3),'LineWidth',2);
 
-legend('y', 'z', 'orig', 'target', 'ORIGINAL', 'RESULT', 'goal_orig');
+legend('y', 'z', 'orig', 'target', 'ORIGINAL', 'RESULT', 'goal-orig');
+% legend('y', 'z', 'orig', 'target', 'ORIGINAL', 'RESULT');
 axis equal;
 hold off;
