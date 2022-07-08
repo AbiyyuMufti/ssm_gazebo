@@ -1,0 +1,510 @@
+<?xml version="1.0" ?>
+<robot name="mm40b3" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find mm40b3_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find mm40b3_description)/urdf/mm40b3.trans" />
+<xacro:include filename="$(find mm40b3_description)/urdf/mm40b3.gazebo" />
+<link name="base_link">
+  <inertial>
+    <origin xyz="0.4387109641054164 -8.999584500533236e-06 -8.999321300238793e-06" rpy="0 0 0"/>
+    <mass value="562.7679612503737"/>
+    <inertia ixx="12.078708" iyy="817.09871" izz="817.09871" ixy="0.0" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="FinHolder_1">
+  <inertial>
+    <origin xyz="0.011989934287455206 0.02489547078090079 0.02489052725207211" rpy="0 0 0"/>
+    <mass value="0.6999999481439694"/>
+    <inertia ixx="0.00025" iyy="0.004649" izz="0.004649" ixy="3e-05" iyz="-9.8e-05" ixz="3e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.262133 -0.12727 -0.12727" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/FinHolder_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="1.262133 -0.12727 -0.12727" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/FinHolder_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="FinHolder_4">
+  <inertial>
+    <origin xyz="0.011989934287455206 -0.024890526157868437 0.024895471044104445" rpy="0 0 0"/>
+    <mass value="0.6999999481439694"/>
+    <inertia ixx="0.00025" iyy="0.004649" izz="0.004649" ixy="-3e-05" iyz="9.8e-05" ixz="3e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.262133 0.127288 -0.12727" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/FinHolder_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="1.262133 0.127288 -0.12727" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/FinHolder_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="FinHolder_3">
+  <inertial>
+    <origin xyz="0.011989934287454318 -0.024895469949900717 -0.024890525894664756" rpy="0 0 0"/>
+    <mass value="0.6999999481439694"/>
+    <inertia ixx="0.00025" iyy="0.004649" izz="0.004649" ixy="-3e-05" iyz="-9.8e-05" ixz="-3e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.262133 0.127288 0.127288" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/FinHolder_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="1.262133 0.127288 0.127288" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/FinHolder_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="FinHolder_2">
+  <inertial>
+    <origin xyz="0.011989934287454318 0.024890526988868455 -0.02489546968669709" rpy="0 0 0"/>
+    <mass value="0.6999999481439694"/>
+    <inertia ixx="0.00025" iyy="0.004649" izz="0.004649" ixy="3e-05" iyz="9.8e-05" ixz="-3e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.262133 -0.12727 0.127288" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/FinHolder_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="1.262133 -0.12727 0.127288" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/FinHolder_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Wing1_1">
+  <inertial>
+    <origin xyz="-0.03120809779189968 0.02095895116205243 -0.0986058785075822" rpy="0 0 0"/>
+    <mass value="9.299979574219174"/>
+    <inertia ixx="0.055746" iyy="0.442635" izz="0.392244" ixy="0.003624" iyz="0.011218" ixz="-0.017051"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.057855 -0.163346 -0.163346" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Wing1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.057855 -0.163346 -0.163346" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Wing1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Booster_1">
+  <inertial>
+    <origin xyz="-0.530558737878678 4.101072758561376e-09 -2.4372112422003445e-10" rpy="0 0 0"/>
+    <mass value="120.00001114591107"/>
+    <inertia ixx="5.768641" iyy="16.618567" izz="16.618567" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.442145 9e-06 9e-06" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Booster_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="1.442145 9e-06 9e-06" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Booster_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Wing1_2">
+  <inertial>
+    <origin xyz="-0.031208097791900133 -0.09762773117005005 -0.020751038377032932" rpy="0 0 0"/>
+    <mass value="9.299979574219174"/>
+    <inertia ixx="0.055746" iyy="0.392244" izz="0.442635" ixy="-0.017051" iyz="-0.011218" ixz="-0.003624"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.057855 -0.163346 0.163364" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Wing1_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.057855 -0.163346 0.163364" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Wing1_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Wing1_3">
+  <inertial>
+    <origin xyz="-0.031208097791899873 -0.020751038640234615 0.09762773226425157" rpy="0 0 0"/>
+    <mass value="9.299979574219174"/>
+    <inertia ixx="0.055746" iyy="0.442635" izz="0.392244" ixy="-0.003624" iyz="0.011218" ixz="0.017051"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.057855 0.163364 0.163364" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Wing1_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.057855 0.163364 0.163364" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Wing1_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Wing1_4">
+  <inertial>
+    <origin xyz="-0.031208097791899553 0.09762773200104996 0.020751039734436066" rpy="0 0 0"/>
+    <mass value="9.299979574219174"/>
+    <inertia ixx="0.055746" iyy="0.392244" izz="0.442635" ixy="0.017051" iyz="-0.011218" ixz="0.003624"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.057855 0.163364 -0.163346" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Wing1_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.057855 0.163364 -0.163346" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Wing1_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Holder_1">
+  <inertial>
+    <origin xyz="-0.19999999173289051 0.02523252069763124 0.025232520960823845" rpy="0 0 0"/>
+    <mass value="13.50000107858645"/>
+    <inertia ixx="0.184494" iyy="0.864601" izz="0.864601" ixy="-0.0" iyz="0.079825" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-1.814326 -0.132484 -0.132484" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Holder_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-1.814326 -0.132484 -0.132484" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Holder_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Holder_2">
+  <inertial>
+    <origin xyz="-0.19999999173289051 -0.025232519866623837 0.02523252096083123" rpy="0 0 0"/>
+    <mass value="13.50000107858645"/>
+    <inertia ixx="0.184494" iyy="0.864601" izz="0.864601" ixy="0.0" iyz="-0.079825" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-1.814326 0.132502 -0.132484" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Holder_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-1.814326 0.132502 -0.132484" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Holder_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Holder_3">
+  <inertial>
+    <origin xyz="-0.19999999173289051 -0.025232519866631248 -0.025232519603423792" rpy="0 0 0"/>
+    <mass value="13.50000107858645"/>
+    <inertia ixx="0.184494" iyy="0.864601" izz="0.864601" ixy="0.0" iyz="0.079825" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-1.814326 0.132502 0.132502" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Holder_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-1.814326 0.132502 0.132502" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Holder_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Holder_4">
+  <inertial>
+    <origin xyz="-0.19999999173289051 0.0252325206976238 -0.02523251960343123" rpy="0 0 0"/>
+    <mass value="13.50000107858645"/>
+    <inertia ixx="0.184494" iyy="0.864601" izz="0.864601" ixy="-0.0" iyz="-0.079825" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-1.814326 -0.132484 0.132502" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Holder_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-1.814326 -0.132484 0.132502" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Holder_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Fin_1">
+  <inertial>
+    <origin xyz="-0.014318287010841813 0.018052617673020382 -0.08493035219325562" rpy="0 0 0"/>
+    <mass value="1.500000007859579"/>
+    <inertia ixx="0.006929" iyy="0.010397" izz="0.004127" ixy="0.000264" iyz="0.001396" ixz="-0.001243"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.262133 -0.166161 -0.166161" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Fin_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="1.262133 -0.166161 -0.166161" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Fin_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Fin_2">
+  <inertial>
+    <origin xyz="-0.014318287010842479 -0.08493058111049845 -0.018052845232855996" rpy="0 0 0"/>
+    <mass value="1.500000007859579"/>
+    <inertia ixx="0.006929" iyy="0.004127" izz="0.010397" ixy="-0.001243" iyz="-0.001396" ixz="-0.000264"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.262133 -0.166149 0.166191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Fin_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="1.262133 -0.166149 0.166191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Fin_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Fin_3">
+  <inertial>
+    <origin xyz="-0.014318287010841813 -0.018052616842020475 0.08493035355066292" rpy="0 0 0"/>
+    <mass value="1.500000007859579"/>
+    <inertia ixx="0.006929" iyy="0.010397" izz="0.004127" ixy="-0.000264" iyz="0.001396" ixz="0.001243"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.262133 0.166179 0.166179" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Fin_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="1.262133 0.166179 0.166179" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Fin_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Fin_4">
+  <inertial>
+    <origin xyz="-0.014318287010842257 0.0849303532874592 0.018052617936223952" rpy="0 0 0"/>
+    <mass value="1.500000007859579"/>
+    <inertia ixx="0.006929" iyy="0.004127" izz="0.010397" ixy="0.001243" iyz="-0.001396" ixz="0.000264"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.262133 0.166179 -0.166161" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Fin_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="1.262133 0.166179 -0.166161" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://mm40b3_description/meshes/Fin_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="fins_rev1" type="revolute">
+  <origin xyz="-1.262133 0.12727 0.12727" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="FinHolder_1"/>
+  <axis xyz="-0.0 0.707107 0.707107"/>
+  <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/>
+</joint>
+
+<joint name="fins_rev4" type="revolute">
+  <origin xyz="-1.262133 -0.127288 0.12727" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="FinHolder_4"/>
+  <axis xyz="-0.0 -0.707107 0.707107"/>
+  <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/>
+</joint>
+
+<joint name="fins_rev3" type="revolute">
+  <origin xyz="-1.262133 -0.127288 -0.127288" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="FinHolder_3"/>
+  <axis xyz="-0.0 -0.707107 -0.707107"/>
+  <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/>
+</joint>
+
+<joint name="fins_rev2" type="revolute">
+  <origin xyz="-1.262133 0.12727 -0.127288" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="FinHolder_2"/>
+  <axis xyz="-0.0 0.707107 -0.707107"/>
+  <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/>
+</joint>
+
+<joint name="wings_fold1" type="revolute">
+  <origin xyz="0.057855 0.163346 0.163346" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Wing1_1"/>
+  <axis xyz="1.0 -0.0 -0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="booster_fixing" type="fixed">
+  <origin xyz="-1.442145 -9e-06 -9e-06" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Booster_1"/>
+</joint>
+
+<joint name="wings_fold2" type="revolute">
+  <origin xyz="0.057855 0.163346 -0.163364" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Wing1_2"/>
+  <axis xyz="1.0 0.0 -0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="wings_fold3" type="revolute">
+  <origin xyz="0.057855 -0.163364 -0.163364" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Wing1_3"/>
+  <axis xyz="1.0 0.0 -0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="wings_fold4" type="revolute">
+  <origin xyz="0.057855 -0.163364 0.163346" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Wing1_4"/>
+  <axis xyz="1.0 -0.0 -0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="HolderJoint1" type="fixed">
+  <origin xyz="1.814326 0.132484 0.132484" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Holder_1"/>
+</joint>
+
+<joint name="HolderJoint2" type="fixed">
+  <origin xyz="1.814326 -0.132502 0.132484" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Holder_2"/>
+</joint>
+
+<joint name="HolderJoint3" type="fixed">
+  <origin xyz="1.814326 -0.132502 -0.132502" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Holder_3"/>
+</joint>
+
+<joint name="HolderJoint4" type="fixed">
+  <origin xyz="1.814326 0.132484 -0.132502" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Holder_4"/>
+</joint>
+
+<joint name="fin_fold1" type="revolute">
+  <origin xyz="0.0 0.038891 0.038891" rpy="0 0 0"/>
+  <parent link="FinHolder_1"/>
+  <child link="Fin_1"/>
+  <axis xyz="1.0 0.0 0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="fin_fold2" type="revolute">
+  <origin xyz="0.0 0.038879 -0.038903" rpy="0 0 0"/>
+  <parent link="FinHolder_2"/>
+  <child link="Fin_2"/>
+  <axis xyz="1.0 0.0 -0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="fin_fold3" type="continuous">
+  <origin xyz="0.0 -0.038891 -0.038891" rpy="0 0 0"/>
+  <parent link="FinHolder_3"/>
+  <child link="Fin_3"/>
+  <axis xyz="1.0 -0.0 -0.0"/>
+</joint>
+
+<joint name="fin_fold4" type="revolute">
+  <origin xyz="0.0 -0.038891 0.038891" rpy="0 0 0"/>
+  <parent link="FinHolder_4"/>
+  <child link="Fin_4"/>
+  <axis xyz="1.0 -0.0 -0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+</robot>

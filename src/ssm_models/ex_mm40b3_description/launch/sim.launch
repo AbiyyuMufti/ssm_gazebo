@@ -1,9 +1,9 @@
 <launch>
 
     <arg name="sim_world" default="$(find ssm_worlds)/big_world.world"/>
-    <!-- <arg name="launcher_file" default="$(find launcher_basic_description)/basic_launcher.urdf"/> -->
+    <arg name="launcher_file" default="$(find launcher_basic_description)/basic_launcher.urdf"/>
     <!-- <arg name="launcher_file" default="$(find launcher20deg_half_description)/launcher20deg_half.urdf"/> -->
-    <arg name="launcher_file" default="$(find launcher20deg_description)/launcher20deg.urdf"/>
+    <!-- <arg name="launcher_file" default="$(find launcher20deg_description)/launcher20deg.urdf"/> -->
 
     <arg name="x_launcher" default="-4000"/>
     <arg name="y_launcher" default="0.0"/>
@@ -16,12 +16,12 @@
     <arg name="y_miss" default="0.0"/>
 
     <!-- using exocet canister -->
-    <arg name="x_miss" default="-0.342484"/>
-    <arg name="z_miss" default="1.662578"/>
+    <!-- <arg name="x_miss" default="-0.342484"/> -->
+    <!-- <arg name="z_miss" default="1.662578"/> -->
 
     <!-- using basic launcher -->
-    <!-- <arg name="z_miss" default="1.332034"/> -->
-    <!-- <arg name="x_miss" default="-0.194658"/> -->
+    <arg name="z_miss" default="1.332034"/>
+    <arg name="x_miss" default="-0.194658"/>
 
     <include file="$(find ex_mm40b3_description)/launch/spawn_launcher.launch">
         <arg name="urdf" value="$(arg launcher_file)"/>

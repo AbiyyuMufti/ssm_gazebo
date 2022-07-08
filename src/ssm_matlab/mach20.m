@@ -17,10 +17,10 @@ hold on;
 plot(Alpha, CL);
 plot(Alpha, CD);
 plot(Alpha, CM);
-% plot(Alpha, CA);
-% plot(Alpha, CN);
-% legend('CL', 'CD', 'CM', 'CA', 'CN');
-legend('CL', 'CD', 'CM');
+plot(Alpha, CA);
+plot(Alpha, CN);
+legend('CL', 'CD', 'CM', 'CA', 'CN');
+% legend('CL', 'CD', 'CM');
 grid on;
 hold off;
 
