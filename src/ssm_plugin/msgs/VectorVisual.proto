@@ -1,0 +1,10 @@
+syntax = "proto2";
+package ssm_msgs.msgs;
+
+import "vector3d.proto";
+
+message VectorVisual
+{
+    required gazebo.msgs.Vector3d center = 1;
+    required gazebo.msgs.Vector3d vector = 2;
+}

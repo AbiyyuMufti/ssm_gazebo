@@ -113,7 +113,7 @@ void ThrustVectoring::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     // Create publisher for thrust force visual
     if (_sdf->HasElement("topic_name")) {
         const auto thrust_visual_topic_ = this->sdf->Get<std::string>("topic_name");
-        thrust_visual_pub_ = this->node_handle_->Advertise<ssm_msgs::msgs::Force>("~/" + thrust_visual_topic_);
+        thrust_visual_pub_ = this->node_handle_->Advertise<ssm_msgs::msgs::VectorVisual>("~/" + thrust_visual_topic_);
         gzdbg << "Publishing to ~/" << thrust_visual_topic_ << std::endl;
     }
 }
@@ -192,9 +192,9 @@ void ThrustVectoring::OnUpdate()
         force_vector_msg->set_y(force_vis.Y());
         force_vector_msg->set_z(force_vis.Z());
 
-        ssm_msgs::msgs::Force force_msg;
+        ssm_msgs::msgs::VectorVisual force_msg;
         force_msg.set_allocated_center(force_center_msg);
-        force_msg.set_allocated_force(force_vector_msg);
+        force_msg.set_allocated_vector(force_vector_msg);
 
         thrust_visual_pub_->Publish(force_msg);
         this->last_pub_time = current_time;

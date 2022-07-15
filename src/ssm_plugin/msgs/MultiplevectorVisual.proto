@@ -1,0 +1,9 @@
+syntax = "proto2";
+package ssm_msgs.msgs;
+
+import "VectorVisual.proto";
+
+message MultiplevectorVisual
+{
+    repeated ssm_msgs.msgs.VectorVisual vectors = 1;
+}

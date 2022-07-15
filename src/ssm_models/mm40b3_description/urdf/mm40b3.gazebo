@@ -1,139 +1,207 @@
 <?xml version="1.0" ?>
 <robot name="mm40b3" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
-<xacro:property name="body_color" value="Gazebo/Silver" />
-
 <gazebo>
   <plugin name="mm40b3_controller" filename="libgazebo_ros_control.so">
     <robotNamespace>mm40b3_controller</robotNamespace>
     <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
   </plugin>
+
+  <plugin name="BoosterThrust" filename="libSimpleThruster.so">
+    <link_name>Booster_1</link_name>
+    <forward_dir>1 0 0</forward_dir>
+    <thrust_origin>-0.820 0 0</thrust_origin>
+    <robotNamespace></robotNamespace>
+    <topic_name>booster_visual</topic_name>
+    <thrust_topic>booster_force</thrust_topic>
+  </plugin>
+
+  <!-- <plugin name="ThrustVectoring" filename="libThrustVectoring.so">
+    <link_name>base_link</link_name>
+    <forward_dir>1 0 0</forward_dir>
+    <thrust_origin>-1.540 0 0</thrust_origin>
+    <robotNamespace></robotNamespace>
+    <topic_name>thrust_visual</topic_name>
+    <vector_topic>thrust_force</vector_topic>
+  </plugin> -->
+
+  <plugin name="FullBodyAerodynamic" filename="libAerodynamic.so">
+    <!-- <radial_symmetry>1/</radial_symmetry> -->
+    <cp>0.0 0.0 0.0</cp>
+    
+    <sref>0.096</sref>
+    <lref>0.350</lref>
+
+    <air_density>1.2041</air_density>
+    <forward>1 0 0</forward>
+    <upward>0 0 1</upward>
+    <link_name>base_link</link_name>
+    <robotNamespace></robotNamespace>
+    <vel_vis>velocity_visual</vel_vis>
+    <!-- <lift_vis>lift_visual</lift_vis> -->
+
+  </plugin>
+
 </gazebo>
+
+
 <gazebo reference="base_link">
-  <material>${body_color}</material>
+  <material>Gazebo/White</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
   <gravity>true</gravity>
+  <visual>
+    <plugin name="VelocityVisual" filename="libForceVisual.so">
+      <topic_name>velocity_visual</topic_name>
+      <color>Gazebo/Blue</color>
+    </plugin>
+  </visual>  
 </gazebo>
 
 <gazebo reference="FinHolder_1">
-  <material>${body_color}</material>
+  <material>Gazebo/Blue</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="FinHolder_4">
-  <material>${body_color}</material>
+  <material>Gazebo/Blue</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="FinHolder_3">
-  <material>${body_color}</material>
+  <material>Gazebo/Blue</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="FinHolder_2">
-  <material>${body_color}</material>
+  <material>Gazebo/Blue</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Wing1_1">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Booster_1">
-  <material>${body_color}</material>
+  <material>Gazebo/Gray</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
+  <visual>
+    <plugin name="SimpleThrustVisual" filename="libForceVisual.so">
+        <topic_name>booster_visual</topic_name>
+        <color>Gazebo/Green</color>
+    </plugin>
+  </visual>
 </gazebo>
 
 <gazebo reference="Wing1_2">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Wing1_3">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Wing1_4">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Holder_1">
-  <material>${body_color}</material>
+  <material>Gazebo/Grey</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
+  <selfCollide>0</selfCollide>
 </gazebo>
 
 <gazebo reference="Holder_2">
-  <material>${body_color}</material>
+  <material>Gazebo/Grey</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
+  <selfCollide>0</selfCollide>
 </gazebo>
 
 <gazebo reference="Holder_3">
-  <material>${body_color}</material>
+  <material>Gazebo/Grey</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
+  <selfCollide>0</selfCollide>
 </gazebo>
 
 <gazebo reference="Holder_4">
-  <material>${body_color}</material>
+  <material>Gazebo/Grey</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
+  <selfCollide>0</selfCollide>
 </gazebo>
 
 <gazebo reference="Fin_1">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Fin_2">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Fin_3">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Fin_4">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference='booster_fixing'>
+  <preserveFixedJoint>true</preserveFixedJoint>
+</gazebo>
+
+<gazebo reference='HolderJoint1'>
+  <preserveFixedJoint>true</preserveFixedJoint>
+</gazebo>
+
+<gazebo reference='HolderJoint2'>
+  <preserveFixedJoint>true</preserveFixedJoint>
+</gazebo>
+
+<gazebo reference='HolderJoint3'>
+  <preserveFixedJoint>true</preserveFixedJoint>
+</gazebo>
+
+<gazebo reference='HolderJoint4'>
+  <preserveFixedJoint>true</preserveFixedJoint>
 </gazebo>
 
 </robot>

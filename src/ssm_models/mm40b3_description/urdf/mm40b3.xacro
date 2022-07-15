@@ -4,6 +4,7 @@
 <xacro:include filename="$(find mm40b3_description)/urdf/materials.xacro" />
 <xacro:include filename="$(find mm40b3_description)/urdf/mm40b3.trans" />
 <xacro:include filename="$(find mm40b3_description)/urdf/mm40b3.gazebo" />
+
 <link name="base_link">
   <inertial>
     <origin xyz="0.4387109641054164 -8.999584500533236e-06 -8.999321300238793e-06" rpy="0 0 0"/>
@@ -15,7 +16,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="white"/>
   </visual>
   <collision>
     <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -36,7 +37,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/FinHolder_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="blue"/>
   </visual>
   <collision>
     <origin xyz="1.262133 -0.12727 -0.12727" rpy="0 0 0"/>
@@ -57,7 +58,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/FinHolder_4.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="blue"/>
   </visual>
   <collision>
     <origin xyz="1.262133 0.127288 -0.12727" rpy="0 0 0"/>
@@ -78,7 +79,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/FinHolder_3.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="blue"/>
   </visual>
   <collision>
     <origin xyz="1.262133 0.127288 0.127288" rpy="0 0 0"/>
@@ -99,7 +100,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/FinHolder_2.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="blue"/>
   </visual>
   <collision>
     <origin xyz="1.262133 -0.12727 0.127288" rpy="0 0 0"/>
@@ -120,7 +121,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/Wing1_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="orange"/>
   </visual>
   <collision>
     <origin xyz="-0.057855 -0.163346 -0.163346" rpy="0 0 0"/>
@@ -141,7 +142,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/Booster_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="grey"/>
   </visual>
   <collision>
     <origin xyz="1.442145 9e-06 9e-06" rpy="0 0 0"/>
@@ -162,7 +163,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/Wing1_2.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="orange"/>
   </visual>
   <collision>
     <origin xyz="-0.057855 -0.163346 0.163364" rpy="0 0 0"/>
@@ -183,7 +184,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/Wing1_3.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="orange"/>
   </visual>
   <collision>
     <origin xyz="-0.057855 0.163364 0.163364" rpy="0 0 0"/>
@@ -204,7 +205,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/Wing1_4.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="orange"/>
   </visual>
   <collision>
     <origin xyz="-0.057855 0.163364 -0.163346" rpy="0 0 0"/>
@@ -225,7 +226,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/Holder_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="darkgrey"/>
   </visual>
   <collision>
     <origin xyz="-1.814326 -0.132484 -0.132484" rpy="0 0 0"/>
@@ -246,7 +247,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/Holder_2.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="darkgrey"/>
   </visual>
   <collision>
     <origin xyz="-1.814326 0.132502 -0.132484" rpy="0 0 0"/>
@@ -267,7 +268,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/Holder_3.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="darkgrey"/>
   </visual>
   <collision>
     <origin xyz="-1.814326 0.132502 0.132502" rpy="0 0 0"/>
@@ -288,7 +289,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/Holder_4.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="darkgrey"/>
   </visual>
   <collision>
     <origin xyz="-1.814326 -0.132484 0.132502" rpy="0 0 0"/>
@@ -309,7 +310,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/Fin_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="orange"/>
   </visual>
   <collision>
     <origin xyz="1.262133 -0.166161 -0.166161" rpy="0 0 0"/>
@@ -330,7 +331,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/Fin_2.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="orange"/>
   </visual>
   <collision>
     <origin xyz="1.262133 -0.166149 0.166191" rpy="0 0 0"/>
@@ -351,7 +352,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/Fin_3.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="orange"/>
   </visual>
   <collision>
     <origin xyz="1.262133 0.166179 0.166179" rpy="0 0 0"/>
@@ -372,7 +373,7 @@
     <geometry>
       <mesh filename="package://mm40b3_description/meshes/Fin_4.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="orange"/>
   </visual>
   <collision>
     <origin xyz="1.262133 0.166179 -0.166161" rpy="0 0 0"/>
@@ -492,11 +493,12 @@
   <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
 </joint>
 
-<joint name="fin_fold3" type="continuous">
+<joint name="fin_fold3" type="revolute">
   <origin xyz="0.0 -0.038891 -0.038891" rpy="0 0 0"/>
   <parent link="FinHolder_3"/>
   <child link="Fin_3"/>
   <axis xyz="1.0 -0.0 -0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
 </joint>
 
 <joint name="fin_fold4" type="revolute">

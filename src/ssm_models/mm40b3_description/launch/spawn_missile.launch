@@ -1,0 +1,13 @@
+<launch>
+    <arg name="x" default="0.0"/>
+    <arg name="y" default="0.0"/>
+    <arg name="z" default="0.0"/>
+    <arg name="R" default="0.0"/>
+    <arg name="P" default="0.0"/>
+    <arg name="Y" default="0.0"/>
+
+    <param name="robot_description" command="$(find xacro)/xacro $(find mm40b3_description)/urdf/mm40b3.xacro"/>
+
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"  
+    args="-param robot_description -urdf -model mm40b3 -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</launch>

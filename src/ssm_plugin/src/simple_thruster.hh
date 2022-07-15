@@ -11,7 +11,7 @@
 #include "gazebo/msgs/msgs.hh"
 #include <ignition/math.hh>
 
-#include "Force.pb.h"
+#include "VectorVisual.pb.h"
 
 namespace gazebo
 {

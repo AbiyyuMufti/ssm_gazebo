@@ -1,11 +1,15 @@
 <launch>
+  <arg name="sim_world" default="$(find ssm_worlds)/big_world.world"/>
   <param name="robot_description" command="$(find xacro)/xacro $(find mm40b3_description)/urdf/mm40b3.xacro"/>
-  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model mm40b3"/>
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model mm40b3 -z 2.492239 -P -1.5708"/>
+  <include file="$(find mm40b3_description)/launch/controller.launch"/>
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg sim_world)"/>
     <arg name="paused" value="true"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
     <arg name="headless" value="false"/>
     <arg name="debug" value="false"/>
+    <arg name="verbose" value="true"/>
   </include>
 </launch>
