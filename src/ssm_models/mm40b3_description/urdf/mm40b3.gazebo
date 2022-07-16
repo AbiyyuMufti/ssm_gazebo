@@ -26,7 +26,7 @@
   </plugin> -->
 
   <plugin name="FullBodyAerodynamic" filename="libAerodynamic.so">
-    <!-- <radial_symmetry>1/</radial_symmetry> -->
+    <radial_symmetry>1/</radial_symmetry>
     <cp>0.0 0.0 0.0</cp>
     
     <sref>0.096</sref>
@@ -34,10 +34,10 @@
 
     <air_density>1.2041</air_density>
     <forward>1 0 0</forward>
-    <upward>0 0 1</upward>
+    <!-- <upward>0 0 1</upward> -->
     <link_name>base_link</link_name>
     <robotNamespace></robotNamespace>
-    <vel_vis>velocity_visual</vel_vis>
+    <topic_name>AeroVectors</topic_name>
     <!-- <lift_vis>lift_visual</lift_vis> -->
 
   </plugin>
@@ -52,11 +52,10 @@
   <selfCollide>true</selfCollide>
   <gravity>true</gravity>
   <visual>
-    <plugin name="VelocityVisual" filename="libForceVisual.so">
-      <topic_name>velocity_visual</topic_name>
-      <color>Gazebo/Blue</color>
+    <plugin name="LiftDragVisual" filename="libMultiplevectorVisual.so">
+      <topic_name vector_size="5">AeroVectors</topic_name>
     </plugin>
-  </visual>  
+  </visual>
 </gazebo>
 
 <gazebo reference="FinHolder_1">

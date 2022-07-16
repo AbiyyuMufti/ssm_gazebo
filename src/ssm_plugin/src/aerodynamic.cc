@@ -1,3 +1,4 @@
+
 #include <algorithm>
 #include <string>
 
@@ -10,7 +11,7 @@
 
 #include <ros/ros.h>
 
-#include "Force.pb.h"
+#include "MultiplevectorVisual.pb.h"
 
 using namespace gazebo;
 
@@ -23,7 +24,7 @@ Aerodynamic::Aerodynamic()
     this->cp = ignition::math::Vector3d(0, 0, 0);
     this->forward = ignition::math::Vector3d(1, 0, 0);
     this->upward = ignition::math::Vector3d(0, 0, 1);
-    this->area = 1.0;
+    // this->area = 1.0;
     this->alpha = 0.0;
     this->sweep = 0.0;
     this->radialSymmetry = false;    
@@ -57,6 +58,7 @@ void Aerodynamic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     
     if (_sdf->HasElement("cp"))
         this->cp = _sdf->Get<ignition::math::Vector3d>("cp");
+    ROS_WARN_STREAM("!!!!!!!!! cp: "<< this->cp);
 
     // blade forward (-drag) direction in link frame
     if (_sdf->HasElement("forward"))
@@ -68,8 +70,14 @@ void Aerodynamic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         this->upward = _sdf->Get<ignition::math::Vector3d>("upward");
     this->upward.Normalize();
 
-    if (_sdf->HasElement("area"))
-        this->area = _sdf->Get<double>("area");
+    // if (_sdf->HasElement("area"))
+    //     this->area = _sdf->Get<double>("area");
+
+    if (_sdf->HasElement("sref"))
+        this->sref = _sdf->Get<double>("sref");
+
+    if (_sdf->HasElement("lref"))
+        this->lref = _sdf->Get<double>("lref");
 
     if (_sdf->HasElement("air_density"))
         this->rho = _sdf->Get<double>("air_density");
@@ -104,9 +112,10 @@ void Aerodynamic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     node_handle_->Init(namespace_);
 
     if (_sdf->HasElement("topic_name")) {
-        const auto lift_force_topic = this->sdf->Get<std::string>("topic_name");
-        lift_force_pub_ = node_handle_->Advertise<ssm_msgs::msgs::Force>("~/" + lift_force_topic);
-        gzdbg << "Publishing to ~/" << lift_force_topic << std::endl;
+        const auto vel_vis_topic = this->sdf->Get<std::string>("topic_name");
+        vectors_pub_ = node_handle_->Advertise<ssm_msgs::msgs::MultiplevectorVisual>("~/" + vel_vis_topic);
+        // velocity_pub_ = node_handle_->Advertise<ssm_msgs::msgs::VectorVisual>("~/" + vel_vis_topic);
+        gzdbg << "Publishing to ~/" << vel_vis_topic << std::endl;
     }
     mach_table.assign({0.2, 0.4, 0.5, 0.6, 0.7, 0.75, 0.8, 0.93});
     alpha_table.assign({.00, 4.00, 8.00, 12.00, 16.00, 20.00, 24.00, 28.00});
@@ -174,6 +183,8 @@ void Aerodynamic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     cp_table.push_back({-0.418, -0.365, -0.313, -0.403, -0.280, -0.143, -0.060, -0.037});
     cl_table.push_back({.000, 1.219, 2.454, 3.848, 5.074, 6.360, 7.694, 9.278});
     cd_table.push_back({.458, .541, .790, 1.248, 1.870, 2.709, 3.748, 5.100});
+
+    ROS_INFO_STREAM("Loading Aero plugin");
 }
 
 
@@ -187,7 +198,6 @@ void Aerodynamic::OnUpdate()
     ignition::math::Vector3d vel = this->link->WorldLinearVel(this->cp);
     const common::Time current_time = this->world->SimTime();
     
-    ROS_WARN_STREAM(" velocity: " << vel);
 
     // get the direction of the linear velocity in inertia frame
     ignition::math::Vector3d velI = vel;
@@ -197,16 +207,14 @@ void Aerodynamic::OnUpdate()
     const double dt = (current_time - this->last_pub_time).Double();
 
     // do nothing if the object almost still
-    if (vel.Length() <= 0.01)
+    if (vel.Length() < 1)
         return;
 
     // get actual pose of body relative to the world link
     ignition::math::Pose3d pose = this->link->WorldPose();
-    ROS_WARN_STREAM(" body bose: " << pose);    
 
     // rotate forward vectors into inertial frame
     ignition::math::Vector3d forwardI = pose.Rot().RotateVector(this->forward);
-    ROS_WARN_STREAM(" forward in inertia: " << forwardI);
 
     if (forwardI.Dot(vel) <= 0.0){
         // Only calculate lift or drag if the body relative velocity is in the same direction
@@ -222,17 +230,16 @@ void Aerodynamic::OnUpdate()
         // which is the component of inflow perpendicular to forward direction.
         ignition::math::Vector3d tmp = forwardI.Cross(velI);
         upwardI = forwardI.Cross(tmp).Normalize();
+        ROS_WARN("RADIAL C");
     }
     else
     {
         // else rotate upward vectors into inertial frame
         upwardI = pose.Rot().RotateVector(this->upward);
     }
-    ROS_WARN_STREAM(" upward in inertia: " << upwardI);
 
     // spanwiseI: a vector normal to lift-drag-plane described in inertial frame
     ignition::math::Vector3d spanwiseI = forwardI.Cross(upwardI).Normalize();
-  ROS_WARN_STREAM(" spanwise in inertia: " << spanwiseI);
 
     // TODO: What is sweep angle defined???? is it necessary
     const double minRatio = -1.0;
@@ -278,49 +285,47 @@ void Aerodynamic::OnUpdate()
     // given upwardI and liftI are both unit vectors, we can drop the denominator
     //   cos(theta) = a.Dot(b)
     double cosAlpha = ignition::math::clamp(liftI.Dot(upwardI), minRatio, maxRatio);
-    double mycosAlpha = ignition::math::clamp(velInLDPlane.Dot(forwardI), minRatio, maxRatio);
-
-    ROS_WARN_STREAM(" alpha_orig_code: " << cosAlpha);
-    ROS_WARN_STREAM(" alpha_my_own: " << mycosAlpha);
-
-    // Is alpha positive or negative? Test:
-    // forwardI points toward zero alpha
-    // if forwardI is in the same direction as lift, alpha is positive.
-    // liftI is in the same direction as forwardI?
-    if (liftI.Dot(forwardI) >= 0.0)
-        this->alpha = acos(cosAlpha);
-    else
-        this->alpha = -1 * acos(cosAlpha);
-
+    ignition::math::Vector3d velInLDPlaneI = velInLDPlane;
+    velInLDPlaneI.Normalize();
+    double mycosAlpha = ignition::math::clamp(velInLDPlaneI.Dot(forwardI), minRatio, maxRatio);
+    
+    this->alpha = acos(cosAlpha);
+    
     // normalize to within +/-90 deg
     while (fabs(this->alpha) > 0.5 * M_PI)
         this->alpha = this->alpha > 0 ? this->alpha - M_PI : this->alpha + M_PI;
 
+    this->alpha = this->alpha * 180 / M_PI;
     
+    // compute dynamic pressure
+    double speedInLDPlane = velInLDPlane.Length();
+    double q = 0.5 * this->rho * speedInLDPlane * speedInLDPlane;
+
+
     double speed = vel.Length();
     const double speed_of_sound = 343;
     // convert speed to mach number
     double mach_val = speed / speed_of_sound;
     std::vector<double>::iterator alpha_iter, mach_iter;
     int m_u, m_l, a_u, a_l;
-    alpha_iter = std::lower_bound(alpha_table.begin(), alpha_table.end(), this->alpha);
-    mach_iter = std::lower_bound(mach_table.begin(), mach_table.end(), mach_val);
+    alpha_iter = std::upper_bound(alpha_table.begin(), alpha_table.end(), this->alpha);
+    mach_iter = std::upper_bound(mach_table.begin(), mach_table.end(), mach_val);
     
     a_u = alpha_iter - alpha_table.begin();
     m_u = mach_iter - mach_table.begin();
 
     a_l = a_u - 1;
-    m_l = m_u - 1;
+    m_l = m_u == 0 ? 0.0 : m_u - 1;
 
 
-    // x = ((x2 - x1)*(y - y1)/(y2 - y1)) + x1);
+    // // x = ((x2 - x1)*(y - y1)/(y2 - y1)) + x1);
     // Get Aerodynamic Parameter from the table
-    double slope_cn = (cn_table[m_u][a_u] - cn_table[m_l][a_l])/(alpha_table[a_u] - alpha_table[a_l]);
-    double slope_cm = (cm_table[m_u][a_u] - cm_table[m_l][a_l])/(alpha_table[a_u] - alpha_table[a_l]);
-    double slope_ca = (ca_table[m_u][a_u] - ca_table[m_l][a_l])/(alpha_table[a_u] - alpha_table[a_l]);
-    double slope_cl = (cl_table[m_u][a_u] - cl_table[m_l][a_l])/(alpha_table[a_u] - alpha_table[a_l]);
-    double slope_cd = (cd_table[m_u][a_u] - cd_table[m_l][a_l])/(alpha_table[a_u] - alpha_table[a_l]);
-    double slope_cp = (cp_table[m_u][a_u] - cp_table[m_l][a_l])/(alpha_table[a_u] - alpha_table[a_l]);
+    double slope_cn = (cn_table[m_l][a_u] - cn_table[m_l][a_l])/(alpha_table[a_u] - alpha_table[a_l]);
+    double slope_cm = (cm_table[m_l][a_u] - cm_table[m_l][a_l])/(alpha_table[a_u] - alpha_table[a_l]);
+    double slope_ca = (ca_table[m_l][a_u] - ca_table[m_l][a_l])/(alpha_table[a_u] - alpha_table[a_l]);
+    double slope_cl = (cl_table[m_l][a_u] - cl_table[m_l][a_l])/(alpha_table[a_u] - alpha_table[a_l]);
+    double slope_cd = (cd_table[m_l][a_u] - cd_table[m_l][a_l])/(alpha_table[a_u] - alpha_table[a_l]);
+    double slope_cp = (cp_table[m_l][a_u] - cp_table[m_l][a_l])/(alpha_table[a_u] - alpha_table[a_l]);
 
     double cn_val = cn_table[m_l][a_l] + ((this->alpha - alpha_table[a_l])*slope_cn);
     double cm_val = cm_table[m_l][a_l] + ((this->alpha - alpha_table[a_l])*slope_cm);
@@ -329,66 +334,172 @@ void Aerodynamic::OnUpdate()
     double cd_val = cd_table[m_l][a_l] + ((this->alpha - alpha_table[a_l])*slope_cd);
     double cp_val = cp_table[m_l][a_l] + ((this->alpha - alpha_table[a_l])*slope_cp);  
 
-    // compute dynamic pressure
-    double speedInLDPlane = velInLDPlane.Length();
-    double q = 0.5 * this->rho * speedInLDPlane * speedInLDPlane;
 
-    ROS_WARN_STREAM(" cn_val: " << cn_val);
-    ROS_WARN_STREAM(" cm_val: " << cm_val);
-    ROS_WARN_STREAM(" ca_val: " << ca_val);
-    ROS_WARN_STREAM(" cl_val: " << cl_val);
-    ROS_WARN_STREAM(" cd_val: " << cd_val);
-    ROS_WARN_STREAM(" cp_val: " << cp_val << " tambah: " << cp_val + this->cp);
+    ignition::math::Vector3d lift = cn_val * q * this->sref * liftI;
+    ignition::math::Vector3d drag = ca_val * q * this->sref * dragDirection;
+    ignition::math::Vector3d moment = cm_val * q * this->sref * this->lref * momentDirection;
+    ignition::math::Vector3d normalF = cm_val * q * this->sref * upwardI;
+    ignition::math::Vector3d axialF = cm_val * q * this->sref * forwardI;
 
 
-    ignition::math::Vector3d lift = cn_val * q * this->area * liftI;
-    ignition::math::Vector3d drag = ca_val * q * this->area * dragDirection;
-    ignition::math::Vector3d moment = cm_val * q * this->area * momentDirection;
-    ignition::math::Vector3d normalF = cm_val * q * this->area * upwardI;
-    ignition::math::Vector3d axialF = cm_val * q * this->area * forwardI;
 
-    ROS_WARN_STREAM(" normal: " << normalF);
-    ROS_WARN_STREAM(" axial: " << axialF);
-    ROS_WARN_STREAM(" moment: " << moment);
-    ROS_WARN_STREAM(" lift: " << normalF);
-    ROS_WARN_STREAM(" drag: " << axialF);
+    // ignition::math::Vector3d force = lift + drag;
+    static ignition::math::Vector3d xref = this->cp;
 
-
-    ignition::math::Vector3d force = lift + drag;
-
-    this->cp += cp_val*this->forward;
-
-    force.Correct();
-    this->cp.Correct();
+    this->cp = xref + cp_val*this->forward;
+    
+    normalF.Correct();
+    axialF.Correct();
     moment.Correct();
+    normalF.Correct();
+    axialF.Correct();
 
-    // apply forces at cg (with torques for position shift)
-    this->link->AddForceAtRelativePosition(force, this->cp);
-    this->link->AddTorque(moment);
+    // force.Correct();
+    // this->cp.Correct();
+    // moment.Correct();
 
-    auto relative_center = this->link->RelativePose().Pos() + this->cp;
+    // // apply forces at cg (with torques for position shift)
+    // this->link->AddForceAtRelativePosition(force, this->cp);
+    // this->link->AddTorque(moment);
+
+    // auto relative_center = this->link->RelativePose().Pos() + this->cp;
 
     // Publish force and center of pressure for potential visual plugin.
     // - dt is used to control the rate at which the force is published
-    // - it only gets published if 'topic_name' is defined in the sdf
-    if (dt > 1.0 / 10 && this->sdf->HasElement("topic_name"))
+    // - it only gets published if 'vel_vis' is defined in the sdf
+    if (dt > 1.0 / 10)
     {
-        msgs::Vector3d* force_center_msg = new msgs::Vector3d;
-        force_center_msg->set_x(relative_center.X());
-        force_center_msg->set_y(relative_center.Y());
-        force_center_msg->set_z(relative_center.Z());
+        if (this->sdf->HasElement("topic_name"))
+        {
+            ignition::math::Vector3d rel_center = this->link->RelativePose().Pos();
+            rel_center.Correct();
+            msgs::Vector3d* relative_center_msg1 = new msgs::Vector3d;
+            msgs::Vector3d* relative_center_msg2 = new msgs::Vector3d;
+            msgs::Vector3d* relative_center_msg3 = new msgs::Vector3d;
+            msgs::Vector3d* relative_center_msg4 = new msgs::Vector3d;
+            msgs::Vector3d* relative_center_msg5 = new msgs::Vector3d;
+            
+            ignition::math::Vector3d vel_vis = pose.Rot().RotateVectorReverse(velInLDPlane);
+            vel_vis.Normalize();
+            vel_vis = 1000 * vel_vis;
+            msgs::Vector3d* vel_vector_msg = new msgs::Vector3d;
+            msgs::Set(vel_vector_msg, vel_vis);
 
-        msgs::Vector3d* force_vector_msg = new msgs::Vector3d;
-        force_vector_msg->set_x(force.X());
-        force_vector_msg->set_y(force.Y());
-        force_vector_msg->set_z(force.Z());
+            ignition::math::Vector3d lift_vis = pose.Rot().RotateVectorReverse(lift);
+            lift_vis.Normalize();
+            lift_vis = 1000 * lift_vis;
+            msgs::Vector3d* lift_vector_msg = new msgs::Vector3d;
+            msgs::Set(lift_vector_msg, lift_vis);
 
-        ssm_msgs::msgs::Force force_msg;
-        force_msg.set_allocated_center(force_center_msg);
-        force_msg.set_allocated_force(force_vector_msg);
+            ignition::math::Vector3d drag_vis = pose.Rot().RotateVectorReverse(drag);
+            drag_vis.Normalize();
+            drag_vis = 1000 * drag_vis;
+            msgs::Vector3d* drag_vector_msg = new msgs::Vector3d;
+            msgs::Set(drag_vector_msg, drag_vis);
 
-        lift_force_pub_->Publish(force_msg);
+            ignition::math::Vector3d normal_vis = pose.Rot().RotateVectorReverse(normalF);
+            normal_vis.Normalize();
+            normal_vis = 1000 * normal_vis;
+            msgs::Vector3d* normal_vector_msg = new msgs::Vector3d;
+            msgs::Set(normal_vector_msg, normal_vis);
+
+            ignition::math::Vector3d axial_vis = pose.Rot().RotateVectorReverse(axialF);
+            axial_vis.Normalize();
+            axial_vis = 1000 * axial_vis;
+            msgs::Vector3d* axial_vector_msg = new msgs::Vector3d;
+            msgs::Set(axial_vector_msg, axial_vis);
+            
+            msgs::Set(relative_center_msg1, rel_center);
+            msgs::Set(relative_center_msg2, rel_center);
+            msgs::Set(relative_center_msg3, rel_center);
+            msgs::Set(relative_center_msg4, rel_center);
+            msgs::Set(relative_center_msg5, rel_center);
+
+            ssm_msgs::msgs::VectorVisual vel_msg;
+            vel_msg.set_allocated_center(relative_center_msg1);
+            vel_msg.set_allocated_vector(vel_vector_msg);
+
+            ssm_msgs::msgs::VectorVisual lift_msg;
+            lift_msg.set_allocated_center(relative_center_msg2);
+            lift_msg.set_allocated_vector(lift_vector_msg);
+
+            ssm_msgs::msgs::VectorVisual drag_msg;
+            drag_msg.set_allocated_center(relative_center_msg3);
+            drag_msg.set_allocated_vector(drag_vector_msg);
+
+            ssm_msgs::msgs::VectorVisual normal_msg;
+            normal_msg.set_allocated_center(relative_center_msg4);
+            normal_msg.set_allocated_vector(normal_vector_msg);
+
+            ssm_msgs::msgs::VectorVisual axial_msg;
+            axial_msg.set_allocated_center(relative_center_msg5);
+            axial_msg.set_allocated_vector(axial_vector_msg);
+            
+            ssm_msgs::msgs::MultiplevectorVisual vectors_to_visualize;
+            vectors_to_visualize.add_vectors()->CopyFrom(vel_msg);
+            vectors_to_visualize.add_vectors()->CopyFrom(lift_msg);
+            vectors_to_visualize.add_vectors()->CopyFrom(drag_msg);
+            vectors_to_visualize.add_vectors()->CopyFrom(normal_msg);
+            vectors_to_visualize.add_vectors()->CopyFrom(axial_msg);
+
+            vectors_pub_->Publish(vectors_to_visualize);
+
+            
+        }
         this->last_pub_time = current_time;
+        
 
-    }    
+        
+        // ROS_WARN_STREAM(" velocity in LD Plane: " << velInLDPlane.Length());
+        // ROS_WARN_STREAM(" velocity_betrag: " << vel.Length());
+        
+        // // ROS_WARN_STREAM(" body bose: " << pose);
+        // // ROS_WARN_STREAM(" forward in inertia: " << forwardI);
+        // // ROS_WARN_STREAM(" upward in inertia: " << upwardI);
+        // // ROS_WARN_STREAM(" spanwise in inertia: " << spanwiseI);
+        // // ROS_WARN_STREAM(" lift in inertia: " << liftI);
+        // // ROS_WARN_STREAM(" drag in inertia: " << dragDirection);
+
+        // ROS_WARN_STREAM(" alpha: " << this->alpha);
+        // // ROS_WARN_STREAM(" alpha_my_own_: " << acos(mycosAlpha)*180/M_PI);
+        // ROS_WARN_STREAM(" dynamic pressure: " << q);
+
+        // ROS_WARN_STREAM(" cn_val: " << cn_val);
+        // ROS_WARN_STREAM(" cm_val: " << cm_val);
+        // ROS_WARN_STREAM(" ca_val: " << ca_val);
+        // ROS_WARN_STREAM(" cl_val: " << cl_val);
+        // ROS_WARN_STREAM(" cd_val: " << cd_val);
+        // // ROS_WARN_STREAM(" cp_val: " << cp_val << " xref: " << xref << " cp: " << this->cp);
+        ROS_WARN_STREAM(" velocity: " << vel.Length());
+        ROS_WARN_STREAM(" lift: " << normalF.Length());
+        ROS_WARN_STREAM(" drag: " << axialF.Length());
+        ROS_WARN_STREAM(" normal: " << normalF.Length());
+        ROS_WARN_STREAM(" axial: " << axialF.Length() << "\n");
+        // ROS_WARN_STREAM(" moment: " << moment.Length());
+        
+        
+
+    }
+}
+
+
+void tools::publish_force(const ignition::math::Vector3d& force, const ignition::math::Vector3d& center, const gazebo::transport::PublisherPtr& publisher)
+{
+    gazebo::msgs::Vector3d* force_center_msg = new msgs::Vector3d;
+    force_center_msg->set_x(center.X());
+    force_center_msg->set_y(center.Y());
+    force_center_msg->set_z(center.Z());
+
+    gazebo::msgs::Vector3d* force_vector_msg = new msgs::Vector3d;
+    force_vector_msg->set_x(force.X());
+    force_vector_msg->set_y(force.Y());
+    force_vector_msg->set_z(force.Z());
+    
+    ssm_msgs::msgs::VectorVisual force_msg;
+
+    force_msg.set_allocated_center(force_center_msg);
+    force_msg.set_allocated_vector(force_vector_msg);
+
+    publisher->Publish(force_msg);
+
 }

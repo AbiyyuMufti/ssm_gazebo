@@ -111,8 +111,9 @@ link_directories(
 
 
 set(ssm_msgs
-  msgs/Force.proto
+  msgs/VectorVisual.proto
   msgs/SphericalVector.proto
+  msgs/MultiplevectorVisual.proto
 )
 
 
@@ -123,6 +124,9 @@ link_libraries(ssm_msgs)
 
 add_library(ForceVisual SHARED src/force_visual.cc)
 list(APPEND plugins ForceVisual)
+
+add_library(MultiplevectorVisual SHARED src/multivector_visual.cc)
+list(APPEND plugins MultiplevectorVisual)
 
 add_library(SimpleThruster SHARED src/simple_thruster.cc)
 list(APPEND plugins SimpleThruster)
@@ -137,9 +141,7 @@ add_library(Aerodynamic SHARED src/aerodynamic.cc)
 list(APPEND plugins Aerodynamic)
 
 foreach(plugin ${plugins})
-  # add_dependencies(${plugin} mav_msgs nav_msgs std_msgs sensor_msgs)
   add_dependencies(${plugin} ssm_msgs)
-  # add_dependencies(${plugin} gazebo_msgs)
   target_link_libraries(${plugin} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
   
 endforeach()

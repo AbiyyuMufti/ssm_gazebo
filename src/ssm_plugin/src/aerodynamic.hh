@@ -52,7 +52,7 @@ namespace gazebo
         protected: bool radialSymmetry;
 
         /// \brief effective planeform surface area
-        protected: double area;
+        // protected: double area;
 
         /// \brief angle of sweep
         protected: double sweep;
@@ -79,8 +79,14 @@ namespace gazebo
         protected: sdf::ElementPtr sdf;
 
         private: transport::NodePtr node_handle_;
-        private: transport::SubscriberPtr wind_sub_;
+        // private: transport::SubscriberPtr wind_sub_;
         private: transport::PublisherPtr lift_force_pub_;
+        private: transport::PublisherPtr drag_force_pub_;
+        private: transport::PublisherPtr velocity_pub_;
+        private: transport::PublisherPtr vectors_pub_;
+        private: transport::PublisherPtr velocity_in_ld_pub_;
+        // private: transport::PublisherPtr lift_force_pub_;
+
         private: common::Time last_pub_time;
         private: msgs::Factory msg_factory_;
         private: std::string namespace_;
@@ -93,7 +99,19 @@ namespace gazebo
         std::vector<std::vector<double>> cp_table;
         std::vector<double> alpha_table;
         std::vector<double> mach_table;
+
+        /// \brief effective planeform surface area
+        protected: double sref;
+
+        protected: double lref;
+
     };
 };
+
+namespace tools{
+    // Helper function to publish force message from the publisher side
+    void publish_force(const ignition::math::Vector3d& force, const ignition::math::Vector3d& center, const gazebo::transport::PublisherPtr& publisher);
+};
+
 
 #endif
