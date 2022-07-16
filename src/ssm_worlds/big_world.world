@@ -2,7 +2,7 @@
 <sdf version="1.7">
   <world name="my_world">
     <scene>
-      <ambient>1.0 1.0 1.0</ambient>
+      <ambient>0.8 0.8 0.8</ambient>
       <background>0.0 0.0 0.0</background>
     </scene>
 
@@ -27,7 +27,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>10000 10000</size>
+              <size>40000 40000</size>
             </plane>
           </geometry>
           <surface>
@@ -36,8 +36,10 @@
             </contact>
             <friction>
               <ode>
-                <mu>100</mu>
-                <mu2>50</mu2>
+                <!-- <mu>100</mu>
+                <mu2>50</mu2> -->
+                <mu>10000</mu>
+                <mu2>5000</mu2>
               </ode>
             </friction>
           </surface>
@@ -47,7 +49,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>10000 10000</size>
+              <size>40000 40000</size>
             </plane>
           </geometry>
           <material>
@@ -61,14 +63,36 @@
     </model>
 
     <model name="target_box">
-      <pose>4000 0 0 0 0 0</pose>
+      <pose>18000 0 0 0 0 0</pose>
       <link name="big_red_box">
+        <inertial>
+          <mass>1000000</mass>
+          <inertia>
+            <ixx>800000</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>2000000</iyy>
+            <iyz>0</iyz>
+            <izz>3000000</izz>
+          </inertia>
+        </inertial>
         <collision name="collision">
           <geometry>
             <box>
               <size>5 3 1</size>
             </box>
           </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+            </friction>
+          </surface>          
         </collision>
         <visual name="visual">
           <geometry>
@@ -87,12 +111,16 @@
     </model>
 
     <gui fullscreen='0'>
-      <camera name='user_camera'>
+      <camera name='follower_camera'>
         <pose>-4033.5 -24 19 0 0.266440 0.266440</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
-        <clip_near>0.10</clip_near>
-        <clip_far>15000</clip_far>
+        <track_visual>
+          <min_dist>2.0</min_dist>
+          <max_dist>20.0</max_dist>
+          <use_model_frame>1</use_model_frame>
+          <inherit_yaw>1</inherit_yaw>
+        </track_visual>
       </camera>
     </gui>
 
