@@ -120,10 +120,10 @@ void ThrustVectoring::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
 void ThrustVectoring::OnUpdate()
 {
-    this->thrust_magnitude = 10000;
-    this->thrust_vector_value.X(cos(0)*sin(0.087));
-    this->thrust_vector_value.Y(sin(0)*sin(0.087));
-    this->thrust_vector_value.Z(cos(0.087));  
+    // this->thrust_magnitude = 10000;
+    // this->thrust_vector_value.X(cos(0)*sin(0.087));
+    // this->thrust_vector_value.Y(sin(0)*sin(0.087));
+    // this->thrust_vector_value.Z(cos(0.087));  
     GZ_ASSERT(this->link, "Link was NULL");
     
     // calculate current time
