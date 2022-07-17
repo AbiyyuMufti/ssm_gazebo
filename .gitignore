@@ -6,4 +6,10 @@ unused
 +bus_conv_fcns
 slprj
 *.slxc
+*.autosave
+*.original
+*.asv
+src/ssm_plugin/customMessage
+SSMPlugin
+
 

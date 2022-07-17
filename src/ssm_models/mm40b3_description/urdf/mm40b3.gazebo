@@ -16,30 +16,29 @@
     <thrust_topic>booster_force</thrust_topic>
   </plugin>
 
-  <!-- <plugin name="ThrustVectoring" filename="libThrustVectoring.so">
+  <plugin name="ThrustVectoring" filename="libThrustVectoring.so">
     <link_name>base_link</link_name>
     <forward_dir>1 0 0</forward_dir>
     <thrust_origin>-1.540 0 0</thrust_origin>
     <robotNamespace></robotNamespace>
     <topic_name>thrust_visual</topic_name>
     <vector_topic>thrust_force</vector_topic>
-  </plugin> -->
+  </plugin>
 
   <plugin name="FullBodyAerodynamic" filename="libAerodynamic.so">
     <radial_symmetry>1/</radial_symmetry>
     <cp>0.0 0.0 0.0</cp>
-    
+    <forward>1 0 0</forward>
+    <!-- <upward>0 0 1</upward> -->
+
     <sref>0.096</sref>
     <lref>0.350</lref>
 
     <air_density>1.2041</air_density>
-    <forward>1 0 0</forward>
-    <!-- <upward>0 0 1</upward> -->
+
     <link_name>base_link</link_name>
     <robotNamespace></robotNamespace>
     <topic_name>AeroVectors</topic_name>
-    <!-- <lift_vis>lift_visual</lift_vis> -->
-
   </plugin>
 
 </gazebo>
@@ -55,7 +54,69 @@
     <plugin name="LiftDragVisual" filename="libMultiplevectorVisual.so">
       <topic_name vector_size="5">AeroVectors</topic_name>
     </plugin>
+    <plugin name="VectoredThrustVisual" filename="libForceVisual.so">
+      <topic_name>thrust_visual</topic_name>
+      <color>Gazebo/Green</color>
+    </plugin>
   </visual>
+  
+  <sensor name="camera_top_side" type="camera">
+    <pose>-2.0 0.0 1.5 0.0 ${3.1416/4} 0.0</pose>
+    <!-- 3.1416 -->
+    <camera>
+      <!-- <horizontal_fov>1.347</horizontal_fov> -->
+      <horizontal_fov>2</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>100</far>
+      </clip>
+    </camera>
+    <always_on>1</always_on>
+    <update_rate>30</update_rate>
+    <!-- <visualize>true</visualize> -->
+  </sensor>
+
+  <sensor name="camera_right_side" type="camera">
+    <pose>-0.0 -2.0 0.0 0.0 0.0 ${3.1416/2}</pose>
+    <!-- 3.1416 -->
+    <camera>
+      <!-- <horizontal_fov>1.347</horizontal_fov> -->
+      <horizontal_fov>2</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>100</far>
+      </clip>
+    </camera>
+    <always_on>1</always_on>
+    <update_rate>30</update_rate>
+    <!-- <visualize>true</visualize> -->
+  </sensor>  
+  
+  <!-- <sensor name="camera_wide" type="camera">
+    <pose>16 0 2.0 0 0.3 3.1416</pose>
+    <camera>
+      <horizontal_fov>2.0</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>1000</far>
+      </clip>
+    </camera>
+    <always_on>1</always_on>
+    <update_rate>30</update_rate>
+    <visualize>true</visualize>
+  </sensor>   -->
 </gazebo>
 
 <gazebo reference="FinHolder_1">

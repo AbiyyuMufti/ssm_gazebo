@@ -25,7 +25,8 @@
       <geometry>
         <mesh>
           <uri>model://ocean/meshes/mesh.dae</uri>
-          <scale>1.1 1.1 0.45</scale>
+          <!-- <scale>1.01 1.01 0.45</scale> -->
+          <scale>5.01 5.01 0.45</scale>
         </mesh>
       </geometry>
       <material>

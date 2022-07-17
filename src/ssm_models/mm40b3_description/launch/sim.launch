@@ -1,11 +1,12 @@
 <launch>
 
     <arg name="sim_world" default="$(find ssm_worlds)/big_world.world"/>
+    <!-- <arg name="sim_world" default="$(find ssm_worlds)/komodo_island.world"/> -->
     <arg name="launcher_file" default="$(find launcher_basic_description)/basic_launcher.urdf"/>
     <!-- <arg name="launcher_file" default="$(find launcher20deg_half_description)/launcher20deg_half.urdf"/> -->
     <!-- <arg name="launcher_file" default="$(find launcher20deg_description)/launcher20deg.urdf"/> -->
 
-    <arg name="x_launcher" default="-4000"/>
+    <arg name="x_launcher" default="-18000"/>
     <arg name="y_launcher" default="0.0"/>
     <arg name="z_launcher" default="0.0"/>
     <arg name="R_launcher" default="0.0"/>
