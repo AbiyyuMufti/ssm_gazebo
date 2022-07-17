@@ -26,19 +26,47 @@
   </plugin>
 
   <plugin name="FullBodyAerodynamic" filename="libAerodynamic.so">
-    <radial_symmetry>1/</radial_symmetry>
-    <cp>0.0 0.0 0.0</cp>
-    <forward>1 0 0</forward>
+
     <!-- <upward>0 0 1</upward> -->
+    <cp>0.0 0.0 0.0</cp>
 
     <sref>0.096</sref>
     <lref>0.350</lref>
 
-    <air_density>1.2041</air_density>
 
-    <link_name>base_link</link_name>
-    <robotNamespace></robotNamespace>
     <topic_name>AeroVectors</topic_name>
+    <mach nr="0.2">
+      <cl_table>0.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cl_table>
+      <cm_table>0.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cm_table>
+      <cd_table>0.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cd_table>
+    </mach>
+    <mach nr="0.2">
+      <cl_table>0.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cl_table>
+      <cm_table>0.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cm_table>
+      <cd_table>0.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cd_table>
+    </mach>
+    <mach nr="0.2">
+      <cl_table>.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cl_table>
+      <cm_table>.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cm_table>
+      <cd_table>.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cd_table>
+    </mach>
+    <mach nr="0.2">
+      <cl_table>.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cl_table>
+      <cm_table>.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cm_table>
+      <cd_table>.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cd_table>
+    </mach>
+    <mach nr="0.2">
+      <cl_table>.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cl_table>
+      <cm_table>.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cm_table>
+      <cd_table>.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cd_table>
+    </mach>
+    
+    <air_density>1.2041</air_density>
+    <link_name>base_link</link_name>
+    <robotNamespace></robotNamespace>    
+    <radial_symmetry>1/</radial_symmetry>
+    
+    <forward>1 0 0</forward>
   </plugin>
 
 </gazebo>
