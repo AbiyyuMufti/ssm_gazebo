@@ -15,7 +15,6 @@
 
 #include <ros/ros.h>
 
-#include "force_visual.hh"
 
 using namespace gazebo;
 
@@ -175,7 +174,7 @@ void SimpleThruster::OnUpdate()
 
 }
 
-void SimpleThruster::OnThrustMsgs(const boost::shared_ptr<const gazebo::msgs::Int> &msg)
+void SimpleThruster::OnThrustMsgs(const boost::shared_ptr<const gazebo::msgs::Double> &msg)
 {
     this->thrust_magnitude_ = msg->data();
     // ROS_WARN_STREAM("thrust magnitude " << this->thrust_magnitude_);

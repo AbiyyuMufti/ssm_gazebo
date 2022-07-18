@@ -12,6 +12,7 @@
 #include <ignition/math.hh>
 
 #include "VectorVisual.pb.h"
+#include "double.pb.h"
 
 namespace gazebo
 {
@@ -31,7 +32,7 @@ namespace gazebo
         protected: virtual void OnUpdate();
 
         /// \brief Callback for incomming Thrust Message.
-        protected: void OnThrustMsgs(const boost::shared_ptr<const gazebo::msgs::Int> &msg);
+        protected: void OnThrustMsgs(const boost::shared_ptr<const gazebo::msgs::Double> &msg);
 
         /// \brief Connection to World Update events.
         protected: event::ConnectionPtr updateConnection;

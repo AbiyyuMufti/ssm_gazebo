@@ -1,0 +1,13 @@
+syntax = "proto2";
+package gazebo.msgs;
+
+/// \ingroup gazebo_msgs
+/// \interface double
+/// \brief Double message
+
+
+message Double
+{
+  /// double data
+  required double data = 1;
+}

@@ -9,7 +9,6 @@ slprj
 *.autosave
 *.original
 *.asv
-src/ssm_plugin/customMessage
-SSMPlugin
+src/ssm_plugin/SimulinkMsgs
 
 

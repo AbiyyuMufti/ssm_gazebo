@@ -1,0 +1,9 @@
+syntax = "proto2";
+package ssm_msgs.msgs;
+
+message SphericalVector
+{
+    required double r= 1;
+    required double theta = 2;
+    required double phi = 3;
+}

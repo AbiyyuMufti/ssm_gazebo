@@ -116,11 +116,17 @@ set(ssm_msgs
   msgs/MultiplevectorVisual.proto
 )
 
+set(msgs msgs/double.proto)
+
 
 PROTOBUF_GENERATE_CPP(SSM_PROTO_SRCS SSM_PROTO_HDRS ${ssm_msgs})
+PROTOBUF_GENERATE_CPP(SRC_PROTO_SRCS SRC_PROTO_HDRS ${msgs})
 
 add_library(ssm_msgs SHARED ${SSM_PROTO_SRCS})
 link_libraries(ssm_msgs)
+
+add_library(msgs SHARED ${SRC_PROTO_SRCS})
+link_libraries(msgs)
 
 add_library(ForceVisual SHARED src/force_visual.cc)
 list(APPEND plugins ForceVisual)
@@ -142,6 +148,7 @@ list(APPEND plugins Aerodynamic)
 
 foreach(plugin ${plugins})
   add_dependencies(${plugin} ssm_msgs)
+  add_dependencies(${plugin} msgs)
   target_link_libraries(${plugin} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
   
 endforeach()

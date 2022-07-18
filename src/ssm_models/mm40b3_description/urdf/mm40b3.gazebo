@@ -35,7 +35,7 @@
 
 
     <topic_name>AeroVectors</topic_name>
-    <mach nr="0.2">
+    <!-- <mach nr="0.2">
       <cl_table>0.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cl_table>
       <cm_table>0.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cm_table>
       <cd_table>0.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cd_table>
@@ -59,7 +59,7 @@
       <cl_table>.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cl_table>
       <cm_table>.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cm_table>
       <cd_table>.000 1.017 2.067 3.218 4.176 5.066 5.836 6.576</cd_table>
-    </mach>
+    </mach> -->
     
     <air_density>1.2041</air_density>
     <link_name>base_link</link_name>
@@ -120,7 +120,7 @@
       </image>
       <clip>
         <near>0.1</near>
-        <far>100</far>
+        <far>1000</far>
       </clip>
     </camera>
     <always_on>1</always_on>
