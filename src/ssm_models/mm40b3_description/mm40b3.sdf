@@ -1,0 +1,1333 @@
+<sdf version='1.7'>
+  <model name='mm40b3'>
+    <link name='base_link'>
+      <inertial>
+        <pose>0.438711 -9e-06 -9e-06 0 -0 0</pose>
+        <mass>562.768</mass>
+        <inertia>
+          <ixx>12.0787</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>817.099</iyy>
+          <iyz>0</iyz>
+          <izz>817.099</izz>
+        </inertia>
+      </inertial>
+      <collision name='base_link_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/base_link.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='base_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/base_link.stl</uri>
+          </mesh>
+        </geometry>
+        <plugin name='LiftDragVisual' filename='libMultiplevectorVisual.so'>
+          <topic_name vector_size='5'>AeroVectors</topic_name>
+        </plugin>
+        <plugin name='VectoredThrustVisual' filename='libForceVisual.so'>
+          <topic_name>thrust_visual</topic_name>
+          <color>Gazebo/Green</color>
+        </plugin>
+        <material>
+          <script>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+      <gravity>1</gravity>
+      <sensor name='camera_top_side' type='camera'>
+        <pose>-2 0 1.5 0 0.7854 0</pose>
+        <camera>
+          <horizontal_fov>2</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+      </sensor>
+      <sensor name='camera_right_side' type='camera'>
+        <pose>-0 -2 0 0 -0 1.5708</pose>
+        <camera>
+          <horizontal_fov>2</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>1000</far>
+          </clip>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+      </sensor>
+    </link>
+    <joint name='HolderJoint1' type='fixed'>
+      <pose relative_to='base_link'>1.81433 0.132484 0.132484 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Holder_1</child>
+      <axis>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+    <link name='Holder_1'>
+      <pose relative_to='HolderJoint1'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.2 0.025233 0.025233 0 -0 0</pose>
+        <mass>13.5</mass>
+        <inertia>
+          <ixx>0.184494</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.864601</iyy>
+          <iyz>0.079825</iyz>
+          <izz>0.864601</izz>
+        </inertia>
+      </inertial>
+      <collision name='Holder_1_collision'>
+        <pose>-1.81433 -0.132484 -0.132484 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Holder_1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Holder_1_visual'>
+        <pose>-1.81433 -0.132484 -0.132484 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Holder_1.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Grey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='HolderJoint2' type='fixed'>
+      <pose relative_to='base_link'>1.81433 -0.132502 0.132484 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Holder_2</child>
+      <axis>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+    <link name='Holder_2'>
+      <pose relative_to='HolderJoint2'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.2 -0.025233 0.025233 0 -0 0</pose>
+        <mass>13.5</mass>
+        <inertia>
+          <ixx>0.184494</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.864601</iyy>
+          <iyz>-0.079825</iyz>
+          <izz>0.864601</izz>
+        </inertia>
+      </inertial>
+      <collision name='Holder_2_collision'>
+        <pose>-1.81433 0.132502 -0.132484 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Holder_2.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Holder_2_visual'>
+        <pose>-1.81433 0.132502 -0.132484 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Holder_2.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Grey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='HolderJoint3' type='fixed'>
+      <pose relative_to='base_link'>1.81433 -0.132502 -0.132502 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Holder_3</child>
+      <axis>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+    <link name='Holder_3'>
+      <pose relative_to='HolderJoint3'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.2 -0.025233 -0.025233 0 -0 0</pose>
+        <mass>13.5</mass>
+        <inertia>
+          <ixx>0.184494</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.864601</iyy>
+          <iyz>0.079825</iyz>
+          <izz>0.864601</izz>
+        </inertia>
+      </inertial>
+      <collision name='Holder_3_collision'>
+        <pose>-1.81433 0.132502 0.132502 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Holder_3.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Holder_3_visual'>
+        <pose>-1.81433 0.132502 0.132502 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Holder_3.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Grey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='HolderJoint4' type='fixed'>
+      <pose relative_to='base_link'>1.81433 0.132484 -0.132502 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Holder_4</child>
+      <axis>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+    <link name='Holder_4'>
+      <pose relative_to='HolderJoint4'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.2 0.025233 -0.025233 0 -0 0</pose>
+        <mass>13.5</mass>
+        <inertia>
+          <ixx>0.184494</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.864601</iyy>
+          <iyz>-0.079825</iyz>
+          <izz>0.864601</izz>
+        </inertia>
+      </inertial>
+      <collision name='Holder_4_collision'>
+        <pose>-1.81433 -0.132484 0.132502 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Holder_4.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Holder_4_visual'>
+        <pose>-1.81433 -0.132484 0.132502 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Holder_4.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Grey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='booster_fixing' type='fixed'>
+      <pose relative_to='base_link'>-1.44215 -9e-06 -9e-06 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Booster_1</child>
+      <axis>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+    <link name='Booster_1'>
+      <pose relative_to='booster_fixing'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.530559 0 -0 0 -0 0</pose>
+        <mass>120</mass>
+        <inertia>
+          <ixx>5.76864</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>16.6186</iyy>
+          <iyz>0</iyz>
+          <izz>16.6186</izz>
+        </inertia>
+      </inertial>
+      <collision name='Booster_1_collision'>
+        <pose>1.44215 9e-06 9e-06 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Booster_1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Booster_1_visual'>
+        <pose>1.44215 9e-06 9e-06 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Booster_1.stl</uri>
+          </mesh>
+        </geometry>
+        <plugin name='SimpleThrustVisual' filename='libForceVisual.so'>
+          <topic_name>booster_visual</topic_name>
+          <color>Gazebo/Green</color>
+        </plugin>
+        <material>
+          <script>
+            <name>Gazebo/Gray</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='fins_rev1' type='revolute'>
+      <pose relative_to='base_link'>-1.26213 0.12727 0.12727 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>FinHolder_1</child>
+      <axis>
+        <xyz>0 0.707107 0.707107</xyz>
+        <limit>
+          <lower>-0.349066</lower>
+          <upper>0.349066</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='FinHolder_1'>
+      <pose relative_to='fins_rev1'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.01199 0.024895 0.024891 0 -0 0</pose>
+        <mass>0.7</mass>
+        <inertia>
+          <ixx>0.00025</ixx>
+          <ixy>3e-05</ixy>
+          <ixz>3e-05</ixz>
+          <iyy>0.004649</iyy>
+          <iyz>-9.8e-05</iyz>
+          <izz>0.004649</izz>
+        </inertia>
+      </inertial>
+      <collision name='FinHolder_1_collision'>
+        <pose>1.26213 -0.12727 -0.12727 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/FinHolder_1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='FinHolder_1_visual'>
+        <pose>1.26213 -0.12727 -0.12727 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/FinHolder_1.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Blue</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='fin_fold1' type='revolute'>
+      <pose relative_to='FinHolder_1'>0 0.038891 0.038891 0 -0 0</pose>
+      <parent>FinHolder_1</parent>
+      <child>Fin_1</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>2.14676</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Fin_1'>
+      <pose relative_to='fin_fold1'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.014318 0.018053 -0.08493 0 -0 0</pose>
+        <mass>1.5</mass>
+        <inertia>
+          <ixx>0.006929</ixx>
+          <ixy>0.000264</ixy>
+          <ixz>-0.001243</ixz>
+          <iyy>0.010397</iyy>
+          <iyz>0.001396</iyz>
+          <izz>0.004127</izz>
+        </inertia>
+      </inertial>
+      <collision name='Fin_1_collision'>
+        <pose>1.26213 -0.166161 -0.166161 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Fin_1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Fin_1_visual'>
+        <pose>1.26213 -0.166161 -0.166161 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Fin_1.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Orange</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='fins_rev2' type='revolute'>
+      <pose relative_to='base_link'>-1.26213 0.12727 -0.127288 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>FinHolder_2</child>
+      <axis>
+        <xyz>0 0.707107 -0.707107</xyz>
+        <limit>
+          <lower>-0.349066</lower>
+          <upper>0.349066</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='FinHolder_2'>
+      <pose relative_to='fins_rev2'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.01199 0.024891 -0.024895 0 -0 0</pose>
+        <mass>0.7</mass>
+        <inertia>
+          <ixx>0.00025</ixx>
+          <ixy>3e-05</ixy>
+          <ixz>-3e-05</ixz>
+          <iyy>0.004649</iyy>
+          <iyz>9.8e-05</iyz>
+          <izz>0.004649</izz>
+        </inertia>
+      </inertial>
+      <collision name='FinHolder_2_collision'>
+        <pose>1.26213 -0.12727 0.127288 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/FinHolder_2.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='FinHolder_2_visual'>
+        <pose>1.26213 -0.12727 0.127288 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/FinHolder_2.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Blue</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='fin_fold2' type='revolute'>
+      <pose relative_to='FinHolder_2'>0 0.038879 -0.038903 0 -0 0</pose>
+      <parent>FinHolder_2</parent>
+      <child>Fin_2</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>2.14676</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Fin_2'>
+      <pose relative_to='fin_fold2'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.014318 -0.084931 -0.018053 0 -0 0</pose>
+        <mass>1.5</mass>
+        <inertia>
+          <ixx>0.006929</ixx>
+          <ixy>-0.001243</ixy>
+          <ixz>-0.000264</ixz>
+          <iyy>0.004127</iyy>
+          <iyz>-0.001396</iyz>
+          <izz>0.010397</izz>
+        </inertia>
+      </inertial>
+      <collision name='Fin_2_collision'>
+        <pose>1.26213 -0.166149 0.166191 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Fin_2.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Fin_2_visual'>
+        <pose>1.26213 -0.166149 0.166191 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Fin_2.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Orange</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='fins_rev3' type='revolute'>
+      <pose relative_to='base_link'>-1.26213 -0.127288 -0.127288 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>FinHolder_3</child>
+      <axis>
+        <xyz>0 -0.707107 -0.707107</xyz>
+        <limit>
+          <lower>-0.349066</lower>
+          <upper>0.349066</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='FinHolder_3'>
+      <pose relative_to='fins_rev3'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.01199 -0.024895 -0.024891 0 -0 0</pose>
+        <mass>0.7</mass>
+        <inertia>
+          <ixx>0.00025</ixx>
+          <ixy>-3e-05</ixy>
+          <ixz>-3e-05</ixz>
+          <iyy>0.004649</iyy>
+          <iyz>-9.8e-05</iyz>
+          <izz>0.004649</izz>
+        </inertia>
+      </inertial>
+      <collision name='FinHolder_3_collision'>
+        <pose>1.26213 0.127288 0.127288 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/FinHolder_3.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='FinHolder_3_visual'>
+        <pose>1.26213 0.127288 0.127288 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/FinHolder_3.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Blue</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='fin_fold3' type='revolute'>
+      <pose relative_to='FinHolder_3'>0 -0.038891 -0.038891 0 -0 0</pose>
+      <parent>FinHolder_3</parent>
+      <child>Fin_3</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>2.14676</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Fin_3'>
+      <pose relative_to='fin_fold3'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.014318 -0.018053 0.08493 0 -0 0</pose>
+        <mass>1.5</mass>
+        <inertia>
+          <ixx>0.006929</ixx>
+          <ixy>-0.000264</ixy>
+          <ixz>0.001243</ixz>
+          <iyy>0.010397</iyy>
+          <iyz>0.001396</iyz>
+          <izz>0.004127</izz>
+        </inertia>
+      </inertial>
+      <collision name='Fin_3_collision'>
+        <pose>1.26213 0.166179 0.166179 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Fin_3.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Fin_3_visual'>
+        <pose>1.26213 0.166179 0.166179 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Fin_3.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Orange</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='fins_rev4' type='revolute'>
+      <pose relative_to='base_link'>-1.26213 -0.127288 0.12727 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>FinHolder_4</child>
+      <axis>
+        <xyz>0 -0.707107 0.707107</xyz>
+        <limit>
+          <lower>-0.349066</lower>
+          <upper>0.349066</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='FinHolder_4'>
+      <pose relative_to='fins_rev4'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.01199 -0.024891 0.024895 0 -0 0</pose>
+        <mass>0.7</mass>
+        <inertia>
+          <ixx>0.00025</ixx>
+          <ixy>-3e-05</ixy>
+          <ixz>3e-05</ixz>
+          <iyy>0.004649</iyy>
+          <iyz>9.8e-05</iyz>
+          <izz>0.004649</izz>
+        </inertia>
+      </inertial>
+      <collision name='FinHolder_4_collision'>
+        <pose>1.26213 0.127288 -0.12727 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/FinHolder_4.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='FinHolder_4_visual'>
+        <pose>1.26213 0.127288 -0.12727 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/FinHolder_4.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Blue</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='fin_fold4' type='revolute'>
+      <pose relative_to='FinHolder_4'>0 -0.038891 0.038891 0 -0 0</pose>
+      <parent>FinHolder_4</parent>
+      <child>Fin_4</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>2.14676</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Fin_4'>
+      <pose relative_to='fin_fold4'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.014318 0.08493 0.018053 0 -0 0</pose>
+        <mass>1.5</mass>
+        <inertia>
+          <ixx>0.006929</ixx>
+          <ixy>0.001243</ixy>
+          <ixz>0.000264</ixz>
+          <iyy>0.004127</iyy>
+          <iyz>-0.001396</iyz>
+          <izz>0.010397</izz>
+        </inertia>
+      </inertial>
+      <collision name='Fin_4_collision'>
+        <pose>1.26213 0.166179 -0.166161 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Fin_4.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Fin_4_visual'>
+        <pose>1.26213 0.166179 -0.166161 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Fin_4.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Orange</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='wings_fold1' type='revolute'>
+      <pose relative_to='base_link'>0.057855 0.163346 0.163346 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Wing1_1</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>2.14676</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Wing1_1'>
+      <pose relative_to='wings_fold1'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.031208 0.020959 -0.098606 0 -0 0</pose>
+        <mass>9.29998</mass>
+        <inertia>
+          <ixx>0.055746</ixx>
+          <ixy>0.003624</ixy>
+          <ixz>-0.017051</ixz>
+          <iyy>0.442635</iyy>
+          <iyz>0.011218</iyz>
+          <izz>0.392244</izz>
+        </inertia>
+      </inertial>
+      <collision name='Wing1_1_collision'>
+        <pose>-0.057855 -0.163346 -0.163346 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Wing1_1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Wing1_1_visual'>
+        <pose>-0.057855 -0.163346 -0.163346 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Wing1_1.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Orange</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='wings_fold2' type='revolute'>
+      <pose relative_to='base_link'>0.057855 0.163346 -0.163364 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Wing1_2</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>2.14676</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Wing1_2'>
+      <pose relative_to='wings_fold2'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.031208 -0.097628 -0.020751 0 -0 0</pose>
+        <mass>9.29998</mass>
+        <inertia>
+          <ixx>0.055746</ixx>
+          <ixy>-0.017051</ixy>
+          <ixz>-0.003624</ixz>
+          <iyy>0.392244</iyy>
+          <iyz>-0.011218</iyz>
+          <izz>0.442635</izz>
+        </inertia>
+      </inertial>
+      <collision name='Wing1_2_collision'>
+        <pose>-0.057855 -0.163346 0.163364 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Wing1_2.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Wing1_2_visual'>
+        <pose>-0.057855 -0.163346 0.163364 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Wing1_2.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Orange</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='wings_fold3' type='revolute'>
+      <pose relative_to='base_link'>0.057855 -0.163364 -0.163364 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Wing1_3</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>2.14676</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Wing1_3'>
+      <pose relative_to='wings_fold3'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.031208 -0.020751 0.097628 0 -0 0</pose>
+        <mass>9.29998</mass>
+        <inertia>
+          <ixx>0.055746</ixx>
+          <ixy>-0.003624</ixy>
+          <ixz>0.017051</ixz>
+          <iyy>0.442635</iyy>
+          <iyz>0.011218</iyz>
+          <izz>0.392244</izz>
+        </inertia>
+      </inertial>
+      <collision name='Wing1_3_collision'>
+        <pose>-0.057855 0.163364 0.163364 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Wing1_3.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Wing1_3_visual'>
+        <pose>-0.057855 0.163364 0.163364 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Wing1_3.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Orange</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='wings_fold4' type='revolute'>
+      <pose relative_to='base_link'>0.057855 -0.163364 0.163346 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Wing1_4</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>2.14676</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Wing1_4'>
+      <pose relative_to='wings_fold4'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.031208 0.097628 0.020751 0 -0 0</pose>
+        <mass>9.29998</mass>
+        <inertia>
+          <ixx>0.055746</ixx>
+          <ixy>0.017051</ixy>
+          <ixz>0.003624</ixz>
+          <iyy>0.392244</iyy>
+          <iyz>-0.011218</iyz>
+          <izz>0.442635</izz>
+        </inertia>
+      </inertial>
+      <collision name='Wing1_4_collision'>
+        <pose>-0.057855 0.163364 -0.163346 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Wing1_4.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Wing1_4_visual'>
+        <pose>-0.057855 0.163364 -0.163346 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://mm40b3_description/meshes/Wing1_4.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Orange</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <static>0</static>
+    <plugin name='mm40b3_controller' filename='libgazebo_ros_control.so'>
+      <robotNamespace>mm40b3_controller</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+    <plugin name='BoosterThrust' filename='libSimpleThruster.so'>
+      <link_name>Booster_1</link_name>
+      <forward_dir>1 0 0</forward_dir>
+      <thrust_origin>-0.820 0 0</thrust_origin>
+      <robotNamespace/>
+      <topic_name>booster_visual</topic_name>
+      <thrust_topic>booster_force</thrust_topic>
+    </plugin>
+    <plugin name='ThrustVectoring' filename='libThrustVectoring.so'>
+      <link_name>base_link</link_name>
+      <forward_dir>1 0 0</forward_dir>
+      <thrust_origin>-1.540 0 0</thrust_origin>
+      <robotNamespace/>
+      <topic_name>thrust_visual</topic_name>
+      <vector_topic>thrust_force</vector_topic>
+    </plugin>
+    <plugin name='FullBodyAerodynamic' filename='libAerodynamic.so'>
+      <cp>0.0 0.0 0.0</cp>
+      <sref>0.096</sref>
+      <lref>0.350</lref>
+      <topic_name>AeroVectors</topic_name>
+      <air_density>1.2041</air_density>
+      <link_name>base_link</link_name>
+      <robotNamespace/>
+      <radial_symmetry>1/</radial_symmetry>
+      <forward>1 0 0</forward>
+    </plugin>
+  </model>
+</sdf>

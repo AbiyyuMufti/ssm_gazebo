@@ -1,0 +1,523 @@
+<?xml version="1.0" ?>
+<robot name="model_missile" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:property name="use_booster" value="false"/>  
+<xacro:property name="use_holder" value="false"/> 
+
+<xacro:include filename="$(find model_missile_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find model_missile_description)/urdf/model_missile.trans" />
+<xacro:include filename="$(find model_missile_description)/urdf/model_missile.gazebo" />
+
+<link name="base_link">
+  <inertial>
+    <origin xyz="-4.5938008952361996e-12 -5.330786024108829e-16 -2.382079374378753e-16" rpy="0 0 0"/>
+    <mass value="562.7679612503737"/>
+    <inertia ixx="12.078708" iyy="817.09871" izz="817.09871" ixy="0.0" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="white"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<xacro:if value="${use_booster}">
+  <link name="Booster_1">
+    <inertial>
+      <origin xyz="-0.5305587019886722 3.685572621648184e-09 -9.224211236366606e-10" rpy="0 0 0"/>
+      <mass value="120.00001114591107"/>
+      <inertia ixx="5.768641" iyy="16.618567" izz="16.618567" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="1.880856 -0.0 -0.0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model_missile_description/meshes/Booster_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <origin xyz="1.880856 -0.0 -0.0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model_missile_description/meshes/Booster_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+</xacro:if>
+
+<link name="FinHolder_1">
+  <inertial>
+    <origin xyz="0.011989970177444853 0.024895470365400352 0.02489052657337168" rpy="0 0 0"/>
+    <mass value="0.6999999481439694"/>
+    <inertia ixx="0.00025" iyy="0.004649" izz="0.004649" ixy="3e-05" iyz="-9.8e-05" ixz="3e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.700844 -0.127279 -0.127279" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/FinHolder_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="blue"/>
+  </visual>
+  <collision>
+    <origin xyz="1.700844 -0.127279 -0.127279" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/FinHolder_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="FinHolder_4">
+  <inertial>
+    <origin xyz="0.011989970177444853 -0.024890526573368127 0.0248954703654041" rpy="0 0 0"/>
+    <mass value="0.6999999481439694"/>
+    <inertia ixx="0.00025" iyy="0.004649" izz="0.004649" ixy="-3e-05" iyz="9.8e-05" ixz="3e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.700844 0.127279 -0.127279" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/FinHolder_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="blue"/>
+  </visual>
+  <collision>
+    <origin xyz="1.700844 0.127279 -0.127279" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/FinHolder_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="FinHolder_3">
+  <inertial>
+    <origin xyz="0.011989970177444853 -0.024895470365400463 -0.02489052657336438" rpy="0 0 0"/>
+    <mass value="0.6999999481439694"/>
+    <inertia ixx="0.00025" iyy="0.004649" izz="0.004649" ixy="-3e-05" iyz="-9.8e-05" ixz="-3e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.700844 0.127279 0.127279" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/FinHolder_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="blue"/>
+  </visual>
+  <collision>
+    <origin xyz="1.700844 0.127279 0.127279" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/FinHolder_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="FinHolder_2">
+  <inertial>
+    <origin xyz="0.011989970177444409 0.024890526573368155 -0.024895470365396688" rpy="0 0 0"/>
+    <mass value="0.6999999481439694"/>
+    <inertia ixx="0.00025" iyy="0.004649" izz="0.004649" ixy="3e-05" iyz="9.8e-05" ixz="-3e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.700844 -0.127279 0.127279" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/FinHolder_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="blue"/>
+  </visual>
+  <collision>
+    <origin xyz="1.700844 -0.127279 0.127279" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/FinHolder_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Wing1_1">
+  <inertial>
+    <origin xyz="-0.031208061901909834 0.07128204697290338 0.07128204710602434" rpy="0 0 0"/>
+    <mass value="9.299979574219194"/>
+    <inertia ixx="0.055746" iyy="0.41744" izz="0.41744" ixy="0.012327" iyz="-0.02758" ixz="0.012327"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.380856 -0.163355 -0.163355" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Wing1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="orange"/>
+  </visual>
+  <collision>
+    <origin xyz="0.380856 -0.163355 -0.163355" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Wing1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Wing1_2">
+  <inertial>
+    <origin xyz="-0.031208061901910722 0.07057494032483622 -0.07057494019171545" rpy="0 0 0"/>
+    <mass value="9.299979574219194"/>
+    <inertia ixx="0.055746" iyy="0.41744" izz="0.41744" ixy="0.012327" iyz="0.02758" ixz="-0.012327"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.380856 -0.163355 0.163355" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Wing1_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="orange"/>
+  </visual>
+  <collision>
+    <origin xyz="0.380856 -0.163355 0.163355" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Wing1_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Wing1_3">
+  <inertial>
+    <origin xyz="-0.031208061901910722 -0.07057494019171678 -0.0705749403248346" rpy="0 0 0"/>
+    <mass value="9.299979574219194"/>
+    <inertia ixx="0.055746" iyy="0.41744" izz="0.41744" ixy="-0.012327" iyz="-0.02758" ixz="-0.012327"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.380856 0.163355 0.163355" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Wing1_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="orange"/>
+  </visual>
+  <collision>
+    <origin xyz="0.380856 0.163355 0.163355" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Wing1_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Wing1_4">
+  <inertial>
+    <origin xyz="-0.031208061901909945 -0.07057494032483608 0.07057494019171842" rpy="0 0 0"/>
+    <mass value="9.299979574219194"/>
+    <inertia ixx="0.055746" iyy="0.41744" izz="0.41744" ixy="-0.012327" iyz="0.02758" ixz="0.012327"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.380856 0.163355 -0.163355" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Wing1_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="orange"/>
+  </visual>
+  <collision>
+    <origin xyz="0.380856 0.163355 -0.163355" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Wing1_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Fin_1">
+  <inertial>
+    <origin xyz="-0.014318251120852166 0.06139665026364291 0.061396650263642966" rpy="0 0 0"/>
+    <mass value="1.500000007859579"/>
+    <inertia ixx="0.006929" iyy="0.007262" izz="0.007262" ixy="0.000899" iyz="-0.003432" ixz="0.000899"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.700844 -0.16617 -0.16617" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Fin_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="orange"/>
+  </visual>
+  <collision>
+    <origin xyz="1.700844 -0.16617 -0.16617" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Fin_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Fin_2">
+  <inertial>
+    <origin xyz="-0.01431825112085261 0.06139642160960024 -0.061396878917678394" rpy="0 0 0"/>
+    <mass value="1.500000007859579"/>
+    <inertia ixx="0.006929" iyy="0.007262" izz="0.007262" ixy="0.000899" iyz="0.003432" ixz="-0.000899"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.700844 -0.166158 0.166182" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Fin_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="orange"/>
+  </visual>
+  <collision>
+    <origin xyz="1.700844 -0.166158 0.166182" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Fin_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Fin_3">
+  <inertial>
+    <origin xyz="-0.014318251120852166 -0.06139665026364283 -0.06139665026363558" rpy="0 0 0"/>
+    <mass value="1.500000007859579"/>
+    <inertia ixx="0.006929" iyy="0.007262" izz="0.007262" ixy="-0.000899" iyz="-0.003432" ixz="-0.000899"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.700844 0.16617 0.16617" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Fin_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="orange"/>
+  </visual>
+  <collision>
+    <origin xyz="1.700844 0.16617 0.16617" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Fin_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Fin_4">
+  <inertial>
+    <origin xyz="-0.014318251120852166 -0.061396650263639274 0.06139665026364652" rpy="0 0 0"/>
+    <mass value="1.500000007859579"/>
+    <inertia ixx="0.006929" iyy="0.007262" izz="0.007262" ixy="-0.000899" iyz="0.003432" ixz="0.000899"/>
+  </inertial>
+  <visual>
+    <origin xyz="1.700844 0.16617 -0.16617" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Fin_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="orange"/>
+  </visual>
+  <collision>
+    <origin xyz="1.700844 0.16617 -0.16617" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://model_missile_description/meshes/Fin_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<xacro:if value="${use_holder}">
+  <link name="Holder_1">
+    <inertial>
+      <origin xyz="-0.19999995584291042 0.025232520282130994 0.02523252028212361" rpy="0 0 0"/>
+      <mass value="13.50000107858645"/>
+      <inertia ixx="0.184494" iyy="0.864601" izz="0.864601" ixy="-0.0" iyz="0.079825" ixz="-0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="-1.375615 -0.132493 -0.132493" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model_missile_description/meshes/Holder_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="darkgrey"/>
+    </visual>
+    <collision>
+      <origin xyz="-1.375615 -0.132493 -0.132493" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model_missile_description/meshes/Holder_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <link name="Holder_2">
+    <inertial>
+      <origin xyz="-0.19999995584291042 -0.02523252028212361 0.025232520282130994" rpy="0 0 0"/>
+      <mass value="13.50000107858645"/>
+      <inertia ixx="0.184494" iyy="0.864601" izz="0.864601" ixy="0.0" iyz="-0.079825" ixz="-0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="-1.375615 0.132493 -0.132493" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model_missile_description/meshes/Holder_2.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="darkgrey"/>
+    </visual>
+    <collision>
+      <origin xyz="-1.375615 0.132493 -0.132493" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model_missile_description/meshes/Holder_2.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <link name="Holder_3">
+    <inertial>
+      <origin xyz="-0.19999995584291042 -0.025232520282130994 -0.025232520282123555" rpy="0 0 0"/>
+      <mass value="13.50000107858645"/>
+      <inertia ixx="0.184494" iyy="0.864601" izz="0.864601" ixy="0.0" iyz="0.079825" ixz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="-1.375615 0.132493 0.132493" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model_missile_description/meshes/Holder_3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="darkgrey"/>
+    </visual>
+    <collision>
+      <origin xyz="-1.375615 0.132493 0.132493" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model_missile_description/meshes/Holder_3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <link name="Holder_4">
+    <inertial>
+      <origin xyz="-0.19999995584291042 0.025232520282123555 -0.025232520282130994" rpy="0 0 0"/>
+      <mass value="13.50000107858645"/>
+      <inertia ixx="0.184494" iyy="0.864601" izz="0.864601" ixy="-0.0" iyz="-0.079825" ixz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="-1.375615 -0.132493 0.132493" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model_missile_description/meshes/Holder_4.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="darkgrey"/>
+    </visual>
+    <collision>
+      <origin xyz="-1.375615 -0.132493 0.132493" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model_missile_description/meshes/Holder_4.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+</xacro:if>
+
+<xacro:if value="${use_booster}">
+  <joint name="booster_fixing" type="fixed">
+    <origin xyz="-1.880856 0.0 0.0" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="Booster_1"/>
+  </joint>
+</xacro:if>
+
+<joint name="fins_rev1" type="revolute">
+  <origin xyz="-1.700844 0.127279 0.127279" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="FinHolder_1"/>
+  <axis xyz="-0.0 0.707107 0.707107"/>
+  <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/>
+</joint>
+
+<joint name="fins_rev4" type="revolute">
+  <origin xyz="-1.700844 -0.127279 0.127279" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="FinHolder_4"/>
+  <axis xyz="-0.0 -0.707107 0.707107"/>
+  <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/>
+</joint>
+
+<joint name="fins_rev3" type="revolute">
+  <origin xyz="-1.700844 -0.127279 -0.127279" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="FinHolder_3"/>
+  <axis xyz="-0.0 -0.707107 -0.707107"/>
+  <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/>
+</joint>
+
+<joint name="fins_rev2" type="revolute">
+  <origin xyz="-1.700844 0.127279 -0.127279" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="FinHolder_2"/>
+  <axis xyz="-0.0 0.707107 -0.707107"/>
+  <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/>
+</joint>
+
+<joint name="wings_fold1" type="revolute">
+  <origin xyz="-0.380856 0.163355 0.163355" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Wing1_1"/>
+  <axis xyz="1.0 -0.0 -0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="wings_fold2" type="revolute">
+  <origin xyz="-0.380856 0.163355 -0.163355" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Wing1_2"/>
+  <axis xyz="1.0 0.0 -0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="wings_fold3" type="revolute">
+  <origin xyz="-0.380856 -0.163355 -0.163355" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Wing1_3"/>
+  <axis xyz="1.0 0.0 -0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="wings_fold4" type="revolute">
+  <origin xyz="-0.380856 -0.163355 0.163355" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Wing1_4"/>
+  <axis xyz="1.0 -0.0 -0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="fin_fold1" type="revolute">
+  <origin xyz="0.0 0.038891 0.038891" rpy="0 0 0"/>
+  <parent link="FinHolder_1"/>
+  <child link="Fin_1"/>
+  <axis xyz="1.0 0.0 0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="fin_fold2" type="revolute">
+  <origin xyz="0.0 0.038879 -0.038903" rpy="0 0 0"/>
+  <parent link="FinHolder_2"/>
+  <child link="Fin_2"/>
+  <axis xyz="1.0 0.0 -0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="fin_fold3" type="revolute">
+  <origin xyz="0.0 -0.038891 -0.038891" rpy="0 0 0"/>
+  <parent link="FinHolder_3"/>
+  <child link="Fin_3"/>
+  <axis xyz="1.0 -0.0 -0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="fin_fold4" type="revolute">
+  <origin xyz="0.0 -0.038891 0.038891" rpy="0 0 0"/>
+  <parent link="FinHolder_4"/>
+  <child link="Fin_4"/>
+  <axis xyz="1.0 -0.0 0.0"/>
+  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<xacro:if value="${use_holder}">
+  <joint name="HolderJoint1" type="fixed">
+    <origin xyz="1.375615 0.132493 0.132493" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="Holder_1"/>
+  </joint>
+  
+  <joint name="HolderJoint2" type="fixed">
+    <origin xyz="1.375615 -0.132493 0.132493" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="Holder_2"/>
+  </joint>
+  
+  <joint name="HolderJoint3" type="fixed">
+    <origin xyz="1.375615 -0.132493 -0.132493" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="Holder_3"/>
+  </joint>
+  
+  <joint name="HolderJoint4" type="fixed">
+    <origin xyz="1.375615 0.132493 -0.132493" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="Holder_4"/>
+  </joint>
+</xacro:if>
+
+</robot>

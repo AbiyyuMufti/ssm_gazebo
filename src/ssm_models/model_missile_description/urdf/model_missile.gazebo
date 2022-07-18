@@ -1,25 +1,27 @@
 <?xml version="1.0" ?>
-<robot name="mm40b3" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<robot name="model_missile" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
 <gazebo>
-  <plugin name="mm40b3_controller" filename="libgazebo_ros_control.so">
-    <robotNamespace>mm40b3_controller</robotNamespace>
+  <plugin name="model_missile_controller" filename="libgazebo_ros_control.so">
+    <robotNamespace>model_missile_controller</robotNamespace>
     <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
   </plugin>
 
-  <plugin name="BoosterThrust" filename="libSimpleThruster.so">
-    <link_name>Booster_1</link_name>
-    <forward_dir>1 0 0</forward_dir>
-    <thrust_origin>-0.820 0 0</thrust_origin>
-    <robotNamespace></robotNamespace>
-    <topic_name>booster_visual</topic_name>
-    <thrust_topic>booster_force</thrust_topic>
-  </plugin>
+  <xacro:if value="${use_booster}">
+    <plugin name="BoosterThrust" filename="libSimpleThruster.so">
+      <link_name>Booster_1</link_name>
+      <forward_dir>1 0 0</forward_dir>
+      <thrust_origin>-0.920 0 0</thrust_origin>
+      <robotNamespace></robotNamespace>
+      <topic_name>booster_visual</topic_name>
+      <thrust_topic>booster_force</thrust_topic>
+    </plugin>
+  </xacro:if>
 
   <plugin name="ThrustVectoring" filename="libThrustVectoring.so">
     <link_name>base_link</link_name>
     <forward_dir>1 0 0</forward_dir>
-    <thrust_origin>-1.540 0 0</thrust_origin>
+    <thrust_origin>-1.880 0 0</thrust_origin>
     <robotNamespace></robotNamespace>
     <topic_name>thrust_visual</topic_name>
     <vector_topic>thrust_force</vector_topic>
@@ -27,13 +29,13 @@
 
   <plugin name="FullBodyAerodynamic" filename="libAerodynamic.so">
     <!-- <upward>0 0 1</upward> -->
-    <cp>0.0 0.0 0.0</cp>
+    <cp>-0.238 0.0 0.0</cp>
     <sref>0.096</sref>
     <lref>0.350</lref>
     <topic_name>AeroVectors</topic_name>    
     <air_density>1.2041</air_density>
     <link_name>base_link</link_name>
-    <robotNamespace></robotNamespace>    
+    <robotNamespace></robotNamespace>
     <radial_symmetry>1/</radial_symmetry>
     
     <forward>1 0 0</forward>
@@ -41,13 +43,13 @@
 
 </gazebo>
 
-
 <gazebo reference="base_link">
   <material>Gazebo/White</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
   <gravity>true</gravity>
+
   <visual>
     <plugin name="LiftDragVisual" filename="libMultiplevectorVisual.so">
       <topic_name vector_size="5">AeroVectors</topic_name>
@@ -59,11 +61,9 @@
   </visual>
   
   <sensor name="camera_top_side" type="camera">
-    <pose>-2.0 0.0 1.5 0.0 ${3.1416/4} 0.0</pose>
-    <!-- 3.1416 -->
+    <pose>-3.2 0.0 1 0.0 ${30*3.1416/180} 0.0</pose>
     <camera>
-      <!-- <horizontal_fov>1.347</horizontal_fov> -->
-      <horizontal_fov>2</horizontal_fov>
+      <horizontal_fov>1.347</horizontal_fov>
       <image>
         <width>640</width>
         <height>480</height>
@@ -78,12 +78,10 @@
     <!-- <visualize>true</visualize> -->
   </sensor>
 
-  <sensor name="camera_right_side" type="camera">
-    <pose>-0.0 -2.0 0.0 0.0 0.0 ${3.1416/2}</pose>
-    <!-- 3.1416 -->
+  <sensor name="camera_deflection" type="camera">
+    <pose>-1.0 -1.0 0.0 0.0 0.0 ${135*3.1416/180}</pose>
     <camera>
-      <!-- <horizontal_fov>1.347</horizontal_fov> -->
-      <horizontal_fov>2</horizontal_fov>
+      <horizontal_fov>1.347</horizontal_fov>
       <image>
         <width>640</width>
         <height>480</height>
@@ -97,25 +95,28 @@
     <update_rate>30</update_rate>
     <!-- <visualize>true</visualize> -->
   </sensor>
-  
-  <!-- <sensor name="camera_wide" type="camera">
-    <pose>16 0 2.0 0 0.3 3.1416</pose>
-    <camera>
-      <horizontal_fov>2.0</horizontal_fov>
-      <image>
-        <width>640</width>
-        <height>480</height>
-      </image>
-      <clip>
-        <near>0.1</near>
-        <far>1000</far>
-      </clip>
-    </camera>
+
+  <!-- <sensor name='imu_sensor' type='imu'>
     <always_on>1</always_on>
     <update_rate>30</update_rate>
-    <visualize>true</visualize>
-  </sensor>   -->
+    <imu/>
+  </sensor> -->
 </gazebo>
+
+<xacro:if value="${use_booster}">
+  <gazebo reference="Booster_1">
+    <material>Gazebo/Gray</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <selfCollide>true</selfCollide>
+    <visual>
+      <plugin name="SimpleThrustVisual" filename="libForceVisual.so">
+          <topic_name>booster_visual</topic_name>
+          <color>Gazebo/Green</color>
+      </plugin>
+    </visual>  
+  </gazebo>
+</xacro:if>
 
 <gazebo reference="FinHolder_1">
   <material>Gazebo/Blue</material>
@@ -152,19 +153,6 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference="Booster_1">
-  <material>Gazebo/Gray</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-  <visual>
-    <plugin name="SimpleThrustVisual" filename="libForceVisual.so">
-        <topic_name>booster_visual</topic_name>
-        <color>Gazebo/Green</color>
-    </plugin>
-  </visual>
-</gazebo>
-
 <gazebo reference="Wing1_2">
   <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
@@ -184,34 +172,6 @@
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="Holder_1">
-  <material>Gazebo/Grey</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>0</selfCollide>
-</gazebo>
-
-<gazebo reference="Holder_2">
-  <material>Gazebo/Grey</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>0</selfCollide>
-</gazebo>
-
-<gazebo reference="Holder_3">
-  <material>Gazebo/Grey</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>0</selfCollide>
-</gazebo>
-
-<gazebo reference="Holder_4">
-  <material>Gazebo/Grey</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>0</selfCollide>
 </gazebo>
 
 <gazebo reference="Fin_1">
@@ -242,24 +202,58 @@
   <selfCollide>true</selfCollide>
 </gazebo>
 
-<gazebo reference='booster_fixing'>
-  <preserveFixedJoint>true</preserveFixedJoint>
-</gazebo>
+<xacro:if value="${use_holder}">
+  <gazebo reference="Holder_1">
+    <material>Gazebo/Grey</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <selfCollide>true</selfCollide>
+  </gazebo>
+  
+  <gazebo reference="Holder_2">
+    <material>Gazebo/Grey</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <selfCollide>true</selfCollide>
+  </gazebo>
+  
+  <gazebo reference="Holder_3">
+    <material>Gazebo/Grey</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <selfCollide>true</selfCollide>
+  </gazebo>
+  
+  <gazebo reference="Holder_4">
+    <material>Gazebo/Grey</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <selfCollide>true</selfCollide>
+  </gazebo>
+</xacro:if> -->
 
-<gazebo reference='HolderJoint1'>
-  <preserveFixedJoint>true</preserveFixedJoint>
-</gazebo>
+<xacro:if value="${use_booster}">
+  <gazebo reference='booster_fixing'>
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+</xacro:if>
 
-<gazebo reference='HolderJoint2'>
-  <preserveFixedJoint>true</preserveFixedJoint>
-</gazebo>
-
-<gazebo reference='HolderJoint3'>
-  <preserveFixedJoint>true</preserveFixedJoint>
-</gazebo>
-
-<gazebo reference='HolderJoint4'>
-  <preserveFixedJoint>true</preserveFixedJoint>
-</gazebo>
+<xacro:if value="${use_holder}">
+  <gazebo reference='HolderJoint1'>
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  
+  <gazebo reference='HolderJoint2'>
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  
+  <gazebo reference='HolderJoint3'>
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  
+  <gazebo reference='HolderJoint4'>
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+</xacro:if>
 
 </robot>
