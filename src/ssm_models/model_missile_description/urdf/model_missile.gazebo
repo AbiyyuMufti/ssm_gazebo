@@ -1,47 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="model_missile" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
-<gazebo>
-  <plugin name="model_missile_controller" filename="libgazebo_ros_control.so">
-    <robotNamespace>model_missile_controller</robotNamespace>
-    <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-  </plugin>
-
-  <xacro:if value="${use_booster}">
-    <plugin name="BoosterThrust" filename="libSimpleThruster.so">
-      <link_name>Booster_1</link_name>
-      <forward_dir>1 0 0</forward_dir>
-      <thrust_origin>-0.920 0 0</thrust_origin>
-      <robotNamespace></robotNamespace>
-      <topic_name>booster_visual</topic_name>
-      <thrust_topic>booster_force</thrust_topic>
-    </plugin>
-  </xacro:if>
-
-  <plugin name="ThrustVectoring" filename="libThrustVectoring.so">
-    <link_name>base_link</link_name>
-    <forward_dir>1 0 0</forward_dir>
-    <thrust_origin>-1.880 0 0</thrust_origin>
-    <robotNamespace></robotNamespace>
-    <topic_name>thrust_visual</topic_name>
-    <vector_topic>thrust_force</vector_topic>
-  </plugin>
-
-  <plugin name="FullBodyAerodynamic" filename="libAerodynamic.so">
-    <!-- <upward>0 0 1</upward> -->
-    <cp>-0.238 0.0 0.0</cp>
-    <sref>0.096</sref>
-    <lref>0.350</lref>
-    <topic_name>AeroVectors</topic_name>    
-    <air_density>1.2041</air_density>
-    <link_name>base_link</link_name>
-    <robotNamespace></robotNamespace>
-    <radial_symmetry>1/</radial_symmetry>
-    
-    <forward>1 0 0</forward>
-  </plugin>
-
-</gazebo>
+<xacro:include filename="$(find model_missile_description)/urdf/model_missile_plugin.gazebo" />
 
 <gazebo reference="base_link">
   <material>Gazebo/White</material>
@@ -61,7 +21,7 @@
   </visual>
   
   <sensor name="camera_top_side" type="camera">
-    <pose>-3.2 0.0 1 0.0 ${30*3.1416/180} 0.0</pose>
+    <pose>-2 0.0 2 0.0 ${30*3.1416/180} 0.0</pose>
     <camera>
       <horizontal_fov>1.347</horizontal_fov>
       <image>
@@ -75,7 +35,7 @@
     </camera>
     <always_on>1</always_on>
     <update_rate>30</update_rate>
-    <!-- <visualize>true</visualize> -->
+    <visualize>true</visualize>
   </sensor>
 
   <sensor name="camera_deflection" type="camera">
@@ -101,6 +61,13 @@
     <update_rate>30</update_rate>
     <imu/>
   </sensor> -->
+
+  <sensor name='touching_ground' type='contact'>
+    <contact>
+      <collision>base_link_collision</collision>
+    </contact>
+  </sensor>
+
 </gazebo>
 
 <xacro:if value="${use_booster}">

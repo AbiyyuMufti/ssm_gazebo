@@ -15,14 +15,8 @@
 
     <arg name="miss_deg" default="-0.349029"/>
     <arg name="y_miss" default="0.0"/>
-
-    <!-- using exocet canister -->
-    <!-- <arg name="x_miss" default="-0.342484"/> -->
-    <!-- <arg name="z_miss" default="1.662578"/> -->
-
-    <!-- using basic launcher -->
-    <arg name="z_miss" default="1.332034"/>
-    <arg name="x_miss" default="-0.194658"/>
+    <arg name="z_miss" default="100"/>
+    <arg name="x_miss" default="0"/>
 
     <!-- <include file="$(find model_missile_description)/launch/spawn_launcher.launch">
         <arg name="urdf" value="$(arg launcher_file)"/>
@@ -50,7 +44,7 @@
         <arg name="gui" value="true"/>
         <arg name="headless" value="false"/>
         <arg name="debug" value="false"/>
-        <arg name="verbose" value="true"/>
+        <!-- <arg name="verbose" value="true"/> -->
     </include>
 
 </launch>

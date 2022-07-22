@@ -13,6 +13,12 @@
 
 namespace gazebo
 {
+    // Forward declare private data class
+    class AerodynamicPrivate;
+    class AerodynamicLUT;
+    class AerodynamicVector;
+    struct AerodynamicCoefficients;
+
       /// \brief A plugin that simulates lift and drag.
     class GAZEBO_VISIBLE Aerodynamic : public ModelPlugin
     {
@@ -26,92 +32,53 @@ namespace gazebo
         public: virtual void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
 
         /// \brief Callback for World Update events.
-        protected: virtual void OnUpdate();
+        public: virtual void OnUpdate();
+        
+        private: void ParseCoefficientTable();
 
-        /// \brief Connection to World Update events.
-        protected: event::ConnectionPtr updateConnection;
+        private: bool CalculateAerodynamicVectors();
 
-        /// \brief Pointer to world.
-        protected: physics::WorldPtr world;
+        private: void CalculateAerodynamicAngles();
 
-        /// \brief Pointer to physics engine.
-        protected: physics::PhysicsEnginePtr physics;
+        private: void CalculateAerodynamicCoefficients();
 
-        /// \brief Pointer to model containing plugin.
-        protected: physics::ModelPtr model;
+        private: void CalculateAerodynamicForces();
 
-        /// \brief air density
-        /// at 25 deg C it's about 1.1839 kg/m^3
-        /// At 20 °C and 101.325 kPa, dry air has a density of 1.2041 kg/m3.
-        protected: double rho;
+        private: void PublishAeroForces();
 
-        /// \brief if the shape is aerodynamically radially symmetric about
-        /// the forward direction. Defaults to false for wing shapes.
-        /// If set to true, the upward direction is determined by the
-        /// angle of attack.
-        protected: bool radialSymmetry;
+        /// \brief Private data pointer
+        private: std::unique_ptr<AerodynamicPrivate> dataPtr;
 
-        /// \brief effective planeform surface area
-        // protected: double area;
+        /// \brief Table of aerodynamic coefficients
+        private: std::vector<AerodynamicLUT> cTable;
 
-        /// \brief angle of sweep
-        protected: double sweep;
+        /// \brief Aerodynamics vectors (velocity, forces and moment)
+        private: std::unique_ptr<AerodynamicVector> V;
 
-        /// \brief angle of attack
-        protected: double alpha;
+        /// \brief Direction of Aerodynamics vectors in inertial frame
+        private: std::unique_ptr<AerodynamicVector> I;
 
-        /// \brief center of pressure in link local coordinates
-        protected: ignition::math::Vector3d cp;
+        private: std::unique_ptr<AerodynamicCoefficients> C;
 
-        /// \brief Normally, this is taken as a direction parallel to the chord
-        /// of the airfoil in zero angle of attack forward flight.
-        protected: ignition::math::Vector3d forward;
-
-        /// \brief A vector in the lift/drag plane, perpendicular to the forward
-        /// vector. Inflow velocity orthogonal to forward and upward vectors
-        /// is considered flow in the wing sweep direction.
-        protected: ignition::math::Vector3d upward;
-
-        /// \brief Pointer to link currently targeted by mud joint.
-        protected: physics::LinkPtr link;
-
-        /// \brief SDF for this plugin;
-        protected: sdf::ElementPtr sdf;
-
+        /// \brief Pointer to a node for communication
         private: transport::NodePtr node_handle_;
-        // private: transport::SubscriberPtr wind_sub_;
-        private: transport::PublisherPtr lift_force_pub_;
-        private: transport::PublisherPtr drag_force_pub_;
-        private: transport::PublisherPtr velocity_pub_;
+        
+        /// \brief Connection to World Update events.
+        private: event::ConnectionPtr updateConnection;
+        
+        /// \brief Pointer to publish aerodynamic vectors (forces and moment)
         private: transport::PublisherPtr vectors_pub_;
-        private: transport::PublisherPtr velocity_in_ld_pub_;
-        // private: transport::PublisherPtr lift_force_pub_;
 
+        /// \brief Keep track of publish time
         private: common::Time last_pub_time;
-        private: msgs::Factory msg_factory_;
+
+        /// \brief Topics namespaces if necesarry
         private: std::string namespace_;
 
-        std::vector<std::vector<double>> cn_table;
-        std::vector<std::vector<double>> cm_table;
-        std::vector<std::vector<double>> ca_table;
-        std::vector<std::vector<double>> cl_table;
-        std::vector<std::vector<double>> cd_table;
-        std::vector<std::vector<double>> cp_table;
-        std::vector<double> alpha_table;
-        std::vector<double> mach_table;
-
-        /// \brief effective planeform surface area
-        protected: double sref;
-
-        protected: double lref;
+        ///
+        private: int ucase;
 
     };
 };
-
-namespace tools{
-    // Helper function to publish force message from the publisher side
-    void publish_force(const ignition::math::Vector3d& force, const ignition::math::Vector3d& center, const gazebo::transport::PublisherPtr& publisher);
-};
-
 
 #endif
