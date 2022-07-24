@@ -146,6 +146,9 @@ list(APPEND plugins PosePublisher)
 add_library(Aerodynamic SHARED src/aerodynamic.cc)
 list(APPEND plugins Aerodynamic)
 
+add_library(DetachableJoint SHARED src/detachable_joint.cc)
+list(APPEND plugins DetachableJoint)
+
 foreach(plugin ${plugins})
   add_dependencies(${plugin} ssm_msgs)
   add_dependencies(${plugin} msgs)

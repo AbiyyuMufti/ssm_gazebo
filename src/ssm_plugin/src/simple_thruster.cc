@@ -18,7 +18,7 @@
 
 using namespace gazebo;
 
-GZ_REGISTER_MODEL_PLUGIN(SimpleThruster)
+GZ_REGISTER_MODEL_PLUGIN(SimpleThruster);
 
 //////////////////////////////////
 SimpleThruster::SimpleThruster()

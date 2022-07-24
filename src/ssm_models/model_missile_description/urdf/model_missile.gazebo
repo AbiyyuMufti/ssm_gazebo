@@ -35,7 +35,7 @@
     </camera>
     <always_on>1</always_on>
     <update_rate>30</update_rate>
-    <visualize>true</visualize>
+    <!-- <visualize>true</visualize> -->
   </sensor>
 
   <sensor name="camera_deflection" type="camera">
@@ -175,6 +175,12 @@
     <mu1>0.2</mu1>
     <mu2>0.2</mu2>
     <selfCollide>true</selfCollide>
+    <visual>
+      <plugin name="Holder1Visual" filename="libForceVisual.so">
+          <topic_name>holder1visual</topic_name>
+          <color>Gazebo/Purple</color>
+      </plugin>
+    </visual>
   </gazebo>
   
   <gazebo reference="Holder_2">
@@ -182,6 +188,12 @@
     <mu1>0.2</mu1>
     <mu2>0.2</mu2>
     <selfCollide>true</selfCollide>
+    <visual>
+      <plugin name="Holder2Visual" filename="libForceVisual.so">
+          <topic_name>holder2visual</topic_name>
+          <color>Gazebo/Purple</color>
+      </plugin>
+    </visual>
   </gazebo>
   
   <gazebo reference="Holder_3">
@@ -189,6 +201,12 @@
     <mu1>0.2</mu1>
     <mu2>0.2</mu2>
     <selfCollide>true</selfCollide>
+    <visual>
+      <plugin name="Holder3Visual" filename="libForceVisual.so">
+          <topic_name>holder3visual</topic_name>
+          <color>Gazebo/Purple</color>
+      </plugin>
+    </visual>
   </gazebo>
   
   <gazebo reference="Holder_4">
@@ -196,6 +214,12 @@
     <mu1>0.2</mu1>
     <mu2>0.2</mu2>
     <selfCollide>true</selfCollide>
+    <visual>
+      <plugin name="Holder4Visual" filename="libForceVisual.so">
+          <topic_name>holder4visual</topic_name>
+          <color>Gazebo/Purple</color>
+      </plugin>
+    </visual>
   </gazebo>
 </xacro:if> -->
 

@@ -27,7 +27,7 @@
         <vector_topic>thrust_force</vector_topic>
     </plugin>
     
-    <!-- <plugin name="FullBodyAerodynamic" filename="libAerodynamic.so">
+    <plugin name="FullBodyAerodynamic" filename="libAerodynamic.so">
         <cp>-0.238 0.0 0.0</cp>
         <sref>0.096</sref>
         <lref>0.350</lref>
@@ -37,8 +37,77 @@
         <upward>0 0 1</upward>
         <forward>1 0 0</forward>
         <robotNamespace></robotNamespace>
-        <topic_name>AeroVectors</topic_name>    
+        <topic_name>AeroVectors</topic_name>
+           
+        <aerodynamics case="with_booster" axis_type="wind">
+        <mach_table>0.2 0.4 0.5 0.6 0.7 0.75 0.8 0.93</mach_table>
+        <alpha_table>.00, 4.00, 8.00, 12.00, 16.00, 20.00, 24.00, 28.00</alpha_table>
     
+        <mach nr="0.2">
+            <cn_table>0.000, 1.037, 2.115, 3.322, 4.383, 5.449, 6.445, 7.475</cn_table>
+            <cm_table>0.000, -0.222, -0.289, -0.558, -0.080, 0.688, 1.595, 2.038</cm_table>
+            <ca_table>0.266, 0.249, 0.194, 0.148, 0.134, 0.160, 0.128, 0.050</ca_table>
+            <cl_table>0.000, 1.017, 2.067, 3.218, 4.176, 5.066, 5.836, 6.576</cl_table>
+            <cd_table>0.266, 0.321, 0.487, 0.835, 1.337, 2.014, 2.738, 3.553</cd_table>
+        </mach>
+    
+        <mach nr="0.4">
+            <cn_table>0.000, 1.051, 2.134, 3.337, 4.373, 5.448, 6.500, 7.626</cn_table>
+            <cm_table>0.000, -0.250, -0.333, -0.604, -0.055, 0.655, 1.426, 1.835</cm_table>
+            <ca_table>0.263, 0.246, 0.193, 0.147, 0.133, 0.157, 0.121, 0.037</ca_table>
+            <cl_table>0.000, 1.031, 2.087, 3.233, 4.167, 5.066, 5.889, 6.716</cl_table>
+            <cd_table>0.263, 0.318, 0.488, 0.838, 1.333, 2.011, 2.754, 3.613</cd_table>
+        </mach>
+    
+        <mach nr="0.5">
+            <cn_table>0.000, 1.070, 2.169, 3.390, 4.433, 5.517, 6.603, 7.866</cn_table>
+            <cm_table>0.000, -0.276, -0.389, -0.727, -0.210, 0.446, 1.204, 1.690</cm_table>
+            <ca_table>0.261, 0.243, 0.187, 0.141, 0.127, 0.152, 0.116, 0.025</ca_table>
+            <cl_table>0.000, 1.051, 2.121, 3.286, 4.227, 5.132, 5.986, 6.934</cl_table>
+            <cd_table>0.261, 0.317, 0.487, 0.842, 1.344, 2.030, 2.791, 3.715</cd_table>
+        </mach>
+    
+        <mach nr="0.6">
+            <cn_table>0.000, 1.093, 2.208, 3.444, 4.494, 5.607, 6.812, 8.206</cn_table>
+            <cm_table>0.000, -0.305, -0.444, -0.825, -0.337, 0.307, 1.051, 1.581</cm_table>
+            <ca_table>0.259, 0.240, 0.183, 0.135, 0.121, 0.148, 0.108, 0.011</ca_table>
+            <cl_table>0.000, 1.074, 2.161, 3.341, 4.287, 5.219, 6.179, 7.240</cl_table>
+            <cd_table>0.259, 0.316, 0.488, 0.848, 1.355, 2.056, 2.869, 3.862</cd_table>
+        </mach>
+    
+        <mach nr="0.7">
+            <cn_table>0.000, 1.101, 2.218, 3.456, 4.531, 5.736, 7.029, 8.570</cn_table>
+            <cm_table>0.000, -0.320, -0.476, -0.877, -0.474, 0.203, 0.845, 1.353</cm_table>
+            <ca_table>0.257, 0.238, 0.180, 0.132, 0.119, 0.144, 0.101, -0.002</ca_table>
+            <cl_table>0.000, 1.081, 2.172, 3.353, 4.323, 5.341, 6.381, 7.568</cl_table>
+            <cd_table>0.257, 0.314, 0.487, 0.848, 1.363, 2.097, 2.951, 4.021</cd_table>        
+        </mach>
+    
+        <mach nr="0.75">
+            <cn_table>0.000, 1.118, 2.250, 3.503, 4.607, 5.853, 7.206, 8.818</cn_table>
+            <cm_table>0.000, -0.345, -0.528, -0.974, -0.628, 0.040, 0.636, 1.106</cm_table>
+            <ca_table>0.256, 0.236, 0.178, 0.129, 0.116, 0.141, 0.097, -0.009</ca_table>
+            <cl_table>0.000, 1.099, 2.204, 3.399, 4.397, 5.452, 6.543, 7.790</cl_table>
+            <cd_table>0.256, 0.314, 0.489, 0.855, 1.382, 2.135, 3.020, 4.132</cd_table>        
+        </mach>
+    
+        <mach nr="0.8">
+            <cn_table>0.000, 1.148, 2.324, 3.656, 4.850, 6.177, 7.617, 9.288</cn_table>
+            <cm_table>0.000, -0.366, -0.575, -1.115, -0.810, -0.218, 0.398, 0.701</cm_table>
+            <ca_table>0.271, 0.251, 0.189, 0.137, 0.123, 0.151, 0.107, -0.001</ca_table>
+            <cl_table>0.000, 1.128, 2.275, 3.547, 4.628, 5.753, 6.915, 8.201</cl_table>
+            <cd_table>0.271, 0.330, 0.510, 0.894, 1.455, 2.255, 3.196, 4.359</cd_table>        
+        </mach>
+        
+        <mach nr="0.93">
+            <cn_table>0.000, 1.254, 2.540, 4.024, 5.393, 6.903, 8.553, 10.586</cn_table>
+            <cm_table>0.000, -0.458, -0.795, -1.620,-1.509, -0.989, -0.510, -0.389</cm_table>
+            <ca_table>0.458, 0.455, 0.440, 0.421, 0.399, 0.370, 0.294, 0.147</ca_table>
+            <cl_table>0.000, 1.219, 2.454, 3.848, 5.074, 6.360, 7.694, 9.278</cl_table>
+            <cd_table>0.458, 0.541, 0.790, 1.248, 1.870, 2.709, 3.748, 5.100</cd_table>
+        </mach>
+        </aerodynamics>
+            
         <aerodynamics case="boosterless" axis_type="wind">
         <mach_table>0.2, 0.4, 0.5, 0.6, 0.7, 0.75, 0.8, 0.93</mach_table>
         <alpha_table>.00, 4.00, 8.00, 12.00, 16.00, 20.00, 24.00, 28.00</alpha_table>
@@ -108,77 +177,71 @@
         </mach>
         </aerodynamics>
     
-        <aerodynamics case="with_booster" axis_type="body">
-        <mach_table>0.2 0.4 0.5 0.6 0.7 0.75 0.8 0.93</mach_table>
-        <alpha_table>.00, 4.00, 8.00, 12.00, 16.00, 20.00, 24.00, 28.00</alpha_table>
+    </plugin>
     
-        <mach nr="0.2">
-            <cn_table>0.000, 1.037, 2.115, 3.322, 4.383, 5.449, 6.445, 7.475</cn_table>
-            <cm_table>0.000, -0.222, -0.289, -0.558, -0.080, 0.688, 1.595, 2.038</cm_table>
-            <ca_table>0.266, 0.249, 0.194, 0.148, 0.134, 0.160, 0.128, 0.050</ca_table>
-            <cl_table>0.000, 1.017, 2.067, 3.218, 4.176, 5.066, 5.836, 6.576</cl_table>
-            <cd_table>0.266, 0.321, 0.487, 0.835, 1.337, 2.014, 2.738, 3.553</cd_table>
-        </mach>
-    
-        <mach nr="0.4">
-            <cn_table>0.000, 1.051, 2.134, 3.337, 4.373, 5.448, 6.500, 7.626</cn_table>
-            <cm_table>0.000, -0.250, -0.333, -0.604, -0.055, 0.655, 1.426, 1.835</cm_table>
-            <ca_table>0.263, 0.246, 0.193, 0.147, 0.133, 0.157, 0.121, 0.037</ca_table>
-            <cl_table>0.000, 1.031, 2.087, 3.233, 4.167, 5.066, 5.889, 6.716</cl_table>
-            <cd_table>0.263, 0.318, 0.488, 0.838, 1.333, 2.011, 2.754, 3.613</cd_table>
-        </mach>
-    
-        <mach nr="0.5">
-            <cn_table>0.000, 1.070, 2.169, 3.390, 4.433, 5.517, 6.603, 7.866</cn_table>
-            <cm_table>0.000, -0.276, -0.389, -0.727, -0.210, 0.446, 1.204, 1.690</cm_table>
-            <ca_table>0.261, 0.243, 0.187, 0.141, 0.127, 0.152, 0.116, 0.025</ca_table>
-            <cl_table>0.000, 1.051, 2.121, 3.286, 4.227, 5.132, 5.986, 6.934</cl_table>
-            <cd_table>0.261, 0.317, 0.487, 0.842, 1.344, 2.030, 2.791, 3.715</cd_table>
-        </mach>
-    
-        <mach nr="0.6">
-            <cn_table>0.000, 1.093, 2.208, 3.444, 4.494, 5.607, 6.812, 8.206</cn_table>
-            <cm_table>0.000, -0.305, -0.444, -0.825, -0.337, 0.307, 1.051, 1.581</cm_table>
-            <ca_table>0.259, 0.240, 0.183, 0.135, 0.121, 0.148, 0.108, 0.011</ca_table>
-            <cl_table>0.000, 1.074, 2.161, 3.341, 4.287, 5.219, 6.179, 7.240</cl_table>
-            <cd_table>0.259, 0.316, 0.488, 0.848, 1.355, 2.056, 2.869, 3.862</cd_table>
-        </mach>
-    
-        <mach nr="0.7">
-            <cn_table>0.000, 1.101, 2.218, 3.456, 4.531, 5.736, 7.029, 8.570</cn_table>
-            <cm_table>0.000, -0.320, -0.476, -0.877, -0.474, 0.203, 0.845, 1.353</cm_table>
-            <ca_table>0.257, 0.238, 0.180, 0.132, 0.119, 0.144, 0.101, -0.002</ca_table>
-            <cl_table>0.000, 1.081, 2.172, 3.353, 4.323, 5.341, 6.381, 7.568</cl_table>
-            <cd_table>0.257, 0.314, 0.487, 0.848, 1.363, 2.097, 2.951, 4.021</cd_table>        
-        </mach>
-    
-        <mach nr="0.75">
-            <cn_table>0.000, 1.118, 2.250, 3.503, 4.607, 5.853, 7.206, 8.818</cn_table>
-            <cm_table>0.000, -0.345, -0.528, -0.974, -0.628, 0.040, 0.636, 1.106</cm_table>
-            <ca_table>0.256, 0.236, 0.178, 0.129, 0.116, 0.141, 0.097, -0.009</ca_table>
-            <cl_table>0.000, 1.099, 2.204, 3.399, 4.397, 5.452, 6.543, 7.790</cl_table>
-            <cd_table>0.256, 0.314, 0.489, 0.855, 1.382, 2.135, 3.020, 4.132</cd_table>        
-        </mach>
-    
-        <mach nr="0.8">
-            <cn_table>0.000, 1.148, 2.324, 3.656, 4.850, 6.177, 7.617, 9.288</cn_table>
-            <cm_table>0.000, -0.366, -0.575, -1.115, -0.810, -0.218, 0.398, 0.701</cm_table>
-            <ca_table>0.271, 0.251, 0.189, 0.137, 0.123, 0.151, 0.107, -0.001</ca_table>
-            <cl_table>0.000, 1.128, 2.275, 3.547, 4.628, 5.753, 6.915, 8.201</cl_table>
-            <cd_table>0.271, 0.330, 0.510, 0.894, 1.455, 2.255, 3.196, 4.359</cd_table>        
-        </mach>
+    <xacro:if value="${use_holder}">
+        <plugin name="DetachHolder1" filename="libDetachableJoint.so">
+            <parent_link>base_link</parent_link>
+            <link_to_detach>Holder_1</link_to_detach>
+            <joint_to_detach>HolderJoint1</joint_to_detach>
+            <detach_direction>0 1 1</detach_direction>
+            <!-- <detach_acc>10000</detach_acc> -->
+            <detach_topic>holder1_detach</detach_topic>
+            <robotNamespace></robotNamespace>
+            <visual_offset></visual_offset>
+            <topic_name>holder1visual</topic_name>
+        </plugin>
+
+        <plugin name="DetachHolder2" filename="libDetachableJoint.so">
+            <parent_link>base_link</parent_link>
+            <link_to_detach>Holder_2</link_to_detach>
+            <joint_to_detach>HolderJoint2</joint_to_detach>
+            <detach_direction>0 -1 1</detach_direction>
+            <detach_acc>10</detach_acc>
+            <detach_topic>holder2_detach</detach_topic>
+            <robotNamespace></robotNamespace>
+            <visual_offset></visual_offset>
+            <topic_name>holder2visual</topic_name>
+        </plugin>
+
+        <plugin name="DetachHolder3" filename="libDetachableJoint.so">
+            <parent_link>base_link</parent_link>
+            <link_to_detach>Holder_3</link_to_detach>
+            <joint_to_detach>HolderJoint3</joint_to_detach>
+            <detach_direction>0 -1 -1</detach_direction>
+            <detach_acc>10</detach_acc>
+            <detach_topic>holder3_detach</detach_topic>
+            <robotNamespace></robotNamespace>
+            <visual_offset></visual_offset>
+            <topic_name>holder3visual</topic_name>
+        </plugin>
         
-        <mach nr="0.93">
-            <cn_table>0.000, 1.254, 2.540, 4.024, 5.393, 6.903, 8.553, 10.586</cn_table>
-            <cm_table>0.000, -0.458, -0.795, -1.620,-1.509, -0.989, -0.510, -0.389</cm_table>
-            <ca_table>0.458, 0.455, 0.440, 0.421, 0.399, 0.370, 0.294, 0.147</ca_table>
-            <cl_table>0.000, 1.219, 2.454, 3.848, 5.074, 6.360, 7.694, 9.278</cl_table>
-            <cd_table>0.458, 0.541, 0.790, 1.248, 1.870, 2.709, 3.748, 5.100</cd_table>
-        </mach>
-        </aerodynamics>
+        <plugin name="DetachHolder4" filename="libDetachableJoint.so">
+            <parent_link>base_link</parent_link>
+            <link_to_detach>Holder_4</link_to_detach>
+            <joint_to_detach>HolderJoint4</joint_to_detach>
+            <detach_direction>0 1 -1</detach_direction>
+            <detach_acc>100</detach_acc>
+            <detach_topic>holder4_detach</detach_topic>
+            <robotNamespace></robotNamespace>
+            <visual_offset></visual_offset>
+            <topic_name>holder4visual</topic_name>
+        </plugin>        
+
+    </xacro:if>
     
-    </plugin> -->
-    
+    <xacro:if value="${use_booster}">
+        <plugin name="DetachBooster" filename="libDetachableJoint.so">
+            <parent_link>base_link</parent_link>
+            <link_to_detach>Booster_1</link_to_detach>
+            <joint_to_detach>booster_fixing</joint_to_detach>
+            <detach_direction>-1 0 0</detach_direction>
+            <detach_acc>10</detach_acc>
+            <detach_topic>booster_detach</detach_topic>
+            <visual_offset></visual_offset>
+            <robotNamespace></robotNamespace>
+        </plugin>        
+    </xacro:if>    
 </gazebo>
 
 </robot>

@@ -3,7 +3,7 @@
 
 using namespace gazebo;
 
-GZ_REGISTER_VISUAL_PLUGIN(MultivectorsVisual)
+GZ_REGISTER_VISUAL_PLUGIN(MultivectorsVisual);
 
 MultivectorsVisual::MultivectorsVisual() {}
 

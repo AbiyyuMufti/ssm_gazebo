@@ -3,7 +3,7 @@
 
 using namespace gazebo;
 
-GZ_REGISTER_VISUAL_PLUGIN(ForceVisualPlugin)
+GZ_REGISTER_VISUAL_PLUGIN(ForceVisualPlugin);
 
 ForceVisualPlugin::ForceVisualPlugin() {}
 
