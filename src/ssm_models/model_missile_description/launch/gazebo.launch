@@ -1,5 +1,6 @@
 <launch>
   <arg name="sim_world" default="$(find ssm_worlds)/big_world.world"/>
+  <arg name="verbose" default="false"/>
   <param name="robot_description" command="$(find xacro)/xacro $(find model_missile_description)/urdf/model_missile.xacro"/>
   <!-- <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model model_missile -z 4 -P -1.5708"/> -->
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model model_missile -z 2.931289 -P -1.5708"/>
@@ -11,6 +12,6 @@
     <arg name="gui" value="true"/>
     <arg name="headless" value="false"/>
     <arg name="debug" value="false"/>
-    <!-- <arg name="verbose" value="true"/> -->
+    <arg name="verbose" value="$(arg verbose)"/>
   </include>
 </launch>

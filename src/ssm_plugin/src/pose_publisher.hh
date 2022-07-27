@@ -60,8 +60,6 @@ namespace gazebo
 
         /// \brief Used if using additional namespace
         private: std::string namespace_;
-
-        
     };
 }
 

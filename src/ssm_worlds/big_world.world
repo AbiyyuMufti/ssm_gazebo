@@ -36,10 +36,10 @@
             </contact>
             <friction>
               <ode>
-                <!-- <mu>100</mu>
-                <mu2>50</mu2> -->
-                <mu>10000</mu>
-                <mu2>5000</mu2>
+                <mu>100</mu>
+                <mu2>50</mu2>
+                <!-- <mu>10000</mu>
+                <mu2>5000</mu2> -->
               </ode>
             </friction>
           </surface>
@@ -118,8 +118,8 @@
         <track_visual>
           <min_dist>3.0</min_dist>
           <max_dist>5.0</max_dist>
-          <use_model_frame>1</use_model_frame>
-          <inherit_yaw>1</inherit_yaw>
+          <use_model_frame>true</use_model_frame>
+          <inherit_yaw>true</inherit_yaw>
         </track_visual>
       </camera>
     </gui>

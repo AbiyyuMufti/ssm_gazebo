@@ -58,7 +58,7 @@
       <self_collide>1</self_collide>
       <gravity>1</gravity>
       <sensor name='camera_top_side' type='camera'>
-        <pose>-3.2 0 1 0 0.5236 0</pose>
+        <pose>-2 0 2 0 0.5236 0</pose>
         <camera>
           <horizontal_fov>1.347</horizontal_fov>
           <image>
@@ -95,6 +95,401 @@
           <topic>__default_topic__</topic>
         </contact>
       </sensor>
+    </link>
+    <joint name='HolderJoint1' type='fixed'>
+      <pose relative_to='base_link'>1.37562 0.132493 0.132493 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Holder_1</child>
+      <axis>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+    <link name='Holder_1'>
+      <pose relative_to='HolderJoint1'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.2 0.025233 0.025233 0 -0 0</pose>
+        <mass>13.5</mass>
+        <inertia>
+          <ixx>0.184494</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.864601</iyy>
+          <iyz>0.079825</iyz>
+          <izz>0.864601</izz>
+        </inertia>
+      </inertial>
+      <collision name='Holder_1_collision'>
+        <pose>-1.37562 -0.132493 -0.132493 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://model_missile_description/meshes/Holder_1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Holder_1_visual'>
+        <pose>-1.37562 -0.132493 -0.132493 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://model_missile_description/meshes/Holder_1.stl</uri>
+          </mesh>
+        </geometry>
+        <plugin name='Holder1Visual' filename='libForceVisual.so'>
+          <topic_name>holder1visual</topic_name>
+          <color>Gazebo/Purple</color>
+        </plugin>
+        <material>
+          <script>
+            <name>Gazebo/Grey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='HolderJoint2' type='fixed'>
+      <pose relative_to='base_link'>1.37562 -0.132493 0.132493 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Holder_2</child>
+      <axis>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+    <link name='Holder_2'>
+      <pose relative_to='HolderJoint2'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.2 -0.025233 0.025233 0 -0 0</pose>
+        <mass>13.5</mass>
+        <inertia>
+          <ixx>0.184494</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.864601</iyy>
+          <iyz>-0.079825</iyz>
+          <izz>0.864601</izz>
+        </inertia>
+      </inertial>
+      <collision name='Holder_2_collision'>
+        <pose>-1.37562 0.132493 -0.132493 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://model_missile_description/meshes/Holder_2.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Holder_2_visual'>
+        <pose>-1.37562 0.132493 -0.132493 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://model_missile_description/meshes/Holder_2.stl</uri>
+          </mesh>
+        </geometry>
+        <plugin name='Holder2Visual' filename='libForceVisual.so'>
+          <topic_name>holder2visual</topic_name>
+          <color>Gazebo/Purple</color>
+        </plugin>
+        <material>
+          <script>
+            <name>Gazebo/Grey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='HolderJoint3' type='fixed'>
+      <pose relative_to='base_link'>1.37562 -0.132493 -0.132493 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Holder_3</child>
+      <axis>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+    <link name='Holder_3'>
+      <pose relative_to='HolderJoint3'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.2 -0.025233 -0.025233 0 -0 0</pose>
+        <mass>13.5</mass>
+        <inertia>
+          <ixx>0.184494</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.864601</iyy>
+          <iyz>0.079825</iyz>
+          <izz>0.864601</izz>
+        </inertia>
+      </inertial>
+      <collision name='Holder_3_collision'>
+        <pose>-1.37562 0.132493 0.132493 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://model_missile_description/meshes/Holder_3.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Holder_3_visual'>
+        <pose>-1.37562 0.132493 0.132493 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://model_missile_description/meshes/Holder_3.stl</uri>
+          </mesh>
+        </geometry>
+        <plugin name='Holder3Visual' filename='libForceVisual.so'>
+          <topic_name>holder3visual</topic_name>
+          <color>Gazebo/Purple</color>
+        </plugin>
+        <material>
+          <script>
+            <name>Gazebo/Grey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='HolderJoint4' type='fixed'>
+      <pose relative_to='base_link'>1.37562 0.132493 -0.132493 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Holder_4</child>
+      <axis>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+    <link name='Holder_4'>
+      <pose relative_to='HolderJoint4'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.2 0.025233 -0.025233 0 -0 0</pose>
+        <mass>13.5</mass>
+        <inertia>
+          <ixx>0.184494</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.864601</iyy>
+          <iyz>-0.079825</iyz>
+          <izz>0.864601</izz>
+        </inertia>
+      </inertial>
+      <collision name='Holder_4_collision'>
+        <pose>-1.37562 -0.132493 0.132493 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://model_missile_description/meshes/Holder_4.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Holder_4_visual'>
+        <pose>-1.37562 -0.132493 0.132493 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://model_missile_description/meshes/Holder_4.stl</uri>
+          </mesh>
+        </geometry>
+        <plugin name='Holder4Visual' filename='libForceVisual.so'>
+          <topic_name>holder4visual</topic_name>
+          <color>Gazebo/Purple</color>
+        </plugin>
+        <material>
+          <script>
+            <name>Gazebo/Grey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
+    </link>
+    <joint name='booster_fixing' type='fixed'>
+      <pose relative_to='base_link'>-1.88086 0 0 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>Booster_1</child>
+      <axis>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+    <link name='Booster_1'>
+      <pose relative_to='booster_fixing'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.530559 0 -0 0 -0 0</pose>
+        <mass>120</mass>
+        <inertia>
+          <ixx>5.76864</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>16.6186</iyy>
+          <iyz>0</iyz>
+          <izz>16.6186</izz>
+        </inertia>
+      </inertial>
+      <collision name='Booster_1_collision'>
+        <pose>1.88086 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://model_missile_description/meshes/Booster_1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='Booster_1_visual'>
+        <pose>1.88086 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://model_missile_description/meshes/Booster_1.stl</uri>
+          </mesh>
+        </geometry>
+        <plugin name='SimpleThrustVisual' filename='libForceVisual.so'>
+          <topic_name>booster_visual</topic_name>
+          <color>Gazebo/Green</color>
+        </plugin>
+        <material>
+          <script>
+            <name>Gazebo/Gray</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <self_collide>1</self_collide>
     </link>
     <joint name='fins_rev1' type='revolute'>
       <pose relative_to='base_link'>-1.70084 0.127279 0.127279 0 -0 0</pose>
@@ -929,6 +1324,14 @@
       <robotNamespace>model_missile_controller</robotNamespace>
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
     </plugin>
+    <plugin name='BoosterThrust' filename='libSimpleThruster.so'>
+      <link_name>Booster_1</link_name>
+      <forward_dir>1 0 0</forward_dir>
+      <thrust_origin>-0.920 0 0</thrust_origin>
+      <robotNamespace/>
+      <topic_name>booster_visual</topic_name>
+      <thrust_topic>booster_force</thrust_topic>
+    </plugin>
     <plugin name='ThrustVectoring' filename='libThrustVectoring.so'>
       <link_name>base_link</link_name>
       <forward_dir>1 0 0</forward_dir>
@@ -944,10 +1347,69 @@
       <air_density>1.2041</air_density>
       <link_name>base_link</link_name>
       <radial_symmetry>1/</radial_symmetry>
-      <upward>0 0 1</upward>
       <forward>1 0 0</forward>
       <robotNamespace/>
       <topic_name>AeroVectors</topic_name>
+      <aerodynamics axis_type='wind' case='with_booster'>
+        <mach_table>0.2 0.4 0.5 0.6 0.7 0.75 0.8 0.93</mach_table>
+        <alpha_table>.00, 4.00, 8.00, 12.00, 16.00, 20.00, 24.00, 28.00</alpha_table>
+        <mach nr='0.2'>
+          <cn_table>0.000, 1.037, 2.115, 3.322, 4.383, 5.449, 6.445, 7.475</cn_table>
+          <cm_table>0.000, -0.222, -0.289, -0.558, -0.080, 0.688, 1.595, 2.038</cm_table>
+          <ca_table>0.266, 0.249, 0.194, 0.148, 0.134, 0.160, 0.128, 0.050</ca_table>
+          <cl_table>0.000, 1.017, 2.067, 3.218, 4.176, 5.066, 5.836, 6.576</cl_table>
+          <cd_table>0.266, 0.321, 0.487, 0.835, 1.337, 2.014, 2.738, 3.553</cd_table>
+        </mach>
+        <mach nr='0.4'>
+          <cn_table>0.000, 1.051, 2.134, 3.337, 4.373, 5.448, 6.500, 7.626</cn_table>
+          <cm_table>0.000, -0.250, -0.333, -0.604, -0.055, 0.655, 1.426, 1.835</cm_table>
+          <ca_table>0.263, 0.246, 0.193, 0.147, 0.133, 0.157, 0.121, 0.037</ca_table>
+          <cl_table>0.000, 1.031, 2.087, 3.233, 4.167, 5.066, 5.889, 6.716</cl_table>
+          <cd_table>0.263, 0.318, 0.488, 0.838, 1.333, 2.011, 2.754, 3.613</cd_table>
+        </mach>
+        <mach nr='0.5'>
+          <cn_table>0.000, 1.070, 2.169, 3.390, 4.433, 5.517, 6.603, 7.866</cn_table>
+          <cm_table>0.000, -0.276, -0.389, -0.727, -0.210, 0.446, 1.204, 1.690</cm_table>
+          <ca_table>0.261, 0.243, 0.187, 0.141, 0.127, 0.152, 0.116, 0.025</ca_table>
+          <cl_table>0.000, 1.051, 2.121, 3.286, 4.227, 5.132, 5.986, 6.934</cl_table>
+          <cd_table>0.261, 0.317, 0.487, 0.842, 1.344, 2.030, 2.791, 3.715</cd_table>
+        </mach>
+        <mach nr='0.6'>
+          <cn_table>0.000, 1.093, 2.208, 3.444, 4.494, 5.607, 6.812, 8.206</cn_table>
+          <cm_table>0.000, -0.305, -0.444, -0.825, -0.337, 0.307, 1.051, 1.581</cm_table>
+          <ca_table>0.259, 0.240, 0.183, 0.135, 0.121, 0.148, 0.108, 0.011</ca_table>
+          <cl_table>0.000, 1.074, 2.161, 3.341, 4.287, 5.219, 6.179, 7.240</cl_table>
+          <cd_table>0.259, 0.316, 0.488, 0.848, 1.355, 2.056, 2.869, 3.862</cd_table>
+        </mach>
+        <mach nr='0.7'>
+          <cn_table>0.000, 1.101, 2.218, 3.456, 4.531, 5.736, 7.029, 8.570</cn_table>
+          <cm_table>0.000, -0.320, -0.476, -0.877, -0.474, 0.203, 0.845, 1.353</cm_table>
+          <ca_table>0.257, 0.238, 0.180, 0.132, 0.119, 0.144, 0.101, -0.002</ca_table>
+          <cl_table>0.000, 1.081, 2.172, 3.353, 4.323, 5.341, 6.381, 7.568</cl_table>
+          <cd_table>0.257, 0.314, 0.487, 0.848, 1.363, 2.097, 2.951, 4.021</cd_table>
+        </mach>
+        <mach nr='0.75'>
+          <cn_table>0.000, 1.118, 2.250, 3.503, 4.607, 5.853, 7.206, 8.818</cn_table>
+          <cm_table>0.000, -0.345, -0.528, -0.974, -0.628, 0.040, 0.636, 1.106</cm_table>
+          <ca_table>0.256, 0.236, 0.178, 0.129, 0.116, 0.141, 0.097, -0.009</ca_table>
+          <cl_table>0.000, 1.099, 2.204, 3.399, 4.397, 5.452, 6.543, 7.790</cl_table>
+          <cd_table>0.256, 0.314, 0.489, 0.855, 1.382, 2.135, 3.020, 4.132</cd_table>
+        </mach>
+        <mach nr='0.8'>
+          <cn_table>0.000, 1.148, 2.324, 3.656, 4.850, 6.177, 7.617, 9.288</cn_table>
+          <cm_table>0.000, -0.366, -0.575, -1.115, -0.810, -0.218, 0.398, 0.701</cm_table>
+          <ca_table>0.271, 0.251, 0.189, 0.137, 0.123, 0.151, 0.107, -0.001</ca_table>
+          <cl_table>0.000, 1.128, 2.275, 3.547, 4.628, 5.753, 6.915, 8.201</cl_table>
+          <cd_table>0.271, 0.330, 0.510, 0.894, 1.455, 2.255, 3.196, 4.359</cd_table>
+        </mach>
+        <mach nr='0.93'>
+          <cn_table>0.000, 1.254, 2.540, 4.024, 5.393, 6.903, 8.553, 10.586</cn_table>
+          <cm_table>0.000, -0.458, -0.795, -1.620,-1.509, -0.989, -0.510, -0.389</cm_table>
+          <ca_table>0.458, 0.455, 0.440, 0.421, 0.399, 0.370, 0.294, 0.147</ca_table>
+          <cl_table>0.000, 1.219, 2.454, 3.848, 5.074, 6.360, 7.694, 9.278</cl_table>
+          <cd_table>0.458, 0.541, 0.790, 1.248, 1.870, 2.709, 3.748, 5.100</cd_table>
+        </mach>
+      </aerodynamics>
       <aerodynamics axis_type='wind' case='boosterless'>
         <mach_table>0.2, 0.4, 0.5, 0.6, 0.7, 0.75, 0.8, 0.93</mach_table>
         <alpha_table>.00, 4.00, 8.00, 12.00, 16.00, 20.00, 24.00, 28.00</alpha_table>
@@ -1008,64 +1470,277 @@
           <cd_table>0.433, 0.514, 0.754, 1.191, 1.771, 2.540, 3.475, 4.676</cd_table>
         </mach>
       </aerodynamics>
+    </plugin>
+    <plugin name='DetachHolder1' filename='libDetachableJoint.so'>
+      <parent_link>base_link</parent_link>
+      <link_to_detach>Holder_1</link_to_detach>
+      <joint_to_detach>HolderJoint1</joint_to_detach>
+      <detach_direction>0 1 1</detach_direction>
+      <detach_topic>holder1_detach</detach_topic>
+      <robotNamespace/>
+      <visual_offset/>
+      <topic_name>holder1visual</topic_name>
+    </plugin>
+    <plugin name='DetachHolder2' filename='libDetachableJoint.so'>
+      <parent_link>base_link</parent_link>
+      <link_to_detach>Holder_2</link_to_detach>
+      <joint_to_detach>HolderJoint2</joint_to_detach>
+      <detach_direction>0 -1 1</detach_direction>
+      <detach_acc>10</detach_acc>
+      <detach_topic>holder2_detach</detach_topic>
+      <robotNamespace/>
+      <visual_offset/>
+      <topic_name>holder2visual</topic_name>
+    </plugin>
+    <plugin name='DetachHolder3' filename='libDetachableJoint.so'>
+      <parent_link>base_link</parent_link>
+      <link_to_detach>Holder_3</link_to_detach>
+      <joint_to_detach>HolderJoint3</joint_to_detach>
+      <detach_direction>0 -1 -1</detach_direction>
+      <detach_acc>10</detach_acc>
+      <detach_topic>holder3_detach</detach_topic>
+      <robotNamespace/>
+      <visual_offset/>
+      <topic_name>holder3visual</topic_name>
+    </plugin>
+    <plugin name='DetachHolder4' filename='libDetachableJoint.so'>
+      <parent_link>base_link</parent_link>
+      <link_to_detach>Holder_4</link_to_detach>
+      <joint_to_detach>HolderJoint4</joint_to_detach>
+      <detach_direction>0 1 -1</detach_direction>
+      <detach_acc>100</detach_acc>
+      <detach_topic>holder4_detach</detach_topic>
+      <robotNamespace/>
+      <visual_offset/>
+      <topic_name>holder4visual</topic_name>
+    </plugin>
+    <plugin name='DetachBooster' filename='libDetachableJoint.so'>
+      <parent_link>base_link</parent_link>
+      <link_to_detach>Booster_1</link_to_detach>
+      <joint_to_detach>booster_fixing</joint_to_detach>
+      <detach_direction>-1 0 0</detach_direction>
+      <detach_acc>10</detach_acc>
+      <detach_topic>booster_detach</detach_topic>
+      <visual_offset/>
+      <robotNamespace/>
+    </plugin>
+    <plugin name='Fin1Aerodynamic' filename='libAerodynamic.so'>
+      <cp>0.0 0.1 0.1</cp>
+      <sref>0.044</sref>
+      <lref>0.044</lref>
+      <air_density>1.2041</air_density>
+      <link_name>FinHolder_1</link_name>
+      <radial_symmetry>1/</radial_symmetry>
+      <forward>1 0 0</forward>
+      <robotNamespace/>
+      <topic_name>AeroVectors</topic_name>
       <aerodynamics axis_type='body' case='with_booster'>
         <mach_table>0.2 0.4 0.5 0.6 0.7 0.75 0.8 0.93</mach_table>
         <alpha_table>.00, 4.00, 8.00, 12.00, 16.00, 20.00, 24.00, 28.00</alpha_table>
         <mach nr='0.2'>
-          <cn_table>0.000, 1.037, 2.115, 3.322, 4.383, 5.449, 6.445, 7.475</cn_table>
-          <cm_table>0.000, -0.222, -0.289, -0.558, -0.080, 0.688, 1.595, 2.038</cm_table>
-          <ca_table>0.266, 0.249, 0.194, 0.148, 0.134, 0.160, 0.128, 0.050</ca_table>
-          <cl_table>0.000, 1.017, 2.067, 3.218, 4.176, 5.066, 5.836, 6.576</cl_table>
-          <cd_table>0.266, 0.321, 0.487, 0.835, 1.337, 2.014, 2.738, 3.553</cd_table>
+          <cn_table>.0000, .2863, .5432, .8305, .9726, 1.0564, 1.0950, 1.1860</cn_table>
+          <cm_table>.0000, -1.1294, -2.1425, -3.2754, -3.8362, -4.1665, -4.3190, -4.6776</cm_table>
+          <ca_table>.0229, .0229, .0229, .0229, .0229, .0229, .0229, .0229</ca_table>
         </mach>
         <mach nr='0.4'>
-          <cn_table>0.000, 1.051, 2.134, 3.337, 4.373, 5.448, 6.500, 7.626</cn_table>
-          <cm_table>0.000, -0.250, -0.333, -0.604, -0.055, 0.655, 1.426, 1.835</cm_table>
-          <ca_table>0.263, 0.246, 0.193, 0.147, 0.133, 0.157, 0.121, 0.037</ca_table>
-          <cl_table>0.000, 1.031, 2.087, 3.233, 4.167, 5.066, 5.889, 6.716</cl_table>
-          <cd_table>0.263, 0.318, 0.488, 0.838, 1.333, 2.011, 2.754, 3.613</cd_table>
+          <cn_table>.0000, .2923, .5521, .8386, .9666, 1.0587, 1.1216, 1.2260</cn_table>
+          <cm_table>.0000, -1.1529, -2.1774, -3.3071, -3.8121, -4.1751, -4.4232, -4.8352</cm_table>
+          <ca_table>.0225, .0225, .0225, .0225, .0225, .0225, .0225, .0225</ca_table>
         </mach>
         <mach nr='0.5'>
-          <cn_table>0.000, 1.070, 2.169, 3.390, 4.433, 5.517, 6.603, 7.866</cn_table>
-          <cm_table>0.000, -0.276, -0.389, -0.727, -0.210, 0.446, 1.204, 1.690</cm_table>
-          <ca_table>0.261, 0.243, 0.187, 0.141, 0.127, 0.152, 0.116, 0.025</ca_table>
-          <cl_table>0.000, 1.051, 2.121, 3.286, 4.227, 5.132, 5.986, 6.934</cl_table>
-          <cd_table>0.261, 0.317, 0.487, 0.842, 1.344, 2.030, 2.791, 3.715</cd_table>
+          <cn_table>.0000, .2986, .5646, .8627, .9958, 1.0958, 1.1631, 1.2684</cn_table>
+          <cm_table>.0000, -1.1776, -2.2265, -3.4022, -3.9270, -4.3213, -4.5867, -5.0019</cm_table>
+          <ca_table>.0222, .0222, .0222, .0222, .0222, .0222, .0222, .0222</ca_table>
         </mach>
         <mach nr='0.6'>
-          <cn_table>0.000, 1.093, 2.208, 3.444, 4.494, 5.607, 6.812, 8.206</cn_table>
-          <cm_table>0.000, -0.305, -0.444, -0.825, -0.337, 0.307, 1.051, 1.581</cm_table>
-          <ca_table>0.259, 0.240, 0.183, 0.135, 0.121, 0.148, 0.108, 0.011</ca_table>
-          <cl_table>0.000, 1.074, 2.161, 3.341, 4.287, 5.219, 6.179, 7.240</cl_table>
-          <cd_table>0.259, 0.316, 0.488, 0.848, 1.355, 2.056, 2.869, 3.862</cd_table>
+          <cn_table>.0000, .3058, .5776, .8835, 1.0210, 1.1251, 1.2047, 1.3162</cn_table>
+          <cm_table>.0000, -1.2057, -2.2773, -3.4837, -4.0256, -4.4363, -4.7500, -5.1897</cm_table>
+          <ca_table>.0220, .0220, .0220, .0220, .0220, .0220, .0220, .0220</ca_table>
         </mach>
         <mach nr='0.7'>
-          <cn_table>0.000, 1.101, 2.218, 3.456, 4.531, 5.736, 7.029, 8.570</cn_table>
-          <cm_table>0.000, -0.320, -0.476, -0.877, -0.474, 0.203, 0.845, 1.353</cm_table>
-          <ca_table>0.257, 0.238, 0.180, 0.132, 0.119, 0.144, 0.101, -0.002</ca_table>
-          <cl_table>0.000, 1.081, 2.172, 3.353, 4.323, 5.341, 6.381, 7.568</cl_table>
-          <cd_table>0.257, 0.314, 0.487, 0.848, 1.363, 2.097, 2.951, 4.021</cd_table>
+          <cn_table>.0000, .3090, .5835, .8925, 1.0449, 1.1529, 1.2554, 1.3839</cn_table>
+          <cm_table>.0000, -1.2180, -2.3000, -3.5184, -4.1193, -4.5447, -4.9488, -5.4556</cm_table>
+          <ca_table>.0217, .0217, .0217, .0217, .0217, .0217, .0217, .0217</ca_table>
         </mach>
         <mach nr='0.75'>
-          <cn_table>0.000, 1.118, 2.250, 3.503, 4.607, 5.853, 7.206, 8.818</cn_table>
-          <cm_table>0.000, -0.345, -0.528, -0.974, -0.628, 0.040, 0.636, 1.106</cm_table>
-          <ca_table>0.256, 0.236, 0.178, 0.129, 0.116, 0.141, 0.097, -0.009</ca_table>
-          <cl_table>0.000, 1.099, 2.204, 3.399, 4.397, 5.452, 6.543, 7.790</cl_table>
-          <cd_table>0.256, 0.314, 0.489, 0.855, 1.382, 2.135, 3.020, 4.132</cd_table>
+          <cn_table>.0000, .3148, .5951, .9124, 1.0761, 1.1889, 1.3036, 1.4442</cn_table>
+          <cm_table>.0000, -1.2408, -2.3455, -3.5963, -4.2415, -4.6862, -5.1381, -5.6925</cm_table>
+          <ca_table>.0215, .0215, .0215, .0215, .0215, .0215, .0215, .0215</ca_table>
         </mach>
         <mach nr='0.8'>
-          <cn_table>0.000, 1.148, 2.324, 3.656, 4.850, 6.177, 7.617, 9.288</cn_table>
-          <cm_table>0.000, -0.366, -0.575, -1.115, -0.810, -0.218, 0.398, 0.701</cm_table>
-          <ca_table>0.271, 0.251, 0.189, 0.137, 0.123, 0.151, 0.107, -0.001</ca_table>
-          <cl_table>0.000, 1.128, 2.275, 3.547, 4.628, 5.753, 6.915, 8.201</cl_table>
-          <cd_table>0.271, 0.330, 0.510, 0.894, 1.455, 2.255, 3.196, 4.359</cd_table>
+          <cn_table>.0000, .3217, .6110, .9516, 1.1309, 1.2632, 1.3835, 1.5524</cn_table>
+          <cm_table>.0000, -1.2678, -2.4078, -3.7498, -4.4566, -4.9777, -5.4518, -6.1174</cm_table>
+          <ca_table>.0214, .0214, .0214, .0214, .0214, .0214, .0214, .0214</ca_table>
         </mach>
         <mach nr='0.93'>
-          <cn_table>0.000, 1.254, 2.540, 4.024, 5.393, 6.903, 8.553, 10.586</cn_table>
-          <cm_table>0.000, -0.458, -0.795, -1.620,-1.509, -0.989, -0.510, -0.389</cm_table>
-          <ca_table>0.458, 0.455, 0.440, 0.421, 0.399, 0.370, 0.294, 0.147</ca_table>
-          <cl_table>0.000, 1.219, 2.454, 3.848, 5.074, 6.360, 7.694, 9.278</cl_table>
-          <cd_table>0.458, 0.541, 0.790, 1.248, 1.870, 2.709, 3.748, 5.100</cd_table>
+          <cn_table>.0000, .3446, .6624, 1.0588, 1.2808, 1.4380, 1.5948, 1.8203</cn_table>
+          <cm_table>.0000, -1.3555, -2.6054, -4.1647, -5.0379, -5.6562, -6.2730, -7.1600</cm_table>
+          <ca_table>.0561, .0561, .0561, .0561, .0561, .0561, .0561, .0561</ca_table>
+        </mach>
+      </aerodynamics>
+    </plugin>
+    <plugin name='Fin2Aerodynamic' filename='libAerodynamic.so'>
+      <cp>0.0 0.1 0.1</cp>
+      <sref>0.044</sref>
+      <lref>0.044</lref>
+      <air_density>1.2041</air_density>
+      <link_name>FinHolder_2</link_name>
+      <radial_symmetry>1/</radial_symmetry>
+      <forward>1 0 0</forward>
+      <robotNamespace/>
+      <topic_name>AeroVectors</topic_name>
+      <aerodynamics axis_type='body' case='with_booster'>
+        <mach_table>0.2 0.4 0.5 0.6 0.7 0.75 0.8 0.93</mach_table>
+        <alpha_table>.00, 4.00, 8.00, 12.00, 16.00, 20.00, 24.00, 28.00</alpha_table>
+        <mach nr='0.2'>
+          <cn_table>.0000, .2863, .5432, .8305, .9726, 1.0564, 1.0950, 1.1860</cn_table>
+          <cm_table>.0000, -1.1294, -2.1425, -3.2754, -3.8362, -4.1665, -4.3190, -4.6776</cm_table>
+          <ca_table>.0229, .0229, .0229, .0229, .0229, .0229, .0229, .0229</ca_table>
+        </mach>
+        <mach nr='0.4'>
+          <cn_table>.0000, .2923, .5521, .8386, .9666, 1.0587, 1.1216, 1.2260</cn_table>
+          <cm_table>.0000, -1.1529, -2.1774, -3.3071, -3.8121, -4.1751, -4.4232, -4.8352</cm_table>
+          <ca_table>.0225, .0225, .0225, .0225, .0225, .0225, .0225, .0225</ca_table>
+        </mach>
+        <mach nr='0.5'>
+          <cn_table>.0000, .2986, .5646, .8627, .9958, 1.0958, 1.1631, 1.2684</cn_table>
+          <cm_table>.0000, -1.1776, -2.2265, -3.4022, -3.9270, -4.3213, -4.5867, -5.0019</cm_table>
+          <ca_table>.0222, .0222, .0222, .0222, .0222, .0222, .0222, .0222</ca_table>
+        </mach>
+        <mach nr='0.6'>
+          <cn_table>.0000, .3058, .5776, .8835, 1.0210, 1.1251, 1.2047, 1.3162</cn_table>
+          <cm_table>.0000, -1.2057, -2.2773, -3.4837, -4.0256, -4.4363, -4.7500, -5.1897</cm_table>
+          <ca_table>.0220, .0220, .0220, .0220, .0220, .0220, .0220, .0220</ca_table>
+        </mach>
+        <mach nr='0.7'>
+          <cn_table>.0000, .3090, .5835, .8925, 1.0449, 1.1529, 1.2554, 1.3839</cn_table>
+          <cm_table>.0000, -1.2180, -2.3000, -3.5184, -4.1193, -4.5447, -4.9488, -5.4556</cm_table>
+          <ca_table>.0217, .0217, .0217, .0217, .0217, .0217, .0217, .0217</ca_table>
+        </mach>
+        <mach nr='0.75'>
+          <cn_table>.0000, .3148, .5951, .9124, 1.0761, 1.1889, 1.3036, 1.4442</cn_table>
+          <cm_table>.0000, -1.2408, -2.3455, -3.5963, -4.2415, -4.6862, -5.1381, -5.6925</cm_table>
+          <ca_table>.0215, .0215, .0215, .0215, .0215, .0215, .0215, .0215</ca_table>
+        </mach>
+        <mach nr='0.8'>
+          <cn_table>.0000, .3217, .6110, .9516, 1.1309, 1.2632, 1.3835, 1.5524</cn_table>
+          <cm_table>.0000, -1.2678, -2.4078, -3.7498, -4.4566, -4.9777, -5.4518, -6.1174</cm_table>
+          <ca_table>.0214, .0214, .0214, .0214, .0214, .0214, .0214, .0214</ca_table>
+        </mach>
+        <mach nr='0.93'>
+          <cn_table>.0000, .3446, .6624, 1.0588, 1.2808, 1.4380, 1.5948, 1.8203</cn_table>
+          <cm_table>.0000, -1.3555, -2.6054, -4.1647, -5.0379, -5.6562, -6.2730, -7.1600</cm_table>
+          <ca_table>.0561, .0561, .0561, .0561, .0561, .0561, .0561, .0561</ca_table>
+        </mach>
+      </aerodynamics>
+    </plugin>
+    <plugin name='Fin3Aerodynamic' filename='libAerodynamic.so'>
+      <cp>0.0 0.1 0.1</cp>
+      <sref>0.044</sref>
+      <lref>0.044</lref>
+      <air_density>1.2041</air_density>
+      <link_name>FinHolder_3</link_name>
+      <radial_symmetry>1/</radial_symmetry>
+      <forward>1 0 0</forward>
+      <robotNamespace/>
+      <topic_name>AeroVectors</topic_name>
+      <aerodynamics axis_type='body' case='with_booster'>
+        <mach_table>0.2 0.4 0.5 0.6 0.7 0.75 0.8 0.93</mach_table>
+        <alpha_table>.00, 4.00, 8.00, 12.00, 16.00, 20.00, 24.00, 28.00</alpha_table>
+        <mach nr='0.2'>
+          <cn_table>.0000, .2863, .5432, .8305, .9726, 1.0564, 1.0950, 1.1860</cn_table>
+          <cm_table>.0000, -1.1294, -2.1425, -3.2754, -3.8362, -4.1665, -4.3190, -4.6776</cm_table>
+          <ca_table>.0229, .0229, .0229, .0229, .0229, .0229, .0229, .0229</ca_table>
+        </mach>
+        <mach nr='0.4'>
+          <cn_table>.0000, .2923, .5521, .8386, .9666, 1.0587, 1.1216, 1.2260</cn_table>
+          <cm_table>.0000, -1.1529, -2.1774, -3.3071, -3.8121, -4.1751, -4.4232, -4.8352</cm_table>
+          <ca_table>.0225, .0225, .0225, .0225, .0225, .0225, .0225, .0225</ca_table>
+        </mach>
+        <mach nr='0.5'>
+          <cn_table>.0000, .2986, .5646, .8627, .9958, 1.0958, 1.1631, 1.2684</cn_table>
+          <cm_table>.0000, -1.1776, -2.2265, -3.4022, -3.9270, -4.3213, -4.5867, -5.0019</cm_table>
+          <ca_table>.0222, .0222, .0222, .0222, .0222, .0222, .0222, .0222</ca_table>
+        </mach>
+        <mach nr='0.6'>
+          <cn_table>.0000, .3058, .5776, .8835, 1.0210, 1.1251, 1.2047, 1.3162</cn_table>
+          <cm_table>.0000, -1.2057, -2.2773, -3.4837, -4.0256, -4.4363, -4.7500, -5.1897</cm_table>
+          <ca_table>.0220, .0220, .0220, .0220, .0220, .0220, .0220, .0220</ca_table>
+        </mach>
+        <mach nr='0.7'>
+          <cn_table>.0000, .3090, .5835, .8925, 1.0449, 1.1529, 1.2554, 1.3839</cn_table>
+          <cm_table>.0000, -1.2180, -2.3000, -3.5184, -4.1193, -4.5447, -4.9488, -5.4556</cm_table>
+          <ca_table>.0217, .0217, .0217, .0217, .0217, .0217, .0217, .0217</ca_table>
+        </mach>
+        <mach nr='0.75'>
+          <cn_table>.0000, .3148, .5951, .9124, 1.0761, 1.1889, 1.3036, 1.4442</cn_table>
+          <cm_table>.0000, -1.2408, -2.3455, -3.5963, -4.2415, -4.6862, -5.1381, -5.6925</cm_table>
+          <ca_table>.0215, .0215, .0215, .0215, .0215, .0215, .0215, .0215</ca_table>
+        </mach>
+        <mach nr='0.8'>
+          <cn_table>.0000, .3217, .6110, .9516, 1.1309, 1.2632, 1.3835, 1.5524</cn_table>
+          <cm_table>.0000, -1.2678, -2.4078, -3.7498, -4.4566, -4.9777, -5.4518, -6.1174</cm_table>
+          <ca_table>.0214, .0214, .0214, .0214, .0214, .0214, .0214, .0214</ca_table>
+        </mach>
+        <mach nr='0.93'>
+          <cn_table>.0000, .3446, .6624, 1.0588, 1.2808, 1.4380, 1.5948, 1.8203</cn_table>
+          <cm_table>.0000, -1.3555, -2.6054, -4.1647, -5.0379, -5.6562, -6.2730, -7.1600</cm_table>
+          <ca_table>.0561, .0561, .0561, .0561, .0561, .0561, .0561, .0561</ca_table>
+        </mach>
+      </aerodynamics>
+    </plugin>
+    <plugin name='Fin4Aerodynamic' filename='libAerodynamic.so'>
+      <cp>0.0 0.1 0.1</cp>
+      <sref>0.044</sref>
+      <lref>0.044</lref>
+      <air_density>1.2041</air_density>
+      <link_name>FinHolder_4</link_name>
+      <radial_symmetry>1/</radial_symmetry>
+      <forward>1 0 0</forward>
+      <robotNamespace/>
+      <topic_name>AeroVectors</topic_name>
+      <aerodynamics axis_type='body' case='with_booster'>
+        <mach_table>0.2 0.4 0.5 0.6 0.7 0.75 0.8 0.93</mach_table>
+        <alpha_table>.00, 4.00, 8.00, 12.00, 16.00, 20.00, 24.00, 28.00</alpha_table>
+        <mach nr='0.2'>
+          <cn_table>.0000, .2863, .5432, .8305, .9726, 1.0564, 1.0950, 1.1860</cn_table>
+          <cm_table>.0000, -1.1294, -2.1425, -3.2754, -3.8362, -4.1665, -4.3190, -4.6776</cm_table>
+          <ca_table>.0229, .0229, .0229, .0229, .0229, .0229, .0229, .0229</ca_table>
+        </mach>
+        <mach nr='0.4'>
+          <cn_table>.0000, .2923, .5521, .8386, .9666, 1.0587, 1.1216, 1.2260</cn_table>
+          <cm_table>.0000, -1.1529, -2.1774, -3.3071, -3.8121, -4.1751, -4.4232, -4.8352</cm_table>
+          <ca_table>.0225, .0225, .0225, .0225, .0225, .0225, .0225, .0225</ca_table>
+        </mach>
+        <mach nr='0.5'>
+          <cn_table>.0000, .2986, .5646, .8627, .9958, 1.0958, 1.1631, 1.2684</cn_table>
+          <cm_table>.0000, -1.1776, -2.2265, -3.4022, -3.9270, -4.3213, -4.5867, -5.0019</cm_table>
+          <ca_table>.0222, .0222, .0222, .0222, .0222, .0222, .0222, .0222</ca_table>
+        </mach>
+        <mach nr='0.6'>
+          <cn_table>.0000, .3058, .5776, .8835, 1.0210, 1.1251, 1.2047, 1.3162</cn_table>
+          <cm_table>.0000, -1.2057, -2.2773, -3.4837, -4.0256, -4.4363, -4.7500, -5.1897</cm_table>
+          <ca_table>.0220, .0220, .0220, .0220, .0220, .0220, .0220, .0220</ca_table>
+        </mach>
+        <mach nr='0.7'>
+          <cn_table>.0000, .3090, .5835, .8925, 1.0449, 1.1529, 1.2554, 1.3839</cn_table>
+          <cm_table>.0000, -1.2180, -2.3000, -3.5184, -4.1193, -4.5447, -4.9488, -5.4556</cm_table>
+          <ca_table>.0217, .0217, .0217, .0217, .0217, .0217, .0217, .0217</ca_table>
+        </mach>
+        <mach nr='0.75'>
+          <cn_table>.0000, .3148, .5951, .9124, 1.0761, 1.1889, 1.3036, 1.4442</cn_table>
+          <cm_table>.0000, -1.2408, -2.3455, -3.5963, -4.2415, -4.6862, -5.1381, -5.6925</cm_table>
+          <ca_table>.0215, .0215, .0215, .0215, .0215, .0215, .0215, .0215</ca_table>
+        </mach>
+        <mach nr='0.8'>
+          <cn_table>.0000, .3217, .6110, .9516, 1.1309, 1.2632, 1.3835, 1.5524</cn_table>
+          <cm_table>.0000, -1.2678, -2.4078, -3.7498, -4.4566, -4.9777, -5.4518, -6.1174</cm_table>
+          <ca_table>.0214, .0214, .0214, .0214, .0214, .0214, .0214, .0214</ca_table>
+        </mach>
+        <mach nr='0.93'>
+          <cn_table>.0000, .3446, .6624, 1.0588, 1.2808, 1.4380, 1.5948, 1.8203</cn_table>
+          <cm_table>.0000, -1.3555, -2.6054, -4.1647, -5.0379, -5.6562, -6.2730, -7.1600</cm_table>
+          <ca_table>.0561, .0561, .0561, .0561, .0561, .0561, .0561, .0561</ca_table>
         </mach>
       </aerodynamics>
     </plugin>

@@ -9,6 +9,7 @@
 #include "gazebo/transport/transport.hh"
 #include "gazebo/msgs/msgs.hh"
 #include "aerodynamic.hh"
+#include "aerodynamic_private.hh"
 
 #include <ros/ros.h>
 
@@ -23,104 +24,6 @@ using namespace gazebo;
 
 GZ_REGISTER_MODEL_PLUGIN(Aerodynamic);
 
-enum axis_type{Body, Wind};
-
-class gazebo::AerodynamicLUT
-{
-    public:
-        std::vector<std::vector<double>> cn_table;
-        std::vector<std::vector<double>> cm_table;
-        std::vector<std::vector<double>> ca_table;
-        std::vector<std::vector<double>> cl_table;
-        std::vector<std::vector<double>> cd_table;
-        std::vector<double> alpha_table;
-        std::vector<double> mach_table;
-        axis_type a_type;
-        int a_case;
-};
-
-class gazebo::AerodynamicVector
-{
-    public: ignition::math::Vector3d velocity;
-    public: ignition::math::Vector3d vel_in_lift_drag_plane;
-    public: ignition::math::Vector3d normal;
-    public: ignition::math::Vector3d axial;
-    public: ignition::math::Vector3d lift;
-    public: ignition::math::Vector3d drag;
-    public: ignition::math::Vector3d moment;
-
-};
-
-struct gazebo::AerodynamicCoefficients{
-    double cn;
-    double cm;
-    double ca;
-    double cl;
-    double cd;
-};
-
-
-class gazebo::AerodynamicPrivate
-{
-    /// \brief Pointer to world.
-    public: physics::WorldPtr world;
-
-    /// \brief Pointer to physics engine.
-    public: physics::PhysicsEnginePtr physics;
-
-    /// \brief Pointer to model containing plugin.
-    public: physics::ModelPtr model;
-
-    /// \brief Pointer to link currently targeted by mud joint.
-    public: physics::LinkPtr link;
-
-    /// \brief Link pose in world frame
-    public: ignition::math::Pose3d pose;
-
-    /// \brief SDF for this plugin;
-    public: sdf::ElementPtr sdf;
-
-    /// \brief air density
-    /// at 25 deg C it's about 1.1839 kg/m^3
-    /// At 20 °C and 101.325 kPa, dry air has a density of 1.2041 kg/m3.
-    public: double rho;
-
-    /// \brief if the shape is aerodynamically radially symmetric about
-    /// the forward direction. Defaults to false for wing shapes.
-    /// If set to true, the upward direction is determined by the
-    /// angle of attack.
-    public: bool radialSymmetry;
-
-    /// \brief effective planeform surface area
-    public: double sref;
-
-    /// \brief effective planeform lenght
-    public: double lref;
-
-    /// \brief angle of sweep
-    public: double sweep;
-
-    /// \brief angle of attack
-    public: double alpha;
-
-    /// \brief angle of attack
-    public: double mach;
-
-    /// \brief dynamic pressure
-    public: double q;
-
-    /// \brief center of pressure in link local coordinates
-    public: ignition::math::Vector3d cp;
-
-    /// \brief Normally, this is taken as a direction parallel to the chord
-    /// of the airfoil in zero angle of attack forward flight.
-    public: ignition::math::Vector3d forward;
-
-    /// \brief A vector in the lift/drag plane, perpendicular to the forward
-    /// vector. Inflow velocity orthogonal to forward and upward vectors
-    /// is considered flow in the wing sweep direction.
-    public: ignition::math::Vector3d upward;
-};
 
 /////////////////////////////////////////////////
 Aerodynamic::Aerodynamic() : dataPtr(new AerodynamicPrivate), V(new AerodynamicVector), I(new AerodynamicVector), C(new AerodynamicCoefficients)
@@ -140,7 +43,6 @@ Aerodynamic::Aerodynamic() : dataPtr(new AerodynamicPrivate), V(new AerodynamicV
 Aerodynamic::~Aerodynamic()
 {
 }
-
 
 /////////////////////////////////////////////////
 void Aerodynamic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
@@ -167,6 +69,7 @@ void Aerodynamic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     if (_sdf->HasElement("radial_symmetry"))
     {
         dataPtr->radialSymmetry = _sdf->Get<bool>("radial_symmetry");
+        ROS_WARN_STREAM("Radial Symetry: " << dataPtr->radialSymmetry);
     }
 
     if (_sdf->HasElement("cp"))
@@ -216,6 +119,16 @@ void Aerodynamic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         }
     }
 
+    if (_sdf->HasElement("control_joint_name"))
+    {
+        std::string controlJointName = _sdf->Get<std::string>("control_joint_name");
+        this->dataPtr->controlJoint = this->dataPtr->model->GetJoint(controlJointName);
+        if (!this->dataPtr->controlJoint)
+        {
+            gzerr << "Joint with name[" << controlJointName << "] does not exist.\n";
+        }
+    }
+
     if (_sdf->HasElement("robotNamespace"))
     {
         namespace_ = _sdf->GetElement("robotNamespace")->Get<std::string>();
@@ -236,63 +149,73 @@ void Aerodynamic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
     this->ParseCoefficientTable();
 
-    // for (size_t i = 0; i < cTable.size(); i++)
-    // {
-    //     ROS_WARN_STREAM("Case: " << cTable[i].a_case);
-    //     ROS_WARN_STREAM("Type: " << cTable[i].a_type);
+    for (size_t i = 0; i < cTable.size(); i++)
+    {
+        gzdbg << "Case: " << cTable[i].a_case << std::endl;
+        gzdbg << "Type: " << cTable[i].a_type << std::endl;
+        std::string mach_table = "mach_table:\t";
+        for (size_t j = 0; j < 8; j++)
+        {
+            
+            mach_table += std::to_string(cTable[i].mach_table[j]) + " ";
+        }
+        gzdbg << mach_table << std::endl;
 
-    //     ROS_WARN_STREAM("mach_table: ");
-    //     for (size_t j = 0; j < 8; j++)
-    //     {
-    //         ROS_WARN_STREAM(" " << cTable[i].mach_table[j]);
-    //     }
-    //     ROS_WARN_STREAM("alpha_table: ");
-    //     for (size_t j = 0; j < 8; j++)
-    //     {
-    //         ROS_WARN_STREAM(" " << cTable[i].alpha_table[j]);
-    //     }
+        std::string alpha_table = "alpha_table:\t";
+        for (size_t j = 0; j < 8; j++)
+        {
+            alpha_table += std::to_string(cTable[i].alpha_table[j]) + " ";
+        }
 
-    //     for (size_t k = 0; k < 8; k++)
-    //     {
-    //         ROS_WARN_STREAM(" MACH: " << cTable[i].mach_table[k]);
-    //         ROS_WARN_STREAM("cm_table: ");
-    //         for (size_t j = 0; j < 8; j++)
-    //         {
-    //             ROS_WARN_STREAM(" " << cTable[i].cm_table[k][j]);
-    //         }
+        gzdbg << alpha_table << std::endl;
+        
+        for (size_t k = 0; k < 8; k++)
+        {
+            gzdbg << " MACH: " << cTable[i].mach_table[k] << std::endl;
+            std::string cm_table = "cm_table:\t";
+            for (size_t j = 0; j < 8; j++)
+            {
+                cm_table += std::to_string(cTable[i].cm_table[k][j]) = " ";
+            }
+            gzdbg << cm_table << std::endl;
+            if (cTable[i].a_type == Wind)
+            {
+                std::string cl_table = "cl_table:\t";
+                for (size_t j = 0; j < 8; j++)
+                {
+                    cl_table += std::to_string(cTable[i].cl_table[k][j]) + " ";
+                }
+                gzdbg << cl_table << std::endl;
 
-    //         if (cTable[i].a_type == Wind)
-    //         {
-    //             ROS_WARN_STREAM("cl_table: ");
-    //             for (size_t j = 0; j < 8; j++)
-    //             {
-    //                 ROS_WARN_STREAM(" " << cTable[i].cl_table[k][j]);
-    //             }
-    //             ROS_WARN_STREAM("cd_table: ");
-    //             for (size_t j = 0; j < 8; j++)
-    //             {
-    //                 ROS_WARN_STREAM(" " << cTable[i].cd_table[k][j]);
-    //             }
-    //         }
-
-    //         if (cTable[i].a_type == Body)
-    //         {
-    //             ROS_WARN_STREAM("cn_table: ");
-    //             for (size_t j = 0; j < 8; j++)
-    //             {
-    //                 ROS_WARN_STREAM(" " << cTable[i].cn_table[k][j]);
-    //             }
-    //             ROS_WARN_STREAM("ca_table: ");
-    //             for (size_t j = 0; j < 8; j++)
-    //             {
-    //                 ROS_WARN_STREAM(" " << cTable[i].ca_table[k][j]);
-    //             }
-    //         }
-    //     }
-    // }
+                std::string cd_table = "cd_table:\t";
+                for (size_t j = 0; j < 8; j++)
+                {
+                    cd_table += std::to_string(cTable[i].cd_table[k][j]) + " ";
+                }
+                gzdbg << cd_table << std::endl;
+            }
+            if (cTable[i].a_type == Body)
+            {
+                std::string cn_table = "cn_table:\t";
+                for (size_t j = 0; j < 8; j++)
+                {
+                    cn_table += std::to_string(cTable[i].cn_table[k][j]) + " ";
+                }
+                gzdbg << cn_table << std::endl;
+                
+                std::string ca_table = "ca_table:\t";
+                for (size_t j = 0; j < 8; j++)
+                {
+                    ca_table += std::to_string(cTable[i].ca_table[k][j]) + " ";
+                }
+                gzdbg << ca_table << std::endl;
+            }
+        }
+    }
     ROS_INFO_STREAM("Loading Aero plugin");
+    
+    gzlog << "Aerodynamic plugin loaded for link " << this->dataPtr->link->GetName() << std::endl;
 }
-
 
 /////////////////////////////////////////////////
 void Aerodynamic::OnUpdate()
@@ -337,33 +260,37 @@ void Aerodynamic::OnUpdate()
     {
         this->last_pub_time = current_time;
         this->PublishAeroForces();
+        ROS_WARN_STREAM(" sweep:\t" << dataPtr->sweep);
+        ROS_WARN_STREAM(" cossweep\t:" << sqrt(1.0 - sin(dataPtr->sweep) * sin(dataPtr->sweep)));
+        ROS_WARN_STREAM(" ctrlAngle:\t" << dataPtr->controlAngle);
         ROS_WARN_STREAM(" velocity:\t" << V->velocity.Length());
         ROS_WARN_STREAM(" alpha:\t" << dataPtr->alpha);
         ROS_WARN_STREAM(" mach:\t" << dataPtr->mach);
-        ROS_WARN_STREAM(" dynamic_pressure\t" << dataPtr->q);
-
+        // ROS_WARN_STREAM(" dynamic_pressure\t" << dataPtr->q);
+        
         // ROS_WARN_STREAM(" cn_val:\t" << C->cn);
         // ROS_WARN_STREAM(" ca_val:\t" << C->ca);
-        ROS_WARN_STREAM(" cl_val:\t" << C->cl);
-        ROS_WARN_STREAM(" cd_val:\t" << C->cd);
-        ROS_WARN_STREAM(" cm_val:\t" << C->cm);
+        // ROS_WARN_STREAM(" cl_val:\t" << C->cl);
+        // ROS_WARN_STREAM(" cd_val:\t" << C->cd);
+        // ROS_WARN_STREAM(" cm_val:\t" << C->cm);
 
-        ROS_WARN_STREAM(" lift:\t" << V->lift.Length());
-        ROS_WARN_STREAM(" drag:\t" << V->drag.Length());
+        // ROS_WARN_STREAM(" lift:\t" << V->lift.Length());
+        // ROS_WARN_STREAM(" drag:\t" << V->drag.Length());
         // ROS_WARN_STREAM(" normal:\t" << V->normal.Length());
         // ROS_WARN_STREAM(" axial:\t" << V->axial.Length());
-        ROS_WARN_STREAM(" moment:\t" << V->moment.Length());
+        // ROS_WARN_STREAM(" moment:\t" << V->moment.Length());
 
         // ROS_WARN_STREAM(" body bose: " << dataPtr->pose);
-        // ROS_WARN_STREAM(" lift_dir:\t" << I->lift);
-        // ROS_WARN_STREAM(" drag_dir:\t" << I->drag);
-        // ROS_WARN_STREAM(" normal_dir:\t" << I->normal);
-        // ROS_WARN_STREAM(" axial_dir:\t" << I->axial);    
-        // ROS_WARN_STREAM(" moment_dir:\t" << I->moment);
+        ROS_WARN_STREAM(" lift:\t" << I->lift);
+        ROS_WARN_STREAM(" drag:\t" << I->drag);
+        ROS_WARN_STREAM(" normal:\t" << I->normal);
+        ROS_WARN_STREAM(" axial:\t" << I->axial);    
+        ROS_WARN_STREAM(" moment:\t" << I->moment);
         ROS_WARN("\n");      
     }
 }
 
+/////////////////////////////////////////////////
 static void store_table(const sdf::ElementPtr& elem, const std::string& elem_name, std::vector<double>& v)
 {
     std::string str = elem->Get<std::string>(elem_name);
@@ -384,22 +311,21 @@ static void store_table(const sdf::ElementPtr& elem, const std::string& elem_nam
         v.push_back(doubleVector[i]);
 }
 
+/////////////////////////////////////////////////
 void Aerodynamic::ParseCoefficientTable()
 {
     ROS_WARN_STREAM(" Parsing Coefficient Table");
 
     if(dataPtr->sdf->HasElement("aerodynamics"))
     {
+        dataPtr->number_of_cases = 0;
         // store data foreach aerodynamics element
         sdf::ElementPtr aeroElemPtr  = dataPtr->sdf->GetElement("aerodynamics");
         do
         {
-            static int idx = 0;
             AerodynamicLUT coef;
-
             // count the aerodynamic use case each aerodynamics element
-            coef.a_case = idx++;
-
+            coef.a_case = dataPtr->number_of_cases++;
             // get aerodynamic axis to use for calculation, use wind axis by default
             if (aeroElemPtr->HasAttribute("axis_type"))
             {
@@ -518,18 +444,39 @@ void Aerodynamic::ParseCoefficientTable()
             {
                 gzerr << "Please specified aerodynamic coefficient under tag <mach> </mach>!";
             }
-            cTable.push_back(coef);
 
+            // store control_joint_rate if control joint is used
+            if (dataPtr->sdf->HasElement("control_joint_name"))
+            {
+                if (aeroElemPtr->HasElement("control_joint_rate"))
+                {
+                    store_table(aeroElemPtr, "control_joint_rate", coef.control_joint_rate);
+                }
+                else
+                {
+                    gzerr << "Please specified list of mach number under tag <mach_table> </mach_table>!";
+                }
+            }
+
+            cTable.push_back(coef);
             aeroElemPtr = aeroElemPtr->GetNextElement("aerodynamics");
 
         } while (aeroElemPtr);
 
+        if (dataPtr->number_of_cases > 1)
+        {
+            const auto case_change_topic = this->dataPtr->model->GetName() + "/AerodynamicCaseChange";
+            case_change_sub_ = this->node_handle_->Subscribe("~/" + case_change_topic, &Aerodynamic::OnCaseChange, this);
+            gzdbg << "Subscribing to ~/" << case_change_topic << std::endl;
+        }
+        
         // TODO: Check order, Check vector dimension
         // TODO: Check if wrong table spesified, Check vector dimension
 
     }
 }
 
+/////////////////////////////////////////////////
 bool Aerodynamic::CalculateAerodynamicVectors()
 {
     // get linear velocity at cp in inertial frame
@@ -561,7 +508,7 @@ bool Aerodynamic::CalculateAerodynamicVectors()
         // which is the component of inflow perpendicular to forward direction.
         ignition::math::Vector3d tmp = I->axial.Cross(I->velocity);
         I->normal = I->axial.Cross(tmp).Normalize();
-        ROS_WARN("RADIAL C");
+        // ROS_WARN("RADIAL C");
     }
     else
     {
@@ -588,10 +535,12 @@ bool Aerodynamic::CalculateAerodynamicVectors()
     I->vel_in_lift_drag_plane = V->vel_in_lift_drag_plane;
     I->vel_in_lift_drag_plane.Normalize();
 
+    I->axial = -1 * I->axial;
+
     return true;
 }
 
-
+/////////////////////////////////////////////////
 void Aerodynamic::CalculateAerodynamicAngles()
 {
     const double minRatio = -1.0;
@@ -604,13 +553,13 @@ void Aerodynamic::CalculateAerodynamicAngles()
     // truncate sweep to within +/-90 deg
     while (fabs(dataPtr->sweep) > 0.5 * M_PI)
         dataPtr->sweep = dataPtr->sweep > 0 ? dataPtr->sweep - M_PI : dataPtr->sweep + M_PI;
-
+    dataPtr->sweep *= (180 / M_PI);
     // get cos from trig identity
     double cosSweepAngle = sqrt(1.0 - sin(dataPtr->sweep) * sin(dataPtr->sweep));
 
     // compute angle of attack
-    // double cosAlpha = ignition::math::clamp(I->lift.Dot(I->normal), minRatio, maxRatio);
-    double cosAlpha = ignition::math::clamp(I->vel_in_lift_drag_plane.Dot(I->axial), minRatio, maxRatio);
+    double cosAlpha = ignition::math::clamp(I->lift.Dot(I->normal), minRatio, maxRatio);
+    // double cosAlpha = ignition::math::clamp(I->vel_in_lift_drag_plane.Dot(I->axial), minRatio, maxRatio);
 
     dataPtr->alpha = acos(cosAlpha);
 
@@ -618,10 +567,11 @@ void Aerodynamic::CalculateAerodynamicAngles()
     while (fabs(dataPtr->alpha) > 0.5 * M_PI)
         dataPtr->alpha = dataPtr->alpha > 0 ? dataPtr->alpha - M_PI : dataPtr->alpha + M_PI;
 
-    dataPtr->alpha = dataPtr->alpha * 180 / M_PI;
+    dataPtr->alpha *= (180 / M_PI);
 
 }
 
+/////////////////////////////////////////////////
 static double linear_function(double x, double x1, double x2, double y1, double y2)
 {
     // (y - y1)/(y2 - y1)) = (x - x1)/(x2 - x1);
@@ -633,6 +583,7 @@ static double linear_function(double x, double x1, double x2, double y1, double 
     return (x - x1) * m + y1;
 }
 
+/////////////////////////////////////////////////
 void Aerodynamic::CalculateAerodynamicCoefficients()
 {
     double speed = V->velocity.Length();
@@ -698,8 +649,30 @@ void Aerodynamic::CalculateAerodynamicCoefficients()
         C->cl = (lower.cl == upper.cl) ? lower.cl : linear_function(dataPtr->mach, m1, m2, lower.cl, upper.cl);
         C->cd = (lower.cd == upper.cd) ? lower.cd : linear_function(dataPtr->mach, m1, m2, lower.cd, upper.cd);
     }
+
+    // Compensate with the sweep angle if there are any
+    double cossweep = sqrt(1.0 - sin(dataPtr->sweep) * sin(dataPtr->sweep));
+    C->cm *= cossweep;
+    C->cn *= cossweep;
+    C->ca *= cossweep;
+    C->cl *= cossweep;
+    C->cd *= cossweep;
+
+    if (this->dataPtr->controlJoint)
+    {
+        this->dataPtr->controlAngle = this->dataPtr->controlJoint->Position(0) * 180 / M_PI;
+
+        int rate_size = cTable[ucase].control_joint_rate.size();
+
+        double rate_cl = (m_upper >= rate_size) ? cTable[ucase].control_joint_rate[rate_size - 1] 
+            : linear_function(dataPtr->mach, m1, m2, cTable[ucase].control_joint_rate[m_lower], cTable[ucase].control_joint_rate[m_upper]);
+
+        C->cl += this->dataPtr->controlAngle * rate_cl;
+    }
+    
 }
 
+/////////////////////////////////////////////////
 void Aerodynamic::CalculateAerodynamicForces()
 {
     // compute dynamic pressure
@@ -725,7 +698,7 @@ void Aerodynamic::CalculateAerodynamicForces()
     V->moment.Correct();
 }
 
-
+/////////////////////////////////////////////////
 void Aerodynamic::PublishAeroForces()
 {
     if (dataPtr->sdf->HasElement("topic_name"))
@@ -739,33 +712,33 @@ void Aerodynamic::PublishAeroForces()
         msgs::Vector3d* relative_center_msg4 = new msgs::Vector3d;
         msgs::Vector3d* relative_center_msg5 = new msgs::Vector3d;
 
-        ignition::math::Vector3d vel_vis = dataPtr->pose.Rot().RotateVectorReverse(V->vel_in_lift_drag_plane);
+        ignition::math::Vector3d vel_vis = dataPtr->pose.Rot().RotateVectorReverse(I->vel_in_lift_drag_plane);
         vel_vis.Normalize();
-        vel_vis = 1000 * vel_vis;
+        vel_vis = 5000 * vel_vis;
         msgs::Vector3d* vel_vector_msg = new msgs::Vector3d;
         msgs::Set(vel_vector_msg, vel_vis);
 
-        ignition::math::Vector3d lift_vis = dataPtr->pose.Rot().RotateVectorReverse(V->lift);
+        ignition::math::Vector3d lift_vis = dataPtr->pose.Rot().RotateVectorReverse(I->lift);
         lift_vis.Normalize();
-        lift_vis = 1000 * lift_vis;
+        lift_vis = 5000 * lift_vis;
         msgs::Vector3d* lift_vector_msg = new msgs::Vector3d;
         msgs::Set(lift_vector_msg, lift_vis);
 
-        ignition::math::Vector3d drag_vis = dataPtr->pose.Rot().RotateVectorReverse(V->drag);
+        ignition::math::Vector3d drag_vis = dataPtr->pose.Rot().RotateVectorReverse(I->drag);
         drag_vis.Normalize();
-        drag_vis = 1000 * drag_vis;
+        drag_vis = 5000 * drag_vis;
         msgs::Vector3d* drag_vector_msg = new msgs::Vector3d;
         msgs::Set(drag_vector_msg, drag_vis);
 
-        ignition::math::Vector3d normal_vis = dataPtr->pose.Rot().RotateVectorReverse(V->normal);
+        ignition::math::Vector3d normal_vis = dataPtr->pose.Rot().RotateVectorReverse(I->normal);
         normal_vis.Normalize();
-        normal_vis = 1000 * normal_vis;
+        normal_vis = 5000 * normal_vis;
         msgs::Vector3d* normal_vector_msg = new msgs::Vector3d;
         msgs::Set(normal_vector_msg, normal_vis);
 
-        ignition::math::Vector3d axial_vis = dataPtr->pose.Rot().RotateVectorReverse(V->axial);
+        ignition::math::Vector3d axial_vis = dataPtr->pose.Rot().RotateVectorReverse(I->axial);
         axial_vis.Normalize();
-        axial_vis = 1000 * axial_vis;
+        axial_vis = 5000 * axial_vis;
         msgs::Vector3d* axial_vector_msg = new msgs::Vector3d;
         msgs::Set(axial_vector_msg, axial_vis);
 
@@ -803,7 +776,21 @@ void Aerodynamic::PublishAeroForces()
         vectors_to_visualize.add_vectors()->CopyFrom(axial_msg);
 
         vectors_pub_->Publish(vectors_to_visualize);
-
-
     }
+}
+
+/////////////////////////////////////////////////
+void Aerodynamic::OnCaseChange(const boost::shared_ptr<const gazebo::msgs::Int> &msg)
+{
+    int data = msg->data();
+    if (data >= this->dataPtr->number_of_cases || data < 0)
+    {
+        gzwarn << "There is no case with number " << data << "No case changes!\nTry again with cases in range between 0 and " << (this->dataPtr->number_of_cases - 1) << std::endl;
+    }
+    else
+    {
+        this->ucase = data;
+        ROS_WARN_STREAM("Use " << this->ucase);
+    }
+    
 }

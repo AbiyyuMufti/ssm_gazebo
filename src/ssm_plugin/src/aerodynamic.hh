@@ -46,6 +46,8 @@ namespace gazebo
 
         private: void PublishAeroForces();
 
+        private: void OnCaseChange(const boost::shared_ptr<const gazebo::msgs::Int> &msg);
+
         /// \brief Private data pointer
         private: std::unique_ptr<AerodynamicPrivate> dataPtr;
 
@@ -69,13 +71,16 @@ namespace gazebo
         /// \brief Pointer to publish aerodynamic vectors (forces and moment)
         private: transport::PublisherPtr vectors_pub_;
 
+        /// \brief Pointer to subscribe command to change aerodynamic use case
+        private: transport::SubscriberPtr case_change_sub_;
+
         /// \brief Keep track of publish time
         private: common::Time last_pub_time;
 
         /// \brief Topics namespaces if necesarry
         private: std::string namespace_;
 
-        ///
+        /// \brief Flag of the case that should be used for aerodynamic
         private: int ucase;
 
     };
