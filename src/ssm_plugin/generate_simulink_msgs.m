@@ -8,7 +8,7 @@ targetPath = fullfile(pwd,target_directory);
 sourcePath = fullfile(pwd,msgs_directory);
 
 if exist(targetPath, 'dir')
-    disp('SimulinkMsgs exisiting already, removing ...')
+    disp('SimulinkMsgs exist already, removing ...')
     rmdir(targetPath, 's')
 end
 disp('Create SimulinkMsgs directory')
@@ -35,6 +35,15 @@ gazebogenmsg(targetPath,"GazeboMessageList",msg_togenerate);
 
 addpath(fullfile(targetPath,'install'));
 savepath
+
+plugin_path = './../ssm_simulink_connect';
+
+if exist(plugin_path, 'dir')
+    disp('Plugin_Path exist already, removing ...')
+    rmdir(plugin_path, 's')
+end
+
+
 out = packageGazeboPlugin('./../ssm_simulink_connect',targetPath)
 
 disp("Package createde in ");

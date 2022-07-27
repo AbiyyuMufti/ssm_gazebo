@@ -81,7 +81,7 @@
           <topic_name>booster_visual</topic_name>
           <color>Gazebo/Green</color>
       </plugin>
-    </visual>  
+    </visual>
   </gazebo>
 </xacro:if>
 
@@ -90,20 +90,11 @@
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="FinHolder_4">
-  <material>Gazebo/Blue</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="FinHolder_3">
-  <material>Gazebo/Blue</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
+  <visual>
+    <plugin name="Fin1LiftDragVisual" filename="libMultiplevectorVisual.so">
+      <topic_name vector_size="5">AeroVectorsFin1</topic_name>
+    </plugin>
+  </visual>
 </gazebo>
 
 <gazebo reference="FinHolder_2">
@@ -111,7 +102,37 @@
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
+  <visual>
+    <plugin name="Fin2LiftDragVisual" filename="libMultiplevectorVisual.so">
+      <topic_name vector_size="5">AeroVectorsFin2</topic_name>
+    </plugin>
+  </visual>  
 </gazebo>
+
+<gazebo reference="FinHolder_3">
+  <material>Gazebo/Blue</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+  <visual>
+    <plugin name="Fin3LiftDragVisual" filename="libMultiplevectorVisual.so">
+      <topic_name vector_size="5">AeroVectorsFin3</topic_name>
+    </plugin>
+  </visual>  
+</gazebo>
+
+<gazebo reference="FinHolder_4">
+  <material>Gazebo/Blue</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+  <visual>
+    <plugin name="Fin4LiftDragVisual" filename="libMultiplevectorVisual.so">
+      <topic_name vector_size="5">AeroVectorsFin4</topic_name>
+    </plugin>
+  </visual>  
+</gazebo>
+
 
 <gazebo reference="Wing1_1">
   <material>Gazebo/Orange</material>

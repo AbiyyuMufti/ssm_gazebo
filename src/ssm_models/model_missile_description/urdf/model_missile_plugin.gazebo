@@ -310,7 +310,7 @@
         <upward>0 0 1</upward>
         <forward>1 0 0</forward>
         <robotNamespace></robotNamespace>
-        <topic_name>AeroVectors</topic_name>
+        <topic_name>AeroVectorsFin1</topic_name>
         <xacro:fins_aero />
     </plugin>
 
@@ -325,7 +325,7 @@
         <upward>0 0 1</upward>
         <forward>1 0 0</forward>
         <robotNamespace></robotNamespace>
-        <topic_name>AeroVectors</topic_name>
+        <topic_name>AeroVectorsFin2</topic_name>
         <xacro:fins_aero />
     </plugin>
     
@@ -340,7 +340,7 @@
         <upward>0 0 1</upward>
         <forward>1 0 0</forward>
         <robotNamespace></robotNamespace>
-        <topic_name>AeroVectors</topic_name>
+        <topic_name>AeroVectorsFin3</topic_name>
         <xacro:fins_aero />
     </plugin>
 
@@ -355,7 +355,7 @@
         <upward>0 0 1</upward>
         <forward>1 0 0</forward>
         <robotNamespace></robotNamespace>
-        <topic_name>AeroVectors</topic_name>
+        <topic_name>AeroVectorsFin4</topic_name>
         <xacro:fins_aero />
     </plugin>
 
