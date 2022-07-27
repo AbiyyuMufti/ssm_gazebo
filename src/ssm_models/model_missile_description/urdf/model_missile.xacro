@@ -398,100 +398,112 @@
   </joint>
 </xacro:if>
 
-<joint name="fins_rev1" type="revolute">
+<!-- <joint name="fins_rev1" type="revolute"> -->
+<joint name="fins_rev1" type="fixed">
   <origin xyz="-1.700844 0.127279 0.127279" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="FinHolder_1"/>
-  <axis xyz="-0.0 0.707107 0.707107"/>
-  <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/>
+  <!-- <axis xyz="-0.0 0.707107 0.707107"/> -->
+  <!-- <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/> -->
 </joint>
 
-<joint name="fins_rev4" type="revolute">
-  <origin xyz="-1.700844 -0.127279 0.127279" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="FinHolder_4"/>
-  <axis xyz="-0.0 -0.707107 0.707107"/>
-  <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/>
-</joint>
-
-<joint name="fins_rev3" type="revolute">
-  <origin xyz="-1.700844 -0.127279 -0.127279" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="FinHolder_3"/>
-  <axis xyz="-0.0 -0.707107 -0.707107"/>
-  <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/>
-</joint>
-
-<joint name="fins_rev2" type="revolute">
+<!-- <joint name="fins_rev2" type="revolute"> -->
+<joint name="fins_rev2" type="fixed">
   <origin xyz="-1.700844 0.127279 -0.127279" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="FinHolder_2"/>
-  <axis xyz="-0.0 0.707107 -0.707107"/>
-  <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/>
+  <!-- <axis xyz="-0.0 0.707107 -0.707107"/> -->
+  <!-- <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/> -->
 </joint>
 
-<joint name="wings_fold1" type="revolute">
+<!-- <joint name="fins_rev3" type="revolute"> -->
+<joint name="fins_rev3" type="fixed">
+  <origin xyz="-1.700844 -0.127279 -0.127279" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="FinHolder_3"/>
+  <!-- <axis xyz="-0.0 -0.707107 -0.707107"/> -->
+  <!-- <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/> -->
+</joint>
+
+<!-- <joint name="fins_rev4" type="revolute"> -->
+<joint name="fins_rev4" type="fixed">
+  <origin xyz="-1.700844 -0.127279 0.127279" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="FinHolder_4"/>
+  <!-- <axis xyz="-0.0 -0.707107 0.707107"/> -->
+  <!-- <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/> -->
+</joint>
+
+<!-- <joint name="wings_fold1" type="revolute"> -->
+<joint name="wings_fold1" type="fixed">
   <origin xyz="-0.380856 0.163355 0.163355" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="Wing1_1"/>
-  <axis xyz="1.0 -0.0 -0.0"/>
-  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+  <!-- <axis xyz="1.0 -0.0 -0.0"/> -->
+  <!-- <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/> -->
 </joint>
 
-<joint name="wings_fold2" type="revolute">
+<!-- <joint name="wings_fold2" type="revolute"> -->
+<joint name="wings_fold2" type="fixed">
   <origin xyz="-0.380856 0.163355 -0.163355" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="Wing1_2"/>
-  <axis xyz="1.0 0.0 -0.0"/>
-  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+  <!-- <axis xyz="1.0 0.0 -0.0"/> -->
+  <!-- <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/> -->
 </joint>
 
-<joint name="wings_fold3" type="revolute">
+<!-- <joint name="wings_fold3" type="revolute"> -->
+<joint name="wings_fold3" type="fixed">
   <origin xyz="-0.380856 -0.163355 -0.163355" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="Wing1_3"/>
-  <axis xyz="1.0 0.0 -0.0"/>
-  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+  <!-- <axis xyz="1.0 0.0 -0.0"/> -->
+  <!-- <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/> -->
 </joint>
 
-<joint name="wings_fold4" type="revolute">
+<!-- <joint name="wings_fold4" type="revolute"> -->
+<joint name="wings_fold4" type="fixed">
   <origin xyz="-0.380856 -0.163355 0.163355" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="Wing1_4"/>
-  <axis xyz="1.0 -0.0 -0.0"/>
-  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+  <!-- <axis xyz="1.0 -0.0 -0.0"/> -->
+  <!-- <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/> -->
 </joint>
 
-<joint name="fin_fold1" type="revolute">
+<!-- <joint name="fin_fold1" type="revolute"> -->
+<joint name="fin_fold1" type="fixed">
   <origin xyz="0.0 0.038891 0.038891" rpy="0 0 0"/>
   <parent link="FinHolder_1"/>
   <child link="Fin_1"/>
-  <axis xyz="1.0 0.0 0.0"/>
-  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+  <!-- <axis xyz="1.0 0.0 0.0"/> -->
+  <!-- <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/> -->
 </joint>
 
-<joint name="fin_fold2" type="revolute">
+<!-- <joint name="fin_fold2" type="revolute"> -->
+<joint name="fin_fold2" type="fixed">
   <origin xyz="0.0 0.038879 -0.038903" rpy="0 0 0"/>
   <parent link="FinHolder_2"/>
   <child link="Fin_2"/>
-  <axis xyz="1.0 0.0 -0.0"/>
-  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+  <!-- <axis xyz="1.0 0.0 -0.0"/> -->
+  <!-- <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/> -->
 </joint>
 
-<joint name="fin_fold3" type="revolute">
+<!-- <joint name="fin_fold3" type="revolute"> -->
+<joint name="fin_fold3" type="fixed">
   <origin xyz="0.0 -0.038891 -0.038891" rpy="0 0 0"/>
   <parent link="FinHolder_3"/>
   <child link="Fin_3"/>
-  <axis xyz="1.0 -0.0 -0.0"/>
-  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+  <!-- <axis xyz="1.0 -0.0 -0.0"/> -->
+  <!-- <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/> -->
 </joint>
 
-<joint name="fin_fold4" type="revolute">
+<!-- <joint name="fin_fold4" type="revolute"> -->
+<joint name="fin_fold4" type="fixed">
   <origin xyz="0.0 -0.038891 0.038891" rpy="0 0 0"/>
   <parent link="FinHolder_4"/>
   <child link="Fin_4"/>
-  <axis xyz="1.0 -0.0 0.0"/>
-  <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/>
+  <!-- <axis xyz="1.0 -0.0 0.0"/> -->
+  <!-- <limit upper="2.146755" lower="0.0" effort="100" velocity="100"/> -->
 </joint>
 
 <xacro:if value="${use_holder}">

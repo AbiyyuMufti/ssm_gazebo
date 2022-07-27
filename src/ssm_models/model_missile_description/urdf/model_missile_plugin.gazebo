@@ -305,9 +305,9 @@
         <lref>0.044</lref>
         <air_density>1.2041</air_density>
         <link_name>FinHolder_1</link_name>
-        <control_joint_name>fins_rev1</control_joint_name>
-        <radial_symmetry>true</radial_symmetry>
-        <upward>0 0 1</upward>
+        <!-- <control_joint_name>fins_rev1</control_joint_name> -->
+        <!-- <radial_symmetry>true</radial_symmetry> -->
+        <upward>0 -1 1</upward>
         <forward>1 0 0</forward>
         <robotNamespace></robotNamespace>
         <topic_name>AeroVectorsFin1</topic_name>
@@ -315,14 +315,14 @@
     </plugin>
 
     <plugin name="Fin2Aerodynamic" filename="libAerodynamic.so">
-        <cp>0.0 0.1 0.1</cp>
+        <cp>0.0 0.1 -0.1</cp>
         <sref>0.044</sref>
         <lref>0.044</lref>
         <air_density>1.2041</air_density>
         <link_name>FinHolder_2</link_name>
-        <control_joint_name>fins_rev2</control_joint_name>
-        <radial_symmetry>true</radial_symmetry>
-        <upward>0 0 1</upward>
+        <!-- <control_joint_name>fins_rev2</control_joint_name> -->
+        <!-- <radial_symmetry>true</radial_symmetry> -->
+        <upward>0 1 1</upward>
         <forward>1 0 0</forward>
         <robotNamespace></robotNamespace>
         <topic_name>AeroVectorsFin2</topic_name>
@@ -330,14 +330,14 @@
     </plugin>
     
     <plugin name="Fin3Aerodynamic" filename="libAerodynamic.so">
-        <cp>0.0 0.1 0.1</cp>
+        <cp>0.0 -0.1 -0.1</cp>
         <sref>0.044</sref>
         <lref>0.044</lref>
         <air_density>1.2041</air_density>
         <link_name>FinHolder_3</link_name>
-        <control_joint_name>fins_rev3</control_joint_name>
-        <radial_symmetry>true</radial_symmetry>
-        <upward>0 0 1</upward>
+        <!-- <control_joint_name>fins_rev3</control_joint_name> -->
+        <!-- <radial_symmetry>true</radial_symmetry> -->
+        <upward>0 -1 1</upward>
         <forward>1 0 0</forward>
         <robotNamespace></robotNamespace>
         <topic_name>AeroVectorsFin3</topic_name>
@@ -345,14 +345,14 @@
     </plugin>
 
     <plugin name="Fin4Aerodynamic" filename="libAerodynamic.so">
-        <cp>0.0 0.1 0.1</cp>
+        <cp>0.0 -0.1 0.1</cp>
         <sref>0.044</sref>
         <lref>0.044</lref>
         <air_density>1.2041</air_density>
         <link_name>FinHolder_4</link_name>
-        <control_joint_name>fins_rev4</control_joint_name>
-        <radial_symmetry>true</radial_symmetry>
-        <upward>0 0 1</upward>
+        <!-- <control_joint_name>fins_rev4</control_joint_name> -->
+        <!-- <radial_symmetry>true</radial_symmetry> -->
+        <upward>0 1 1</upward>
         <forward>1 0 0</forward>
         <robotNamespace></robotNamespace>
         <topic_name>AeroVectorsFin4</topic_name>

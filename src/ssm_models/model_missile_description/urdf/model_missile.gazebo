@@ -268,4 +268,21 @@
   </gazebo>
 </xacro:if>
 
+
+<gazebo reference='fins_rev1'>
+  <preserveFixedJoint>true</preserveFixedJoint>
+</gazebo>
+
+<gazebo reference='fins_rev2'>
+  <preserveFixedJoint>true</preserveFixedJoint>
+</gazebo>
+
+<gazebo reference='fins_rev3'>
+  <preserveFixedJoint>true</preserveFixedJoint>
+</gazebo>
+
+<gazebo reference='fins_rev4'>
+  <preserveFixedJoint>true</preserveFixedJoint>
+</gazebo>
+
 </robot>
