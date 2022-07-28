@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="model_missile" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
-<!-- <transmission name="fins_rev1_tran">
+<transmission name="fins_rev1_tran">
   <type>transmission_interface/SimpleTransmission</type>
   <joint name="fins_rev1">
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
@@ -43,7 +43,7 @@
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
-</transmission> -->
+</transmission>
 
 <!-- <transmission name="wings_fold1_tran">
   <type>transmission_interface/SimpleTransmission</type>

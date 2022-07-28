@@ -398,40 +398,40 @@
   </joint>
 </xacro:if>
 
-<!-- <joint name="fins_rev1" type="revolute"> -->
-<joint name="fins_rev1" type="fixed">
+<joint name="fins_rev1" type="revolute">
+<!-- <joint name="fins_rev1" type="fixed"> -->
   <origin xyz="-1.700844 0.127279 0.127279" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="FinHolder_1"/>
-  <!-- <axis xyz="-0.0 0.707107 0.707107"/> -->
-  <!-- <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/> -->
+  <axis xyz="-0.0 0.707107 0.707107"/>
+  <limit upper="0.349066" lower="-0.349066" effort="1000" velocity="100"/>
 </joint>
 
-<!-- <joint name="fins_rev2" type="revolute"> -->
-<joint name="fins_rev2" type="fixed">
+<joint name="fins_rev2" type="revolute">
+<!-- <joint name="fins_rev2" type="fixed"> -->
   <origin xyz="-1.700844 0.127279 -0.127279" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="FinHolder_2"/>
-  <!-- <axis xyz="-0.0 0.707107 -0.707107"/> -->
-  <!-- <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/> -->
+  <axis xyz="-0.0 0.707107 -0.707107"/>
+  <limit upper="0.349066" lower="-0.349066" effort="1000" velocity="100"/>
 </joint>
 
-<!-- <joint name="fins_rev3" type="revolute"> -->
-<joint name="fins_rev3" type="fixed">
+<joint name="fins_rev3" type="revolute">
+<!-- <joint name="fins_rev3" type="fixed"> -->
   <origin xyz="-1.700844 -0.127279 -0.127279" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="FinHolder_3"/>
-  <!-- <axis xyz="-0.0 -0.707107 -0.707107"/> -->
-  <!-- <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/> -->
+  <axis xyz="-0.0 -0.707107 -0.707107"/>
+  <limit upper="0.349066" lower="-0.349066" effort="1000" velocity="100"/>
 </joint>
 
-<!-- <joint name="fins_rev4" type="revolute"> -->
-<joint name="fins_rev4" type="fixed">
+<joint name="fins_rev4" type="revolute">
+<!-- <joint name="fins_rev4" type="fixed"> -->
   <origin xyz="-1.700844 -0.127279 0.127279" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="FinHolder_4"/>
-  <!-- <axis xyz="-0.0 -0.707107 0.707107"/> -->
-  <!-- <limit upper="0.349066" lower="-0.349066" effort="100" velocity="100"/> -->
+  <axis xyz="-0.0 -0.707107 0.707107"/>
+  <limit upper="0.349066" lower="-0.349066" effort="1000" velocity="100"/>
 </joint>
 
 <!-- <joint name="wings_fold1" type="revolute"> -->

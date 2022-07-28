@@ -11,7 +11,7 @@
 
 namespace gazebo
 {
-    enum axis_type{Body, Wind};
+    enum axis_type{Body, Wind, Both};
 
     class AerodynamicLUT
     {
@@ -43,11 +43,12 @@ namespace gazebo
 
     struct AerodynamicCoefficients
     {
-        double cn;
-        double cm;
-        double ca;
-        double cl;
-        double cd;
+        double cn = 0;
+        double cm = 0;
+        double ca = 0;
+        double cl = 0;
+        double cd = 0;
+        double rate_cl = 0;
     };
 
 

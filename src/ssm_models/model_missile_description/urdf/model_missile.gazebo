@@ -269,7 +269,7 @@
 </xacro:if>
 
 
-<gazebo reference='fins_rev1'>
+<!-- <gazebo reference='fins_rev1'>
   <preserveFixedJoint>true</preserveFixedJoint>
 </gazebo>
 
@@ -283,6 +283,6 @@
 
 <gazebo reference='fins_rev4'>
   <preserveFixedJoint>true</preserveFixedJoint>
-</gazebo>
+</gazebo> -->
 
 </robot>

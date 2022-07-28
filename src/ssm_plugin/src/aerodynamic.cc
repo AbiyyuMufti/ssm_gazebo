@@ -35,6 +35,7 @@ Aerodynamic::Aerodynamic() : dataPtr(new AerodynamicPrivate), V(new AerodynamicV
     dataPtr->alpha = 0.0;
     dataPtr->sweep = 0.0;
     dataPtr->radialSymmetry = false;
+    dataPtr->controlAngle = 0;
 
     this->ucase = 0;
 }
@@ -260,29 +261,29 @@ void Aerodynamic::OnUpdate()
     {
         this->last_pub_time = current_time;
         this->PublishAeroForces();
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   sweep: " << dataPtr->sweep);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cossweep\t:" << sqrt(1.0 - sin(dataPtr->sweep) * sin(dataPtr->sweep)));
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  ctrlAng: " << dataPtr->controlAngle);
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " velocity: " << V->velocity.Length());
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "    alpha: " << dataPtr->alpha);
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     mach: " << dataPtr->mach);
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     sweep: " << dataPtr->sweep << "(Rad) -- " << dataPtr->sweep * 180/M_PI << "(Deg)");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   ctrlAng: " << dataPtr->controlAngle*M_PI/180 << "(Rad) -- " << dataPtr->controlAngle << "(Deg)");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " ClDuectrl: " << C->rate_cl);
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  velocity: " << V->velocity.Length());
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     alpha: " << dataPtr->alpha*M_PI/180 << "(Rad) -- " << dataPtr->alpha << "(Deg)");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "      mach: " << dataPtr->mach);
         // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " dynamic_pressure\t" << dataPtr->q);
         // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cn_val\t: " << C->cn);
         // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " ca_val\t: " << C->ca);
         // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cl_val\t: " << C->cl);
         // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cd_val\t: " << C->cd);
         // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cm_val\t: " << C->cm);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " lift\t: " << V->lift.Length());
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " drag\t: " << V->drag.Length());
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " normal\t: " << V->normal.Length());
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " axial\t: " << V->axial.Length());
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " moment\t: " << V->moment.Length());
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     lift: " << V->lift.Length() << " <" << V->lift << ">");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     drag: " << V->drag.Length() << " <" << V->drag << ">");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   normal: " << V->normal.Length() << " <" << V->normal << ">");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "    axial: " << V->axial.Length() << " <" << V->axial << ">");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   moment: " << V->moment.Length() << " <" << V->moment << ">");
         // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " body bose: " << dataPtr->pose);
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   lift: " << I->lift);
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   drag: " << I->drag);
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " normal: " << I->normal);
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  axial: " << I->axial);    
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " moment: " << I->moment);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "    lift: " << I->lift);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "    drag: " << I->drag);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  normal: " << I->normal);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   axial: " << I->axial);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  moment: " << I->moment);
         ROS_WARN("\n");      
     }
 }
@@ -331,9 +332,13 @@ void Aerodynamic::ParseCoefficientTable()
                 aero_axis_type->Get<std::string>(txt);
                 if(txt.compare("body")==0)
                     coef.a_type = Body;
-                else
+                else if(txt.compare("wind")==0)
                 {
                     coef.a_type = Wind;
+                } 
+                else
+                {
+                    coef.a_type = Both;
                 }
             }
             else
@@ -430,6 +435,57 @@ void Aerodynamic::ParseCoefficientTable()
                             gzerr << "Please specified list of mach number under tag <cd_table> </cd_table>!";
                         }
                         coef.cd_table.push_back(cur_cd);
+                    }
+
+                    if (coef.a_type == Both)
+                    {
+                        // store cl_table
+                        std::vector<double> cur_cl;
+                        if (machElemPtr->HasElement("cl_table"))
+                        {
+                            store_table(machElemPtr, "cl_table", cur_cl);
+                        }
+                        else
+                        {
+                            gzerr << "Please specified list of mach number under tag <cl_table> </cl_table>!";
+                        }
+                        coef.cl_table.push_back(cur_cl);
+
+                        // store cd_table
+                        std::vector<double> cur_cd;
+                        if (machElemPtr->HasElement("cd_table"))
+                        {
+                            store_table(machElemPtr, "cd_table", cur_cd);
+                        }
+                        else
+                        {
+                            gzerr << "Please specified list of mach number under tag <cd_table> </cd_table>!";
+                        }
+                        coef.cd_table.push_back(cur_cd);
+
+                        // store cn_table
+                        std::vector<double> cur_cn;
+                        if (machElemPtr->HasElement("cn_table"))
+                        {
+                            store_table(machElemPtr, "cn_table", cur_cn);
+                        }
+                        else
+                        {
+                            gzerr << "Please specified list of mach number under tag <cn_table> </cn_table>!";
+                        }
+                        coef.cn_table.push_back(cur_cn);
+
+                        // store ca_table
+                        std::vector<double> cur_ca;
+                        if (machElemPtr->HasElement("ca_table"))
+                        {
+                            store_table(machElemPtr, "ca_table", cur_ca);
+                        }
+                        else
+                        {
+                            gzerr << "Please specified list of mach number under tag <ca_table> </ca_table>!";
+                        }
+                        coef.ca_table.push_back(cur_ca);                        
                     }
 
                     machElemPtr = machElemPtr->GetNextElement("mach");
@@ -550,9 +606,7 @@ void Aerodynamic::CalculateAerodynamicAngles()
     // truncate sweep to within +/-90 deg
     while (fabs(dataPtr->sweep) > 0.5 * M_PI)
         dataPtr->sweep = dataPtr->sweep > 0 ? dataPtr->sweep - M_PI : dataPtr->sweep + M_PI;
-    dataPtr->sweep *= (180 / M_PI);
-    // get cos from trig identity
-    double cosSweepAngle = sqrt(1.0 - sin(dataPtr->sweep) * sin(dataPtr->sweep));
+
 
     // compute angle of attack
     double cosAlpha = ignition::math::clamp(I->lift.Dot(I->normal), minRatio, maxRatio);
@@ -563,7 +617,8 @@ void Aerodynamic::CalculateAerodynamicAngles()
     // normalize to within +/-90 deg
     while (fabs(dataPtr->alpha) > 0.5 * M_PI)
         dataPtr->alpha = dataPtr->alpha > 0 ? dataPtr->alpha - M_PI : dataPtr->alpha + M_PI;
-
+    
+    // alpha table for look up using degree
     dataPtr->alpha *= (180 / M_PI);
 
 }
@@ -637,7 +692,7 @@ void Aerodynamic::CalculateAerodynamicCoefficients()
         C->cn = (lower.cn == upper.cn) ? lower.cn : linear_function(dataPtr->mach, m1, m2, lower.cn, upper.cn);
         C->ca = (lower.ca == upper.ca) ? lower.ca : linear_function(dataPtr->mach, m1, m2, lower.ca, upper.ca);
     }
-    else
+    else if (cTable[ucase].a_type == Wind)
     {
         lower.cl = linear_function(dataPtr->alpha, a1, a2, cTable[ucase].cl_table[m_lower][a_lower], cTable[ucase].cl_table[m_lower][a_upper]);
         lower.cd = linear_function(dataPtr->alpha, a1, a2, cTable[ucase].cd_table[m_lower][a_lower], cTable[ucase].cd_table[m_lower][a_upper]);
@@ -645,6 +700,23 @@ void Aerodynamic::CalculateAerodynamicCoefficients()
         upper.cd = linear_function(dataPtr->alpha, a1, a2, cTable[ucase].cd_table[m_upper][a_lower], cTable[ucase].cd_table[m_upper][a_upper]);
         C->cl = (lower.cl == upper.cl) ? lower.cl : linear_function(dataPtr->mach, m1, m2, lower.cl, upper.cl);
         C->cd = (lower.cd == upper.cd) ? lower.cd : linear_function(dataPtr->mach, m1, m2, lower.cd, upper.cd);
+    }
+    else 
+    {
+        lower.cn = linear_function(dataPtr->alpha, a1, a2, cTable[ucase].cn_table[m_lower][a_lower], cTable[ucase].cn_table[m_lower][a_upper]);
+        lower.ca = linear_function(dataPtr->alpha, a1, a2, cTable[ucase].ca_table[m_lower][a_lower], cTable[ucase].ca_table[m_lower][a_upper]);
+        upper.cn = linear_function(dataPtr->alpha, a1, a2, cTable[ucase].cn_table[m_upper][a_lower], cTable[ucase].cn_table[m_upper][a_upper]);
+        upper.ca = linear_function(dataPtr->alpha, a1, a2, cTable[ucase].ca_table[m_upper][a_lower], cTable[ucase].ca_table[m_upper][a_upper]);
+
+        C->cn = (lower.cn == upper.cn) ? lower.cn : linear_function(dataPtr->mach, m1, m2, lower.cn, upper.cn);
+        C->ca = (lower.ca == upper.ca) ? lower.ca : linear_function(dataPtr->mach, m1, m2, lower.ca, upper.ca);
+
+        lower.cl = linear_function(dataPtr->alpha, a1, a2, cTable[ucase].cl_table[m_lower][a_lower], cTable[ucase].cl_table[m_lower][a_upper]);
+        lower.cd = linear_function(dataPtr->alpha, a1, a2, cTable[ucase].cd_table[m_lower][a_lower], cTable[ucase].cd_table[m_lower][a_upper]);
+        upper.cl = linear_function(dataPtr->alpha, a1, a2, cTable[ucase].cl_table[m_upper][a_lower], cTable[ucase].cl_table[m_upper][a_upper]);
+        upper.cd = linear_function(dataPtr->alpha, a1, a2, cTable[ucase].cd_table[m_upper][a_lower], cTable[ucase].cd_table[m_upper][a_upper]);
+        C->cl = (lower.cl == upper.cl) ? lower.cl : linear_function(dataPtr->mach, m1, m2, lower.cl, upper.cl);
+        C->cd = (lower.cd == upper.cd) ? lower.cd : linear_function(dataPtr->mach, m1, m2, lower.cd, upper.cd);        
     }
 
     // Compensate with the sweep angle if there are any
@@ -654,6 +726,7 @@ void Aerodynamic::CalculateAerodynamicCoefficients()
     C->ca *= cossweep;
     C->cl *= cossweep;
     C->cd *= cossweep;
+    // dataPtr->sweep *= (180 / M_PI);
 
     if (this->dataPtr->controlJoint)
     {
@@ -661,10 +734,11 @@ void Aerodynamic::CalculateAerodynamicCoefficients()
 
         int rate_size = cTable[ucase].control_joint_rate.size();
 
-        double rate_cl = (m_upper >= rate_size) ? cTable[ucase].control_joint_rate[rate_size - 1] 
+        C->rate_cl = (m_upper >= rate_size) ? cTable[ucase].control_joint_rate[rate_size - 1] 
             : linear_function(dataPtr->mach, m1, m2, cTable[ucase].control_joint_rate[m_lower], cTable[ucase].control_joint_rate[m_upper]);
 
-        // C->cl += this->dataPtr->controlAngle * rate_cl;
+        C->cl += this->dataPtr->controlAngle * C->rate_cl;
+        C->cm += this->dataPtr->controlAngle * C->rate_cl;
     }
     
 }
@@ -684,12 +758,24 @@ void Aerodynamic::CalculateAerodynamicForces()
         V->normal.Correct();
         V->axial.Correct();
     }
-    else
+    else if (cTable[ucase].a_type == Wind)
     {
         V->lift = I->lift * (C->cl * dataPtr->q * dataPtr->sref);
         V->drag = I->drag * (C->cd * dataPtr->q * dataPtr->sref);
         V->lift.Correct();
         V->drag.Correct();
+    }
+    else
+    {
+        V->normal = I->normal * (C->cn * dataPtr->q * dataPtr->sref);
+        V->axial = I->axial * (C->ca * dataPtr->q * dataPtr->sref);
+        V->normal.Correct();
+        V->axial.Correct();
+
+        V->lift = I->lift * (C->cl * dataPtr->q * dataPtr->sref);
+        V->drag = I->drag * (C->cd * dataPtr->q * dataPtr->sref);
+        V->lift.Correct();
+        V->drag.Correct();        
     }
     V->moment = I->moment * (C->cm * dataPtr->q * dataPtr->sref * dataPtr->lref);
     V->moment.Correct();
