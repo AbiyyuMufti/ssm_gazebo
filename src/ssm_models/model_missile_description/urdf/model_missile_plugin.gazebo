@@ -2,7 +2,7 @@
 <robot name="model_missile" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
 <gazebo>
-    <plugin name="set_joint_position" filename="libInitialPosition.so">
+    <!-- <plugin name="set_joint_position" filename="libInitialPosition.so">
         <joint name="fin_fold1">${123/180*pi}</joint>
         <joint name="fin_fold2">${123/180*pi}</joint>
         <joint name="fin_fold3">${123/180*pi}</joint>
@@ -11,8 +11,14 @@
         <joint name="wings_fold2">${123/180*pi}</joint>
         <joint name="wings_fold3">${123/180*pi}</joint>
         <joint name="wings_fold4">${123/180*pi}</joint>
-    </plugin>
+    </plugin> -->
     
+    <plugin name="DynamicState" filename="libPosePublisher.so">
+        <topic_name>DynamicState</topic_name>
+        <link_name>base_link</link_name>
+        <robotNamespace></robotNamespace>
+    </plugin>
+
     <plugin name="model_missile_controller" filename="libgazebo_ros_control.so">
         <robotNamespace>model_missile_controller</robotNamespace>
         <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
@@ -258,7 +264,8 @@
         <aerodynamics case="with_booster" axis_type="body">
             <mach_table>0.2 0.4 0.5 0.6 0.7 0.75 0.8 0.93</mach_table>
             <alpha_table>.00, 4.00, 8.00, 12.00, 16.00, 20.00, 24.00, 28.00</alpha_table>
-            <control_joint_rate>.1024, .1092, .1167, .1272, .1434, .1552</control_joint_rate>
+            <!-- <control_joint_rate>.1024, .1092, .1167, .1272, .1434, .1552</control_joint_rate> -->
+            <control_joint_rate>0, 0, 0, 0, 0, 0</control_joint_rate>
 
             <mach nr="0.2">
                 <cn_table>.0000, .2863, .5432, .8305, .9726, 1.0564, 1.0950, 1.1860</cn_table>
@@ -316,7 +323,7 @@
         <lref>0.27</lref>
         <air_density>1.2041</air_density>
         <link_name>FinHolder_1</link_name>
-        <control_joint_name>fins_rev1</control_joint_name>
+        <control_joint_name inverse="true">fins_rev1</control_joint_name>
         <!-- <radial_symmetry>true</radial_symmetry> -->
         <upward>0 -1 1</upward>
         <forward>1 0 0</forward>
@@ -331,7 +338,7 @@
         <lref>0.27</lref>
         <air_density>1.2041</air_density>
         <link_name>FinHolder_2</link_name>
-        <control_joint_name>fins_rev2</control_joint_name>
+        <control_joint_name inverse="true">fins_rev2</control_joint_name>
         <!-- <radial_symmetry>true</radial_symmetry> -->
         <upward>0 1 1</upward>
         <forward>1 0 0</forward>

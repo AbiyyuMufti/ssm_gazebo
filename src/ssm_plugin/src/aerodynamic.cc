@@ -122,12 +122,29 @@ void Aerodynamic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
     if (_sdf->HasElement("control_joint_name"))
     {
-        std::string controlJointName = _sdf->Get<std::string>("control_joint_name");
+        auto ctrJointElem = _sdf->GetElement("control_joint_name");
+        std::string controlJointName;
+        ctrJointElem->GetValue()->Get<std::string>(controlJointName);
+
         this->dataPtr->controlJoint = this->dataPtr->model->GetJoint(controlJointName);
         if (!this->dataPtr->controlJoint)
         {
             gzerr << "Joint with name[" << controlJointName << "] does not exist.\n";
         }
+
+        if (ctrJointElem->HasAttribute("inverse")){
+            auto inversVal = ctrJointElem->GetAttribute("inverse");
+            bool val;
+            inversVal->Get<bool>(val);
+            this->dataPtr->inverse_joint_value = val;
+        } 
+        else
+        {
+            this->dataPtr->inverse_joint_value = 0;
+        }
+
+        ROS_WARN_STREAM("Joint: " << controlJointName << " inverse " << dataPtr->inverse_joint_value);
+
     }
 
     if (_sdf->HasElement("robotNamespace"))
@@ -216,76 +233,6 @@ void Aerodynamic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     ROS_INFO_STREAM("Loading Aero plugin for link " << this->dataPtr->link->GetName());
     
     gzlog << "Aerodynamic plugin loaded for link " << this->dataPtr->link->GetName() << std::endl;
-}
-
-/////////////////////////////////////////////////
-void Aerodynamic::OnUpdate()
-{
-    GZ_ASSERT(dataPtr->link, "Link was NULL");
-
-    // get update time different
-    const common::Time current_time = dataPtr->world->SimTime();
-    const double dt = (current_time - this->last_pub_time).Double();
-
-    // if Aerodynamic calculation gives false, aerodynamic will not be calculated
-    if(!this->CalculateAerodynamicVectors())
-    {
-        return;
-    }
-
-    this->CalculateAerodynamicAngles();
-
-    this->CalculateAerodynamicCoefficients();
-
-    this->CalculateAerodynamicForces();
-
-    // Apply force
-    if (cTable[ucase].a_type == Body)
-    {
-        dataPtr->link->AddForceAtRelativePosition(V->normal, dataPtr->cp);
-        dataPtr->link->AddForceAtRelativePosition(V->axial, dataPtr->cp);
-    }
-    else
-    {
-        dataPtr->link->AddForceAtRelativePosition(V->lift, dataPtr->cp);
-        dataPtr->link->AddForceAtRelativePosition(V->drag, dataPtr->cp);
-    }
-
-    dataPtr->link->AddTorque(V->moment);
-
-
-    // // Publish force and center of pressure for potential visual plugin.
-    // // - dt is used to control the rate at which the force is published
-    // // - it only gets published if 'topic_name' is defined in the sdf
-    if (dt > 1.0 / 10)
-    {
-        this->last_pub_time = current_time;
-        this->PublishAeroForces();
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     sweep: " << dataPtr->sweep << "(Rad) -- " << dataPtr->sweep * 180/M_PI << "(Deg)");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   ctrlAng: " << dataPtr->controlAngle*M_PI/180 << "(Rad) -- " << dataPtr->controlAngle << "(Deg)");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " ClDuectrl: " << C->rate_cl);
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  velocity: " << V->velocity.Length());
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     alpha: " << dataPtr->alpha*M_PI/180 << "(Rad) -- " << dataPtr->alpha << "(Deg)");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "      mach: " << dataPtr->mach);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " dynamic_pressure\t" << dataPtr->q);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cn_val\t: " << C->cn);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " ca_val\t: " << C->ca);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cl_val\t: " << C->cl);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cd_val\t: " << C->cd);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cm_val\t: " << C->cm);
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     lift: " << V->lift.Length() << " <" << V->lift << ">");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     drag: " << V->drag.Length() << " <" << V->drag << ">");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   normal: " << V->normal.Length() << " <" << V->normal << ">");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "    axial: " << V->axial.Length() << " <" << V->axial << ">");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   moment: " << V->moment.Length() << " <" << V->moment << ">");
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " body bose: " << dataPtr->pose);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "    lift: " << I->lift);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "    drag: " << I->drag);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  normal: " << I->normal);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   axial: " << I->axial);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  moment: " << I->moment);
-        ROS_WARN("\n");      
-    }
 }
 
 /////////////////////////////////////////////////
@@ -529,6 +476,78 @@ void Aerodynamic::ParseCoefficientTable()
     }
 }
 
+
+/////////////////////////////////////////////////
+void Aerodynamic::OnUpdate()
+{
+    GZ_ASSERT(dataPtr->link, "Link was NULL");
+
+    // get update time different
+    const common::Time current_time = dataPtr->world->SimTime();
+    const double dt = (current_time - this->last_pub_time).Double();
+
+    // if Aerodynamic calculation gives false, aerodynamic will not be calculated
+    if(!this->CalculateAerodynamicVectors())
+    {
+        return;
+    }
+
+    this->CalculateAerodynamicAngles();
+
+    this->CalculateAerodynamicCoefficients();
+
+    this->CalculateAerodynamicForces();
+
+    // Apply force
+    if (cTable[ucase].a_type == Body)
+    {
+        dataPtr->link->AddForceAtRelativePosition(V->normal, dataPtr->cp);
+        dataPtr->link->AddForceAtRelativePosition(V->axial, dataPtr->cp);
+    }
+    else
+    {
+        dataPtr->link->AddForceAtRelativePosition(V->lift, dataPtr->cp);
+        dataPtr->link->AddForceAtRelativePosition(V->drag, dataPtr->cp);
+    }
+
+    dataPtr->link->AddTorque(V->moment);
+
+
+    // // Publish force and center of pressure for potential visual plugin.
+    // // - dt is used to control the rate at which the force is published
+    // // - it only gets published if 'topic_name' is defined in the sdf
+    if (dt > 1.0 / 10)
+    {
+        this->last_pub_time = current_time;
+        this->PublishAeroForces();
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     sweep: " << dataPtr->sweep << "(Rad) -- " << dataPtr->sweep * 180/M_PI << "(Deg)");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   ctrlAng: " << dataPtr->controlAngle*M_PI/180 << "(Rad) -- " << dataPtr->controlAngle << "(Deg)");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " ClDuectrl: " << C->rate_cl);
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  velocity: " << V->velocity.Length());
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     alpha: " << dataPtr->alpha*M_PI/180 << "(Rad) -- " << dataPtr->alpha << "(Deg)");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "      mach: " << dataPtr->mach);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " dynamic_pressure\t" << dataPtr->q);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cn_val\t: " << C->cn);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " ca_val\t: " << C->ca);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cl_val\t: " << C->cl);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cd_val\t: " << C->cd);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cm_val\t: " << C->cm);
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     lift: " << V->lift.Length() << " <" << V->lift << ">");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     drag: " << V->drag.Length() << " <" << V->drag << ">");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   normal: " << V->normal.Length() << " <" << V->normal << ">");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "    axial: " << V->axial.Length() << " <" << V->axial << ">");
+        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   moment: " << V->moment.Length() << " <" << V->moment << ">");
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " body bose: " << dataPtr->pose);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "    lift: " << I->lift);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "    drag: " << I->drag);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  normal: " << I->normal);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   axial: " << I->axial);
+        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  moment: " << I->moment);
+        ROS_WARN("\n");      
+    }
+}
+
+
 /////////////////////////////////////////////////
 bool Aerodynamic::CalculateAerodynamicVectors()
 {
@@ -736,6 +755,9 @@ void Aerodynamic::CalculateAerodynamicCoefficients()
 
         C->rate_cl = (m_upper >= rate_size) ? cTable[ucase].control_joint_rate[rate_size - 1] 
             : linear_function(dataPtr->mach, m1, m2, cTable[ucase].control_joint_rate[m_lower], cTable[ucase].control_joint_rate[m_upper]);
+
+        // inverse the direction if inverse flag is true
+        this->dataPtr->controlAngle = this->dataPtr->inverse_joint_value ? -1 * this->dataPtr->controlAngle : this->dataPtr->controlAngle;
 
         C->cl += this->dataPtr->controlAngle * C->rate_cl;
         C->cm += this->dataPtr->controlAngle * C->rate_cl;

@@ -31,6 +31,8 @@ PosePublisher::~PosePublisher()
 
 void PosePublisher::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 {
+    gzmsg << " LOAD Pose Publisher" << std::endl;
+
     GZ_ASSERT(_model, "PosePublisher _model pointer is NULL");
     GZ_ASSERT(_sdf, "PosePublisher _sdf pointer is NULL");
     this->model = _model;
@@ -79,7 +81,7 @@ void PosePublisher::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     if (_sdf->HasElement("topic_name")) {
         const auto pose_pub_topic = this->sdf->Get<std::string>("topic_name");
         
-        this->dynamic_state_pub_ = this->node_handle_->Advertise<ssm_msgs::msgs::DynamicState>("~/" + pose_pub_topic);
+        dynamic_state_pub_ = this->node_handle_->Advertise<ssm_msgs::msgs::DynamicState>("~/" + pose_pub_topic);
         gzdbg << "Publishing to ~/" << pose_pub_topic << std::endl;
     } 
     else
@@ -111,40 +113,34 @@ void PosePublisher::OnUpdate()
     // Retrieve Angular Acceleration in World Frame
     ignition::math::Vector3d model_ang_acc = this->link->WorldAngularAccel();
 
-    ssm_msgs::msgs::DynamicState State;
-    
-    
+   
     msgs::Vector3d *linVel = new msgs::Vector3d;
     linVel->set_x(model_lin_vel.X());
     linVel->set_y(model_lin_vel.Y());
     linVel->set_z(model_lin_vel.Z());
-    State.set_allocated_linearvelocity(linVel);
 
     msgs::Vector3d *angVel = new msgs::Vector3d;
     angVel->set_x(model_ang_vel.X());
     angVel->set_y(model_ang_vel.Y());
-    angVel->set_z(model_ang_vel.Z());      
-    State.set_allocated_angluarvelocity(angVel);
+    angVel->set_z(model_ang_vel.Z());
 
     msgs::Vector3d *linAcc = new msgs::Vector3d;
-    linAcc->set_x(model_lin_vel.X());
-    linAcc->set_y(model_lin_vel.Y());
-    linAcc->set_z(model_lin_vel.Z());
-    State.set_allocated_linearacceleration(linAcc);
+    linAcc->set_x(model_lin_acc.X());
+    linAcc->set_y(model_lin_acc.Y());
+    linAcc->set_z(model_lin_acc.Z());
 
     msgs::Vector3d *angAcc = new msgs::Vector3d;
-    angAcc->set_x(model_ang_vel.X());
-    angAcc->set_y(model_ang_vel.Y());
-    angAcc->set_z(model_ang_vel.Z());
-    State.set_allocated_angluaracceleration(angAcc);
+    angAcc->set_x(model_ang_acc.X());
+    angAcc->set_y(model_ang_acc.Y());
+    angAcc->set_z(model_ang_acc.Z());
     
     model_pose.Rot();
-    msgs::Vector3d *ps;
+    msgs::Vector3d *ps = new msgs::Vector3d;
     ps->set_x(model_pose.Pos().X());
     ps->set_y(model_pose.Pos().Y());
     ps->set_z(model_pose.Pos().Z());
 
-    msgs::Quaternion *rot;
+    msgs::Quaternion *rot = new msgs::Quaternion;
     rot->set_w(model_pose.Rot().W());
     rot->set_x(model_pose.Rot().X());
     rot->set_y(model_pose.Rot().Y());
@@ -154,14 +150,20 @@ void PosePublisher::OnUpdate()
     pose->set_name(this->linkName);
     pose->set_allocated_position(ps);
     pose->set_allocated_orientation(rot);
-    State.set_allocated_pose(pose);
-
+    
     msgs::Time* my_time = new msgs::Time;
     my_time->set_nsec(current_time.nsec);
     my_time->set_sec(current_time.sec);
-    State.set_allocated_time(my_time);
 
-    this->dynamic_state_pub_->Publish(State);
-    // this->last_pub_time = current_time;
+    ssm_msgs::msgs::DynamicState * State = new ssm_msgs::msgs::DynamicState;
+    State->set_allocated_linearvelocity(linVel);
+    State->set_allocated_angluarvelocity(angVel);
+    State->set_allocated_linearacceleration(linAcc);
+    State->set_allocated_angluaracceleration(angAcc);
+    State->set_allocated_pose(pose);
+    State->set_allocated_time(my_time);
+
+    this->dynamic_state_pub_->Publish(*State);
+    this->last_pub_time = current_time;
 
 }

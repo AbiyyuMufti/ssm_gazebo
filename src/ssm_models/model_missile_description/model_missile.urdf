@@ -71,93 +71,6 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-  <!-- <transmission name="wings_fold1_tran">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="wings_fold1">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-  </joint>
-  <actuator name="wings_fold1_actr">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<transmission name="wings_fold2_tran">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="wings_fold2">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-  </joint>
-  <actuator name="wings_fold2_actr">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<transmission name="wings_fold3_tran">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="wings_fold3">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-  </joint>
-  <actuator name="wings_fold3_actr">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<transmission name="wings_fold4_tran">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="wings_fold4">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-  </joint>
-  <actuator name="wings_fold4_actr">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<transmission name="fin_fold1_tran">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="fin_fold1">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-  </joint>
-  <actuator name="fin_fold1_actr">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<transmission name="fin_fold2_tran">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="fin_fold2">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-  </joint>
-  <actuator name="fin_fold2_actr">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<transmission name="fin_fold3_tran">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="fin_fold3">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-  </joint>
-  <actuator name="fin_fold3_actr">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<transmission name="fin_fold4_tran">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="fin_fold4">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-  </joint>
-  <actuator name="fin_fold4_actr">
-    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission> -->
   <gazebo>
     <plugin filename="libInitialPosition.so" name="set_joint_position">
       <joint name="fin_fold1">2.1467549799530254</joint>
@@ -168,6 +81,11 @@
       <joint name="wings_fold2">2.1467549799530254</joint>
       <joint name="wings_fold3">2.1467549799530254</joint>
       <joint name="wings_fold4">2.1467549799530254</joint>
+    </plugin>
+    <plugin filename="libPosePublisher.so" name="DynamicState">
+      <topic_name>DynamicState</topic_name>
+      <link_name>base_link</link_name>
+      <robotNamespace/>
     </plugin>
     <plugin filename="libgazebo_ros_control.so" name="model_missile_controller">
       <robotNamespace>model_missile_controller</robotNamespace>
@@ -709,21 +627,74 @@
    --&gt;
 
 
-  <!-- <gazebo reference='fins_rev1'>
-  <preserveFixedJoint>true</preserveFixedJoint>
-</gazebo>
-
-<gazebo reference='fins_rev2'>
-  <preserveFixedJoint>true</preserveFixedJoint>
-</gazebo>
-
-<gazebo reference='fins_rev3'>
-  <preserveFixedJoint>true</preserveFixedJoint>
-</gazebo>
-
-<gazebo reference='fins_rev4'>
-  <preserveFixedJoint>true</preserveFixedJoint>
-</gazebo> -->
+  <gazebo reference="fins_rev1">
+    <!-- <preserveFixedJoint>true</preserveFixedJoint> -->
+    <dynamic>
+      <damping>5</damping>
+      <spring_stiffness>0.5</spring_stiffness>
+      <spring_reference>0.5</spring_reference>
+    </dynamic>
+    <physics>
+      <ode>
+        <cfm_damping>true</cfm_damping>
+        <limit>
+          <cfm>1</cfm>
+          <erf>1</erf>
+        </limit>
+      </ode>
+    </physics>
+  </gazebo>
+  <gazebo reference="fins_rev2">
+    <!-- <preserveFixedJoint>true</preserveFixedJoint> -->
+    <dynamic>
+      <damping>5</damping>
+      <spring_stiffness>0.5</spring_stiffness>
+      <spring_reference>0.5</spring_reference>
+    </dynamic>
+    <physics>
+      <ode>
+        <cfm_damping>true</cfm_damping>
+        <limit>
+          <cfm>1</cfm>
+          <erf>1</erf>
+        </limit>
+      </ode>
+    </physics>
+  </gazebo>
+  <gazebo reference="fins_rev3">
+    <!-- <preserveFixedJoint>true</preserveFixedJoint> -->
+    <dynamic>
+      <damping>5</damping>
+      <spring_stiffness>0.5</spring_stiffness>
+      <spring_reference>0.5</spring_reference>
+    </dynamic>
+    <physics>
+      <ode>
+        <cfm_damping>true</cfm_damping>
+        <limit>
+          <cfm>1</cfm>
+          <erf>1</erf>
+        </limit>
+      </ode>
+    </physics>
+  </gazebo>
+  <gazebo reference="fins_rev4">
+    <!-- <preserveFixedJoint>true</preserveFixedJoint> -->
+    <dynamic>
+      <damping>5</damping>
+      <spring_stiffness>0.5</spring_stiffness>
+      <spring_reference>0.5</spring_reference>
+    </dynamic>
+    <physics>
+      <ode>
+        <cfm_damping>true</cfm_damping>
+        <limit>
+          <cfm>1</cfm>
+          <erf>1</erf>
+        </limit>
+      </ode>
+    </physics>
+  </gazebo>
   <link name="base_link">
     <inertial>
       <origin rpy="0 0 0" xyz="-4.5938008952361996e-12 -5.330786024108829e-16 -2.382079374378753e-16"/>
@@ -985,92 +956,71 @@
     </collision>
   </link>
   <joint name="fins_rev1" type="revolute">
-    <!-- <joint name="fins_rev1" type="fixed"> -->
     <origin rpy="0 0 0" xyz="-1.700844 0.127279 0.127279"/>
     <parent link="base_link"/>
     <child link="FinHolder_1"/>
     <axis xyz="-0.0 0.707107 0.707107"/>
-    <limit effort="1000" lower="-0.349066" upper="0.349066" velocity="100"/>
+    <limit effort="1000000" lower="-0.349066" upper="0.349066" velocity="1000000"/>
   </joint>
   <joint name="fins_rev2" type="revolute">
-    <!-- <joint name="fins_rev2" type="fixed"> -->
     <origin rpy="0 0 0" xyz="-1.700844 0.127279 -0.127279"/>
     <parent link="base_link"/>
     <child link="FinHolder_2"/>
     <axis xyz="-0.0 0.707107 -0.707107"/>
-    <limit effort="1000" lower="-0.349066" upper="0.349066" velocity="100"/>
+    <limit effort="1000000" lower="-0.349066" upper="0.349066" velocity="1000000"/>
   </joint>
   <joint name="fins_rev3" type="revolute">
-    <!-- <joint name="fins_rev3" type="fixed"> -->
     <origin rpy="0 0 0" xyz="-1.700844 -0.127279 -0.127279"/>
     <parent link="base_link"/>
     <child link="FinHolder_3"/>
     <axis xyz="-0.0 -0.707107 -0.707107"/>
-    <limit effort="1000" lower="-0.349066" upper="0.349066" velocity="100"/>
+    <limit effort="1000000" lower="-0.349066" upper="0.349066" velocity="1000000"/>
   </joint>
   <joint name="fins_rev4" type="revolute">
-    <!-- <joint name="fins_rev4" type="fixed"> -->
     <origin rpy="0 0 0" xyz="-1.700844 -0.127279 0.127279"/>
     <parent link="base_link"/>
     <child link="FinHolder_4"/>
     <axis xyz="-0.0 -0.707107 0.707107"/>
-    <limit effort="1000" lower="-0.349066" upper="0.349066" velocity="100"/>
+    <limit effort="1000000" lower="-0.349066" upper="0.349066" velocity="1000000"/>
   </joint>
-  <joint name="wings_fold1" type="revolute">
+  <joint name="wings_fold1" type="fixed">
     <origin rpy="0 0 0" xyz="-0.380856 0.163355 0.163355"/>
     <parent link="base_link"/>
     <child link="Wing1_1"/>
-    <axis xyz="1.0 -0.0 -0.0"/>
-    <limit effort="100" lower="0.0" upper="2.146755" velocity="100"/>
   </joint>
-  <joint name="wings_fold2" type="revolute">
+  <joint name="wings_fold2" type="fixed">
     <origin rpy="0 0 0" xyz="-0.380856 0.163355 -0.163355"/>
     <parent link="base_link"/>
     <child link="Wing1_2"/>
-    <axis xyz="1.0 0.0 -0.0"/>
-    <limit effort="100" lower="0.0" upper="2.146755" velocity="100"/>
   </joint>
-  <joint name="wings_fold3" type="revolute">
+  <joint name="wings_fold3" type="fixed">
     <origin rpy="0 0 0" xyz="-0.380856 -0.163355 -0.163355"/>
     <parent link="base_link"/>
     <child link="Wing1_3"/>
-    <axis xyz="1.0 0.0 -0.0"/>
-    <limit effort="100" lower="0.0" upper="2.146755" velocity="100"/>
   </joint>
-  <joint name="wings_fold4" type="revolute">
+  <joint name="wings_fold4" type="fixed">
     <origin rpy="0 0 0" xyz="-0.380856 -0.163355 0.163355"/>
     <parent link="base_link"/>
     <child link="Wing1_4"/>
-    <axis xyz="1.0 -0.0 -0.0"/>
-    <limit effort="100" lower="0.0" upper="2.146755" velocity="100"/>
   </joint>
-  <joint name="fin_fold1" type="revolute">
+  <joint name="fin_fold1" type="fixed">
     <origin rpy="0 0 0" xyz="0.0 0.038891 0.038891"/>
     <parent link="FinHolder_1"/>
     <child link="Fin_1"/>
-    <axis xyz="1.0 0.0 0.0"/>
-    <limit effort="100" lower="0.0" upper="2.146755" velocity="100"/>
   </joint>
-  <joint name="fin_fold2" type="revolute">
+  <joint name="fin_fold2" type="fixed">
     <origin rpy="0 0 0" xyz="0.0 0.038879 -0.038903"/>
     <parent link="FinHolder_2"/>
     <child link="Fin_2"/>
-    <axis xyz="1.0 0.0 -0.0"/>
-    <limit effort="100" lower="0.0" upper="2.146755" velocity="100"/>
   </joint>
-  <joint name="fin_fold3" type="revolute">
+  <joint name="fin_fold3" type="fixed">
     <origin rpy="0 0 0" xyz="0.0 -0.038891 -0.038891"/>
     <parent link="FinHolder_3"/>
     <child link="Fin_3"/>
-    <axis xyz="1.0 -0.0 -0.0"/>
-    <limit effort="100" lower="0.0" upper="2.146755" velocity="100"/>
   </joint>
-  <joint name="fin_fold4" type="revolute">
+  <joint name="fin_fold4" type="fixed">
     <origin rpy="0 0 0" xyz="0.0 -0.038891 0.038891"/>
     <parent link="FinHolder_4"/>
     <child link="Fin_4"/>
-    <axis xyz="1.0 -0.0 0.0"/>
-    <limit effort="100" lower="0.0" upper="2.146755" velocity="100"/>
   </joint>
 </robot>
-

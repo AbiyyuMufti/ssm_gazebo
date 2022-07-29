@@ -3,7 +3,7 @@
 
 <xacro:property name="use_booster" value="false"/>
 <xacro:property name="use_holder" value="false"/>
-<xacro:property name="foldable" value="true"/>
+<xacro:property name="foldable" value="false"/>
 <xacro:property name="deflection" value="true"/>
 
 <xacro:include filename="$(find model_missile_description)/urdf/materials.xacro" />
@@ -406,7 +406,8 @@
     <parent link="base_link"/>
     <child link="FinHolder_1"/>
     <axis xyz="-0.0 0.707107 0.707107"/>
-    <limit upper="0.349066" lower="-0.349066" effort="1000" velocity="100"/>
+    <limit upper="0.349066" lower="-0.349066" effort="10000000" velocity="1000000"/>
+    <dynamics damping="5"/>
   </joint>
   
   <joint name="fins_rev2" type="revolute">
@@ -414,7 +415,8 @@
     <parent link="base_link"/>
     <child link="FinHolder_2"/>
     <axis xyz="-0.0 0.707107 -0.707107"/>
-    <limit upper="0.349066" lower="-0.349066" effort="1000" velocity="100"/>
+    <limit upper="0.349066" lower="-0.349066" effort="10000000" velocity="1000000"/>
+    <dynamics damping="5"/>
   </joint>
   
   <joint name="fins_rev3" type="revolute">
@@ -422,7 +424,8 @@
     <parent link="base_link"/>
     <child link="FinHolder_3"/>
     <axis xyz="-0.0 -0.707107 -0.707107"/>
-    <limit upper="0.349066" lower="-0.349066" effort="1000" velocity="100"/>
+    <limit upper="0.349066" lower="-0.349066" effort="10000000" velocity="1000000"/>
+    <dynamics damping="5"/>
   </joint>
   
   <joint name="fins_rev4" type="revolute">
@@ -430,7 +433,8 @@
     <parent link="base_link"/>
     <child link="FinHolder_4"/>
     <axis xyz="-0.0 -0.707107 0.707107"/>
-    <limit upper="0.349066" lower="-0.349066" effort="1000" velocity="100"/>
+    <limit upper="0.349066" lower="-0.349066" effort="10000000" velocity="1000000"/>
+    <dynamics damping="5"/>
   </joint>
 </xacro:if>
 

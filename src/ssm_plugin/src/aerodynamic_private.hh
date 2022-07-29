@@ -69,6 +69,8 @@ namespace gazebo
         /// \brief Pointer to a joint that actuates a control surface for this lifting body
         public: physics::JointPtr controlJoint;
 
+        public: bool inverse_joint_value;
+
         /// \brief Link pose in world frame
         public: ignition::math::Pose3d pose;
 

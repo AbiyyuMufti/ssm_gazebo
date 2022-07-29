@@ -49,6 +49,7 @@
 #include "gazebotransport/gazebocustom/gazebocustommsghandler/gazebo_msgs_ContactsCustomMessageHandler.hpp"
 #include "gazebotransport/gazebocustom/gazebocustommsghandler/gazebo_msgs_CylinderGeomCustomMessageHandler.hpp"
 #include "gazebotransport/gazebocustom/gazebocustommsghandler/gazebo_msgs_DoubleCustomMessageHandler.hpp"
+#include "gazebotransport/gazebocustom/gazebocustommsghandler/ssm_msgs_msgs_DynamicStateCustomMessageHandler.hpp"
 #include "gazebotransport/gazebocustom/gazebocustommsghandler/gazebo_msgs_FrictionCustomMessageHandler.hpp"
 #include "gazebotransport/gazebocustom/gazebocustommsghandler/gazebo_msgs_GeometryCustomMessageHandler.hpp"
 #include "gazebotransport/gazebocustom/gazebocustommsghandler/gazebo_msgs_HeightmapGeomCustomMessageHandler.hpp"
@@ -105,6 +106,7 @@ this->m_customDispatch->registerCustomHandler(std::make_shared<robotics::gazebot
 this->m_customDispatch->registerCustomHandler(std::make_shared<robotics::gazebotransport::gazebo_msgs_ContactsCustomMessageHandler>(this->m_node),"gazebo_msgs/custom/gazebo_msgs/Contacts");
 this->m_customDispatch->registerCustomHandler(std::make_shared<robotics::gazebotransport::gazebo_msgs_CylinderGeomCustomMessageHandler>(this->m_node),"gazebo_msgs/custom/gazebo_msgs/CylinderGeom");
 this->m_customDispatch->registerCustomHandler(std::make_shared<robotics::gazebotransport::gazebo_msgs_DoubleCustomMessageHandler>(this->m_node),"gazebo_msgs/custom/gazebo_msgs/Double");
+this->m_customDispatch->registerCustomHandler(std::make_shared<robotics::gazebotransport::ssm_msgs_msgs_DynamicStateCustomMessageHandler>(this->m_node),"gazebo_msgs/custom/ssm_msgs_msgs/DynamicState");
 this->m_customDispatch->registerCustomHandler(std::make_shared<robotics::gazebotransport::gazebo_msgs_FrictionCustomMessageHandler>(this->m_node),"gazebo_msgs/custom/gazebo_msgs/Friction");
 this->m_customDispatch->registerCustomHandler(std::make_shared<robotics::gazebotransport::gazebo_msgs_GeometryCustomMessageHandler>(this->m_node),"gazebo_msgs/custom/gazebo_msgs/Geometry");
 this->m_customDispatch->registerCustomHandler(std::make_shared<robotics::gazebotransport::gazebo_msgs_HeightmapGeomCustomMessageHandler>(this->m_node),"gazebo_msgs/custom/gazebo_msgs/HeightmapGeom");

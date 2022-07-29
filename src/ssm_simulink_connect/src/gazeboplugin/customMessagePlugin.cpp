@@ -29,6 +29,7 @@
 #include <contacts.pb.h>
 #include <cylindergeom.pb.h>
 #include <double.pb.h>
+#include <dynamic_state.pb.h>
 #include <friction.pb.h>
 #include <geometry.pb.h>
 #include <heightmapgeom.pb.h>
@@ -70,6 +71,7 @@ typedef const boost::shared_ptr<const gazebo::msgs::Contact> gazebo_msgs_Contact
 typedef const boost::shared_ptr<const gazebo::msgs::Contacts> gazebo_msgs_ContactsPtr;
 typedef const boost::shared_ptr<const gazebo::msgs::CylinderGeom> gazebo_msgs_CylinderGeomPtr;
 typedef const boost::shared_ptr<const gazebo::msgs::Double> gazebo_msgs_DoublePtr;
+typedef const boost::shared_ptr<const ssm_msgs::msgs::DynamicState> ssm_msgs_msgs_DynamicStatePtr;
 typedef const boost::shared_ptr<const gazebo::msgs::Friction> gazebo_msgs_FrictionPtr;
 typedef const boost::shared_ptr<const gazebo::msgs::Geometry> gazebo_msgs_GeometryPtr;
 typedef const boost::shared_ptr<const gazebo::msgs::HeightmapGeom> gazebo_msgs_HeightmapGeomPtr;
@@ -112,6 +114,7 @@ transport::SubscriberPtr commandSubscribergazebo_msgs_contact0;
 transport::SubscriberPtr commandSubscribergazebo_msgs_contacts0;
 transport::SubscriberPtr commandSubscribergazebo_msgs_cylindergeom0;
 transport::SubscriberPtr commandSubscribergazebo_msgs_double0;
+transport::SubscriberPtr commandSubscriberssm_msgs_msgs_dynamicstate0;
 transport::SubscriberPtr commandSubscribergazebo_msgs_friction0;
 transport::SubscriberPtr commandSubscribergazebo_msgs_geometry0;
 transport::SubscriberPtr commandSubscribergazebo_msgs_heightmapgeom0;
@@ -150,6 +153,7 @@ gazebo::transport::PublisherPtr commandPublishergazebo_msgs_contact0;
 gazebo::transport::PublisherPtr commandPublishergazebo_msgs_contacts0;
 gazebo::transport::PublisherPtr commandPublishergazebo_msgs_cylindergeom0;
 gazebo::transport::PublisherPtr commandPublishergazebo_msgs_double0;
+gazebo::transport::PublisherPtr commandPublisherssm_msgs_msgs_dynamicstate0;
 gazebo::transport::PublisherPtr commandPublishergazebo_msgs_friction0;
 gazebo::transport::PublisherPtr commandPublishergazebo_msgs_geometry0;
 gazebo::transport::PublisherPtr commandPublishergazebo_msgs_heightmapgeom0;
@@ -203,6 +207,7 @@ commandSubscribergazebo_msgs_contact0 = node->Subscribe("gazebo/default/gazebo_m
 commandSubscribergazebo_msgs_contacts0 = node->Subscribe("gazebo/default/gazebo_msgs_Contacts/test_subscriber0", &customMessagePlugin::subscribeCallbackgazebo_msgs_contacts0, this);
 commandSubscribergazebo_msgs_cylindergeom0 = node->Subscribe("gazebo/default/gazebo_msgs_CylinderGeom/test_subscriber0", &customMessagePlugin::subscribeCallbackgazebo_msgs_cylindergeom0, this);
 commandSubscribergazebo_msgs_double0 = node->Subscribe("gazebo/default/gazebo_msgs_Double/test_subscriber0", &customMessagePlugin::subscribeCallbackgazebo_msgs_double0, this);
+commandSubscriberssm_msgs_msgs_dynamicstate0 = node->Subscribe("gazebo/default/ssm_msgs_msgs_DynamicState/test_subscriber0", &customMessagePlugin::subscribeCallbackssm_msgs_msgs_dynamicstate0, this);
 commandSubscribergazebo_msgs_friction0 = node->Subscribe("gazebo/default/gazebo_msgs_Friction/test_subscriber0", &customMessagePlugin::subscribeCallbackgazebo_msgs_friction0, this);
 commandSubscribergazebo_msgs_geometry0 = node->Subscribe("gazebo/default/gazebo_msgs_Geometry/test_subscriber0", &customMessagePlugin::subscribeCallbackgazebo_msgs_geometry0, this);
 commandSubscribergazebo_msgs_heightmapgeom0 = node->Subscribe("gazebo/default/gazebo_msgs_HeightmapGeom/test_subscriber0", &customMessagePlugin::subscribeCallbackgazebo_msgs_heightmapgeom0, this);
@@ -241,6 +246,7 @@ commandPublishergazebo_msgs_contact0 = node->Advertise<gazebo::msgs::Contact>("g
 commandPublishergazebo_msgs_contacts0 = node->Advertise<gazebo::msgs::Contacts>("gazebo/default/gazebo_msgs_Contacts/test_publisher");
 commandPublishergazebo_msgs_cylindergeom0 = node->Advertise<gazebo::msgs::CylinderGeom>("gazebo/default/gazebo_msgs_CylinderGeom/test_publisher");
 commandPublishergazebo_msgs_double0 = node->Advertise<gazebo::msgs::Double>("gazebo/default/gazebo_msgs_Double/test_publisher");
+commandPublisherssm_msgs_msgs_dynamicstate0 = node->Advertise<ssm_msgs::msgs::DynamicState>("gazebo/default/ssm_msgs_msgs_DynamicState/test_publisher");
 commandPublishergazebo_msgs_friction0 = node->Advertise<gazebo::msgs::Friction>("gazebo/default/gazebo_msgs_Friction/test_publisher");
 commandPublishergazebo_msgs_geometry0 = node->Advertise<gazebo::msgs::Geometry>("gazebo/default/gazebo_msgs_Geometry/test_publisher");
 commandPublishergazebo_msgs_heightmapgeom0 = node->Advertise<gazebo::msgs::HeightmapGeom>("gazebo/default/gazebo_msgs_HeightmapGeom/test_publisher");
@@ -306,6 +312,9 @@ commandPublishergazebo_msgs_wrench0 = node->Advertise<gazebo::msgs::Wrench>("gaz
 
 //gazebo::msgs::Double  gazebo_msgs_double_msg;
 //commandPublishergazebo_msgs_double0->Publish(gazebo_msgs_double_msg);
+
+//ssm_msgs::msgs::DynamicState  ssm_msgs_msgs_dynamicstate_msg;
+//commandPublisherssm_msgs_msgs_dynamicstate0->Publish(ssm_msgs_msgs_dynamicstate_msg);
 
 //gazebo::msgs::Friction  gazebo_msgs_friction_msg;
 //commandPublishergazebo_msgs_friction0->Publish(gazebo_msgs_friction_msg);
@@ -438,6 +447,11 @@ void subscribeCallbackgazebo_msgs_cylindergeom0(gazebo_msgs_CylinderGeomPtr &msg
 }
 
 void subscribeCallbackgazebo_msgs_double0(gazebo_msgs_DoublePtr &msg)
+{
+  //std::cout << msg->DebugString() << std::endl;
+}
+
+void subscribeCallbackssm_msgs_msgs_dynamicstate0(ssm_msgs_msgs_DynamicStatePtr &msg)
 {
   //std::cout << msg->DebugString() << std::endl;
 }
