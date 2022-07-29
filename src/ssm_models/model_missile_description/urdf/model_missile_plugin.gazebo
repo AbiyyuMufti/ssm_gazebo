@@ -2,6 +2,17 @@
 <robot name="model_missile" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
 <gazebo>
+    <plugin name="set_joint_position" filename="libInitialPosition.so">
+        <joint name="fin_fold1">${123/180*pi}</joint>
+        <joint name="fin_fold2">${123/180*pi}</joint>
+        <joint name="fin_fold3">${123/180*pi}</joint>
+        <joint name="fin_fold4">${123/180*pi}</joint>
+        <joint name="wings_fold1">${123/180*pi}</joint>
+        <joint name="wings_fold2">${123/180*pi}</joint>
+        <joint name="wings_fold3">${123/180*pi}</joint>
+        <joint name="wings_fold4">${123/180*pi}</joint>
+    </plugin>
+    
     <plugin name="model_missile_controller" filename="libgazebo_ros_control.so">
         <robotNamespace>model_missile_controller</robotNamespace>
         <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>

@@ -1,0 +1,16 @@
+syntax = "proto2";
+package ssm_msgs.msgs;
+
+import "vector3d.proto";
+import "pose.proto";
+import "time.proto";
+
+message DynamicState
+{
+    required gazebo.msgs.Vector3d LinearVelocity = 1;
+    required gazebo.msgs.Vector3d AngluarVelocity = 2;
+    required gazebo.msgs.Vector3d LinearAcceleration= 3;
+    required gazebo.msgs.Vector3d AngluarAcceleration = 4;
+    required gazebo.msgs.Pose Pose = 5;
+    required gazebo.msgs.Time Time = 6;
+}

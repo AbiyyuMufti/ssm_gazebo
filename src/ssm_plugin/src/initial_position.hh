@@ -1,8 +1,9 @@
-#ifndef _POSE_PUBLISHER_HH_
-#define _POSE_PUBLISHER_HH_
+#ifndef _INITIAL_POSITION_HH_
+#define _INITIAL_POSITION_HH_
 
 #include <string>
 #include <vector>
+#include <map>
 #include <boost/bind.hpp>
 
 #include "gazebo/common/Plugin.hh"
@@ -11,24 +12,22 @@
 #include "gazebo/msgs/msgs.hh"
 #include <ignition/math.hh>
 
-#include "dynamic_state.pb.h"
-
 namespace gazebo
 {
     /// \brief A plugin that simulates simple thrust of a jet booster in one direction.
-    class GAZEBO_VISIBLE PosePublisher : public ModelPlugin
+    class GAZEBO_VISIBLE InitialPosition : public ModelPlugin
     {
         /// \brief Constructor.
-        public: PosePublisher();
+        public: InitialPosition();
 
         /// \brief Destructor.
-        public: ~PosePublisher();
+        public: ~InitialPosition();
+        
+        /// \brief Callback for Simulation Reset.
+        public: void Reset();
 
         // Documentation Inherited.
         public: virtual void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
-
-        /// \brief Callback for World Update events.
-        protected: virtual void OnUpdate();
 
         /// \brief Connection to World Update events.
         protected: event::ConnectionPtr updateConnection;
@@ -42,24 +41,11 @@ namespace gazebo
         /// \brief Pointer to model containing plugin.
         protected: physics::ModelPtr model;
 
-        /// \brief Pointer to link which it's poses will be published.
+        /// \brief Pointer to link currently targeted by mud joint.
         protected: physics::LinkPtr link;
-        protected: std::string linkName;
 
         /// \brief SDF for this plugin;
         protected: sdf::ElementPtr sdf;
-
-        /// \brief The node handle to manage the message transport
-        private: transport::NodePtr node_handle_;
-
-        /// \brief The publisher of the thrust force vector for visualization
-        private: transport::PublisherPtr dynamic_state_pub_;
-
-        /// \brief The timer to count the published time
-        private: common::Time last_pub_time;
-
-        /// \brief Used if using additional namespace
-        private: std::string namespace_;
     };
 }
 

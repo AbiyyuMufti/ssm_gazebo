@@ -56,12 +56,12 @@ void PosePublisher::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
         if (!this->link)
         {
-        gzerr << "Link with name[" << linkName << "] not found. "
-            << "The PosePublisher will not generate forces\n";
+            gzerr << "Link with name[" << linkName << "] not found. "
+            << "The PosePublisher will not publish dynamic states\n";
         }
         else
         {
-        this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&PosePublisher::OnUpdate, this));
+            this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&PosePublisher::OnUpdate, this));
         }
     }
 
@@ -70,7 +70,7 @@ void PosePublisher::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         namespace_ = _sdf->GetElement("robotNamespace")->Get<std::string>();
     } else {
         // namespace_ = "";
-        gzerr << "[gazebo_simple_thruster] Please specify a robotNamespace.\n";
+        gzerr << "[" << linkName << " - Dynamic Publisher] Please specify a robotNamespace.\n";
     }
     
     node_handle_ = transport::NodePtr(new transport::Node());
@@ -79,9 +79,16 @@ void PosePublisher::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     if (_sdf->HasElement("topic_name")) {
         const auto pose_pub_topic = this->sdf->Get<std::string>("topic_name");
         
-        this->pose_publisher_ = this->node_handle_->Advertise<gazebo::msgs::PoseStamped>("~/" + pose_pub_topic);
+        this->dynamic_state_pub_ = this->node_handle_->Advertise<ssm_msgs::msgs::DynamicState>("~/" + pose_pub_topic);
         gzdbg << "Publishing to ~/" << pose_pub_topic << std::endl;
+    } 
+    else
+    {
+        gzerr << "Cannot Publish Dynamic State of Link "  << linkName << " because topic_name wasn't spesified";
     }
+    
+
+    // TODO: Also ROS PUBLISHER
 
 
 }
@@ -91,41 +98,70 @@ void PosePublisher::OnUpdate()
     GZ_ASSERT(this->link, "Link was NULL");
     
     const common::Time current_time = this->world->SimTime();
-    const double dt = (current_time - this->last_pub_time).Double();
-    // get link actual pose
+    // const double dt = (current_time - this->last_pub_time).Double();
+    
+    // Retrieve Pose in world frame
+    ignition::math::Pose3d model_pose = this->link->WorldPose();
+    // Retrieve Linear Velocity in World Frame
+    ignition::math::Vector3d model_lin_vel = this->link->WorldLinearVel();
+    // Retrieve Angular Velocity in World Frame
+    ignition::math::Vector3d model_ang_vel = this->link->WorldAngularVel();
+    // Retrieve Linear Acceleration in World Frame
+    ignition::math::Vector3d model_lin_acc = this->link->WorldAngularAccel();
+    // Retrieve Angular Acceleration in World Frame
+    ignition::math::Vector3d model_ang_acc = this->link->WorldAngularAccel();
+
+    ssm_msgs::msgs::DynamicState State;
     
     
-    if (dt > 1.0 / 10 && this->sdf->HasElement("topic_name")) {
-        ignition::math::Pose3d model_pose = this->link->WorldPose();
-        msgs::Pose* pose = new msgs::Pose;
-        msgs::Time* my_time = new msgs::Time;
+    msgs::Vector3d *linVel = new msgs::Vector3d;
+    linVel->set_x(model_lin_vel.X());
+    linVel->set_y(model_lin_vel.Y());
+    linVel->set_z(model_lin_vel.Z());
+    State.set_allocated_linearvelocity(linVel);
 
-        pose->set_name(this->linkName);
-        
-        model_pose.Rot();
-        gazebo::msgs::Vector3d *ps;
-        ps->set_x(model_pose.Pos().X());
-        ps->set_y(model_pose.Pos().Y());
-        ps->set_z(model_pose.Pos().Z());
+    msgs::Vector3d *angVel = new msgs::Vector3d;
+    angVel->set_x(model_ang_vel.X());
+    angVel->set_y(model_ang_vel.Y());
+    angVel->set_z(model_ang_vel.Z());      
+    State.set_allocated_angluarvelocity(angVel);
 
-        gazebo::msgs::Quaternion *rot;
-        rot->set_w(model_pose.Rot().W());
-        rot->set_x(model_pose.Rot().X());
-        rot->set_y(model_pose.Rot().Y());
-        rot->set_z(model_pose.Rot().Z());
+    msgs::Vector3d *linAcc = new msgs::Vector3d;
+    linAcc->set_x(model_lin_vel.X());
+    linAcc->set_y(model_lin_vel.Y());
+    linAcc->set_z(model_lin_vel.Z());
+    State.set_allocated_linearacceleration(linAcc);
 
-        pose->set_allocated_position(ps);
-        pose->set_allocated_orientation(rot);
-        
-        my_time->set_nsec(current_time.nsec);
-        my_time->set_sec(current_time.sec);
+    msgs::Vector3d *angAcc = new msgs::Vector3d;
+    angAcc->set_x(model_ang_vel.X());
+    angAcc->set_y(model_ang_vel.Y());
+    angAcc->set_z(model_ang_vel.Z());
+    State.set_allocated_angluaracceleration(angAcc);
+    
+    model_pose.Rot();
+    msgs::Vector3d *ps;
+    ps->set_x(model_pose.Pos().X());
+    ps->set_y(model_pose.Pos().Y());
+    ps->set_z(model_pose.Pos().Z());
 
-        msgs::PoseStamped msg_pose;
-        msg_pose.set_allocated_time(my_time);
-        msg_pose.set_allocated_pose(pose);
+    msgs::Quaternion *rot;
+    rot->set_w(model_pose.Rot().W());
+    rot->set_x(model_pose.Rot().X());
+    rot->set_y(model_pose.Rot().Y());
+    rot->set_z(model_pose.Rot().Z());
+    
+    msgs::Pose* pose = new msgs::Pose;
+    pose->set_name(this->linkName);
+    pose->set_allocated_position(ps);
+    pose->set_allocated_orientation(rot);
+    State.set_allocated_pose(pose);
 
-        this->pose_publisher_->Publish(msg_pose);
-        this->last_pub_time = current_time;
-    }
+    msgs::Time* my_time = new msgs::Time;
+    my_time->set_nsec(current_time.nsec);
+    my_time->set_sec(current_time.sec);
+    State.set_allocated_time(my_time);
+
+    this->dynamic_state_pub_->Publish(State);
+    // this->last_pub_time = current_time;
 
 }

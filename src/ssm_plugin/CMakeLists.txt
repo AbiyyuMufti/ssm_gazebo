@@ -114,6 +114,7 @@ set(ssm_msgs
   msgs/VectorVisual.proto
   msgs/SphericalVector.proto
   msgs/MultiplevectorVisual.proto
+  msgs/dynamic_state.proto
 )
 
 set(msgs msgs/double.proto)
@@ -148,6 +149,9 @@ list(APPEND plugins Aerodynamic)
 
 add_library(DetachableJoint SHARED src/detachable_joint.cc)
 list(APPEND plugins DetachableJoint)
+
+add_library(InitialPosition SHARED src/initial_position.cc)
+list(APPEND plugins InitialPosition)
 
 foreach(plugin ${plugins})
   add_dependencies(${plugin} ssm_msgs)

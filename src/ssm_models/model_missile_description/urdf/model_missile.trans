@@ -45,7 +45,8 @@
   </actuator>
 </transmission>
 
-<!-- <transmission name="wings_fold1_tran">
+<xacro:if value="${foldable}">
+<transmission name="wings_fold1_tran">
   <type>transmission_interface/SimpleTransmission</type>
   <joint name="wings_fold1">
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
@@ -131,6 +132,7 @@
     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     <mechanicalReduction>1</mechanicalReduction>
   </actuator>
-</transmission> -->
+</transmission>
+</xacro:if>
 
 </robot>
