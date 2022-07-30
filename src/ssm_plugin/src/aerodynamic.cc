@@ -811,46 +811,49 @@ void Aerodynamic::PublishAeroForces()
         ignition::math::Vector3d rel_center = dataPtr->link->RelativePose().Pos() + dataPtr->cp;
         rel_center.Correct();
 
-        msgs::Vector3d* relative_center_msg1 = new msgs::Vector3d;
-        msgs::Vector3d* relative_center_msg2 = new msgs::Vector3d;
-        msgs::Vector3d* relative_center_msg3 = new msgs::Vector3d;
-        msgs::Vector3d* relative_center_msg4 = new msgs::Vector3d;
-        msgs::Vector3d* relative_center_msg5 = new msgs::Vector3d;
-
         ignition::math::Vector3d vel_vis = dataPtr->pose.Rot().RotateVectorReverse(V->vel_in_lift_drag_plane);
-        vel_vis.Normalize();
+        // vel_vis.Normalize();
         vel_vis = 1000 * vel_vis;
         msgs::Vector3d* vel_vector_msg = new msgs::Vector3d;
         msgs::Set(vel_vector_msg, vel_vis);
 
         ignition::math::Vector3d lift_vis = dataPtr->pose.Rot().RotateVectorReverse(V->lift);
-        lift_vis.Normalize();
+        // lift_vis.Normalize();
         lift_vis = 1000 * lift_vis;
         msgs::Vector3d* lift_vector_msg = new msgs::Vector3d;
         msgs::Set(lift_vector_msg, lift_vis);
 
         ignition::math::Vector3d drag_vis = dataPtr->pose.Rot().RotateVectorReverse(V->drag);
-        drag_vis.Normalize();
+        // drag_vis.Normalize();
         drag_vis = 1000 * drag_vis;
         msgs::Vector3d* drag_vector_msg = new msgs::Vector3d;
         msgs::Set(drag_vector_msg, drag_vis);
 
         ignition::math::Vector3d normal_vis = dataPtr->pose.Rot().RotateVectorReverse(V->normal);
-        normal_vis.Normalize();
+        // normal_vis.Normalize();
         normal_vis = 1000 * normal_vis;
         msgs::Vector3d* normal_vector_msg = new msgs::Vector3d;
         msgs::Set(normal_vector_msg, normal_vis);
 
         ignition::math::Vector3d axial_vis = dataPtr->pose.Rot().RotateVectorReverse(V->axial);
-        axial_vis.Normalize();
+        // axial_vis.Normalize();
         axial_vis = 1000 * axial_vis;
         msgs::Vector3d* axial_vector_msg = new msgs::Vector3d;
         msgs::Set(axial_vector_msg, axial_vis);
 
+        msgs::Vector3d* relative_center_msg1 = new msgs::Vector3d;
         msgs::Set(relative_center_msg1, rel_center);
+        
+        msgs::Vector3d* relative_center_msg2 = new msgs::Vector3d;
         msgs::Set(relative_center_msg2, rel_center);
+        
+        msgs::Vector3d* relative_center_msg3 = new msgs::Vector3d;
         msgs::Set(relative_center_msg3, rel_center);
+        
+        msgs::Vector3d* relative_center_msg4 = new msgs::Vector3d;
         msgs::Set(relative_center_msg4, rel_center);
+        
+        msgs::Vector3d* relative_center_msg5 = new msgs::Vector3d;
         msgs::Set(relative_center_msg5, rel_center);
 
         ssm_msgs::msgs::VectorVisual vel_msg;

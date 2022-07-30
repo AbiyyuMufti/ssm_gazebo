@@ -406,8 +406,8 @@
     <parent link="base_link"/>
     <child link="FinHolder_1"/>
     <axis xyz="-0.0 0.707107 0.707107"/>
-    <limit upper="0.349066" lower="-0.349066" effort="10000000" velocity="1000000"/>
-    <dynamics damping="5"/>
+    <limit upper="0.349066" lower="-0.349066" effort="90000000" velocity="90000000"/>
+    <dynamics damping="7"/>
   </joint>
   
   <joint name="fins_rev2" type="revolute">
@@ -415,8 +415,8 @@
     <parent link="base_link"/>
     <child link="FinHolder_2"/>
     <axis xyz="-0.0 0.707107 -0.707107"/>
-    <limit upper="0.349066" lower="-0.349066" effort="10000000" velocity="1000000"/>
-    <dynamics damping="5"/>
+    <limit upper="0.349066" lower="-0.349066" effort="90000000" velocity="90000000"/>
+    <dynamics damping="7"/>
   </joint>
   
   <joint name="fins_rev3" type="revolute">
@@ -424,8 +424,8 @@
     <parent link="base_link"/>
     <child link="FinHolder_3"/>
     <axis xyz="-0.0 -0.707107 -0.707107"/>
-    <limit upper="0.349066" lower="-0.349066" effort="10000000" velocity="1000000"/>
-    <dynamics damping="5"/>
+    <limit upper="0.349066" lower="-0.349066" effort="90000000" velocity="90000000"/>
+    <dynamics damping="7"/>
   </joint>
   
   <joint name="fins_rev4" type="revolute">
@@ -433,8 +433,8 @@
     <parent link="base_link"/>
     <child link="FinHolder_4"/>
     <axis xyz="-0.0 -0.707107 0.707107"/>
-    <limit upper="0.349066" lower="-0.349066" effort="10000000" velocity="1000000"/>
-    <dynamics damping="5"/>
+    <limit upper="0.349066" lower="-0.349066" effort="90000000" velocity="90000000"/>
+    <dynamics damping="7"/>
   </joint>
 </xacro:if>
 

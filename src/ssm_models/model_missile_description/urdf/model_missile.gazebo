@@ -270,8 +270,8 @@
 
 
 <gazebo reference='fins_rev1'>
-  <spring_stiffness>1</spring_stiffness>
-  <spring_reference>1</spring_reference>
+  <spring_stiffness>10</spring_stiffness>
+  <spring_reference>10</spring_reference>
   <!-- <preserveFixedJoint>true</preserveFixedJoint> -->
   <!-- <dynamic> -->
     <!-- <damping>5</damping> -->
@@ -290,8 +290,8 @@
 </gazebo>
 
 <gazebo reference='fins_rev2'>
-  <spring_stiffness>1</spring_stiffness>
-  <spring_reference>1</spring_reference>  
+  <spring_stiffness>10</spring_stiffness>
+  <spring_reference>10</spring_reference>  
   <!-- <preserveFixedJoint>true</preserveFixedJoint> -->
   <!-- <dynamic> -->
     <!-- <damping>5</damping> -->
@@ -310,8 +310,8 @@
 </gazebo>
 
 <gazebo reference='fins_rev3'>
-  <spring_stiffness>1</spring_stiffness>
-  <spring_reference>1</spring_reference>  
+  <spring_stiffness>10</spring_stiffness>
+  <spring_reference>10</spring_reference>  
   <!-- <preserveFixedJoint>true</preserveFixedJoint> -->
   <!-- <dynamic> -->
     <!-- <damping>5</damping> -->
@@ -330,8 +330,8 @@
 </gazebo>
 
 <gazebo reference='fins_rev4'>
-  <spring_stiffness>1</spring_stiffness>
-  <spring_reference>1</spring_reference>
+  <spring_stiffness>10</spring_stiffness>
+  <spring_reference>10</spring_reference>
   <!-- <preserveFixedJoint>true</preserveFixedJoint> -->
   <!-- <dynamic> -->
     <!-- <damping>5</damping> -->
