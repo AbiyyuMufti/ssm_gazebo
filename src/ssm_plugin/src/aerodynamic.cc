@@ -120,6 +120,20 @@ void Aerodynamic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         }
     }
 
+    if (_sdf->HasElement("ref_link"))
+    {
+        sdf::ElementPtr elem = _sdf->GetElement("ref_link");
+        GZ_ASSERT(elem, "Element ref_link doesn't exist!");
+
+        std::string linkName = elem->Get<std::string>();
+        dataPtr->link_ref = dataPtr->model->GetLink(linkName);
+
+        if (!dataPtr->link_ref)
+        {
+            gzerr << "Link with name[" << linkName << "] not found. " << "The Aerodynamic will not generate forces\n";
+        }
+    }
+
     if (_sdf->HasElement("control_joint_name"))
     {
         auto ctrJointElem = _sdf->GetElement("control_joint_name");
@@ -498,16 +512,27 @@ void Aerodynamic::OnUpdate()
 
     this->CalculateAerodynamicForces();
 
-    // Apply force
-    if (cTable[ucase].a_type == Body)
+    ignition::math::Vector3d offset;
+    if (dataPtr->link_ref)
     {
-        dataPtr->link->AddForceAtRelativePosition(V->normal, dataPtr->cp);
-        dataPtr->link->AddForceAtRelativePosition(V->axial, dataPtr->cp);
+        auto rel_pos = dataPtr->link_ref->RelativePose();
+        offset = dataPtr->cp + rel_pos.Pos();
     }
     else
     {
-        dataPtr->link->AddForceAtRelativePosition(V->lift, dataPtr->cp);
-        dataPtr->link->AddForceAtRelativePosition(V->drag, dataPtr->cp);
+        offset = dataPtr->cp;
+    }
+
+    // Apply force
+    if (cTable[ucase].a_type == Body)
+    {
+        dataPtr->link->AddForceAtRelativePosition(V->normal, offset);
+        dataPtr->link->AddForceAtRelativePosition(V->axial, offset);
+    }
+    else
+    {
+        dataPtr->link->AddForceAtRelativePosition(V->lift, offset);
+        dataPtr->link->AddForceAtRelativePosition(V->drag, offset);
     }
 
     dataPtr->link->AddTorque(V->moment);
@@ -551,8 +576,19 @@ void Aerodynamic::OnUpdate()
 /////////////////////////////////////////////////
 bool Aerodynamic::CalculateAerodynamicVectors()
 {
-    // get linear velocity at cp in inertial frame
-    V->velocity = dataPtr->link->WorldLinearVel(dataPtr->cp);
+    if (dataPtr->link_ref)
+    {
+        dataPtr->pose = dataPtr->link_ref->WorldPose();
+        V->velocity = dataPtr->link_ref->WorldLinearVel(dataPtr->cp);
+    }
+    else 
+    {
+        // get actual pose of body relative to the world link
+        dataPtr->pose = dataPtr->link->WorldPose();        
+        // get linear velocity at cp in inertial frame
+        V->velocity = dataPtr->link->WorldLinearVel(dataPtr->cp);
+    }
+    
 
     // get the direction of the linear velocity in inertia frame
     I->velocity = V->velocity;
@@ -561,9 +597,6 @@ bool Aerodynamic::CalculateAerodynamicVectors()
     // do nothing if the object almost still
     if (V->velocity.Length() < 1)
         return false;
-
-    // get actual pose of body relative to the world link
-    dataPtr->pose = dataPtr->link->WorldPose();
 
     // rotate forward vectors into inertial frame
     I->axial = dataPtr->pose.Rot().RotateVector(dataPtr->forward);

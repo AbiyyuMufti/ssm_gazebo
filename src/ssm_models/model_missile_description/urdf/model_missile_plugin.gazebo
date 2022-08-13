@@ -322,7 +322,8 @@
         <sref>0.044</sref>
         <lref>0.27</lref>
         <air_density>1.2041</air_density>
-        <link_name>FinHolder_1</link_name>
+        <link_name>base_link</link_name>
+        <ref_link>FinHolder_1</ref_link>
         <control_joint_name inverse="true">fins_rev1</control_joint_name>
         <!-- <radial_symmetry>true</radial_symmetry> -->
         <upward>0 -1 1</upward>
@@ -337,7 +338,8 @@
         <sref>0.044</sref>
         <lref>0.27</lref>
         <air_density>1.2041</air_density>
-        <link_name>FinHolder_2</link_name>
+        <link_name>base_link</link_name>
+        <ref_link>FinHolder_2</ref_link>
         <control_joint_name inverse="true">fins_rev2</control_joint_name>
         <!-- <radial_symmetry>true</radial_symmetry> -->
         <upward>0 1 1</upward>
@@ -352,7 +354,8 @@
         <sref>0.044</sref>
         <lref>0.27</lref>
         <air_density>1.2041</air_density>
-        <link_name>FinHolder_3</link_name>
+        <link_name>base_link</link_name>
+        <ref_link>FinHolder_3</ref_link>
         <control_joint_name>fins_rev3</control_joint_name>
         <!-- <radial_symmetry>true</radial_symmetry> -->
         <upward>0 -1 1</upward>
@@ -367,7 +370,8 @@
         <sref>0.044</sref>
         <lref>0.27</lref>
         <air_density>1.2041</air_density>
-        <link_name>FinHolder_4</link_name>
+        <link_name>base_link</link_name>
+        <ref_link>FinHolder_4</ref_link>
         <control_joint_name>fins_rev4</control_joint_name>
         <!-- <radial_symmetry>true</radial_symmetry> -->
         <upward>0 1 1</upward>
