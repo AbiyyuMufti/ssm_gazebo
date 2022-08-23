@@ -13,19 +13,19 @@
     <arg name="P_launcher" default="0.0"/>
     <arg name="Y_launcher" default="0.0"/>
 
-    <arg name="miss_deg" default="-0.348794"/>
-    <arg name="y_miss" default="0.00041"/>
+    <arg name="miss_deg" default="-0.34898694"/>
+    <arg name="y_miss" default="0.000"/>
 
     <!-- using exocet canister -->
-    <arg name="x_miss" default="-0.624021"/>
+    <arg name="x_miss" default="-0.211460"/>
     <!-- <arg name="z_miss" default="1.662578"/> -->
-    <arg name="z_miss" default="1.560014"/>
+    <arg name="z_miss" default="1.709996"/>
 
     <!-- using basic launcher -->
     <!-- <arg name="z_miss" default="1.332034"/>
     <arg name="x_miss" default="-0.194658"/> -->
 
-    <include file="$(find mm40b3_description)/launch/spawn_launcher.launch">
+    <include file="$(find missile_description)/launch/spawn_launcher.launch">
         <arg name="urdf" value="$(arg launcher_file)"/>
         <arg name="x" value="$(arg x_launcher)"/>
         <arg name="y" value="$(arg y_launcher)"/>
@@ -35,14 +35,14 @@
         <arg name="Y" value="$(arg Y_launcher)"/>
     </include>
 
-    <include file="$(find mm40b3_description)/launch/spawn_missile.launch">
+    <include file="$(find missile_description)/launch/spawn_missile.launch">
         <arg name="x" value="$(eval arg('x_launcher') + arg('x_miss'))"/>
         <arg name="y" value="$(eval arg('y_launcher') + arg('y_miss'))"/>
         <arg name="z" value="$(eval arg('z_launcher') + arg('z_miss'))"/>
         <arg name="P" value="$(arg miss_deg)"/>
     </include>
     
-    <include file="$(find mm40b3_description)/launch/controller.launch"/>
+    <include file="$(find missile_description)/launch/controller.launch"/>
 
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(arg sim_world)"/>

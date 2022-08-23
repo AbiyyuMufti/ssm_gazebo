@@ -19,8 +19,8 @@
         <robotNamespace></robotNamespace>
     </plugin>
 
-    <plugin name="model_missile_controller" filename="libgazebo_ros_control.so">
-        <robotNamespace>model_missile_controller</robotNamespace>
+    <plugin name="missile_controller" filename="libgazebo_ros_control.so">
+        <robotNamespace>missile_controller</robotNamespace>
         <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
     </plugin>
     

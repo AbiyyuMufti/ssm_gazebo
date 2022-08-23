@@ -1,6 +1,11 @@
 <?xml version="1.0" ?>
 <robot name="missile" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+<xacro:property name="use_booster" value="true"/>
+<xacro:property name="use_holder" value="true"/>
+<xacro:property name="foldable" value="true"/>
+<xacro:property name="deflection" value="true"/>
+
 <xacro:include filename="$(find missile_description)/urdf/materials.xacro" />
 <xacro:include filename="$(find missile_description)/urdf/missile.trans" />
 <xacro:include filename="$(find missile_description)/urdf/missile.gazebo" />

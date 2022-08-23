@@ -207,9 +207,10 @@ void Aerodynamic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
             std::string cm_table = "cm_table\t: ";
             for (size_t j = 0; j < 8; j++)
             {
-                cm_table += std::to_string(cTable[i].cm_table[k][j]) = " ";
+                cm_table += std::to_string(cTable[i].cm_table[k][j]) + " ";
             }
             gzdbg << cm_table << std::endl;
+
             if (cTable[i].a_type == Wind)
             {
                 std::string cl_table = "cl_table\t: ";
@@ -253,7 +254,7 @@ void Aerodynamic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 static void store_table(const sdf::ElementPtr& elem, const std::string& elem_name, std::vector<double>& v)
 {
     std::string str = elem->Get<std::string>(elem_name);
-
+    // gzdbg << "elem: " << elem_name << " : " <<str << "\n";
     // split str to string of vector
     std::vector<std::string> stringVector;
     boost::split(stringVector, str, boost::is_any_of(", "), boost::token_compress_on);
@@ -266,8 +267,10 @@ static void store_table(const sdf::ElementPtr& elem, const std::string& elem_nam
     });
 
     // assign to the vector
-    for (std::size_t i = 0; i < doubleVector.size(); i++)
+    for (std::size_t i = 0; i < doubleVector.size(); i++){
         v.push_back(doubleVector[i]);
+        // gzdbg << doubleVector[i];
+    }
 }
 
 /////////////////////////////////////////////////
@@ -512,14 +515,17 @@ void Aerodynamic::OnUpdate()
 
     this->CalculateAerodynamicForces();
 
+    std::string lk;
     ignition::math::Vector3d offset;
     if (dataPtr->link_ref)
     {
         auto rel_pos = dataPtr->link_ref->RelativePose();
         offset = dataPtr->cp + rel_pos.Pos();
+        lk = dataPtr->link_ref->GetName();
     }
     else
     {
+        lk = dataPtr->link->GetName();
         offset = dataPtr->cp;
     }
 
@@ -545,29 +551,30 @@ void Aerodynamic::OnUpdate()
     {
         this->last_pub_time = current_time;
         this->PublishAeroForces();
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     sweep: " << dataPtr->sweep << "(Rad) -- " << dataPtr->sweep * 180/M_PI << "(Deg)");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   ctrlAng: " << dataPtr->controlAngle*M_PI/180 << "(Rad) -- " << dataPtr->controlAngle << "(Deg)");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " ClDuectrl: " << C->rate_cl);
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  velocity: " << V->velocity.Length());
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     alpha: " << dataPtr->alpha*M_PI/180 << "(Rad) -- " << dataPtr->alpha << "(Deg)");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "      mach: " << dataPtr->mach);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " dynamic_pressure\t" << dataPtr->q);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cn_val\t: " << C->cn);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " ca_val\t: " << C->ca);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cl_val\t: " << C->cl);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cd_val\t: " << C->cd);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " cm_val\t: " << C->cm);
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     lift: " << V->lift.Length() << " <" << V->lift << ">");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "     drag: " << V->drag.Length() << " <" << V->drag << ">");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   normal: " << V->normal.Length() << " <" << V->normal << ">");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "    axial: " << V->axial.Length() << " <" << V->axial << ">");
-        ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   moment: " << V->moment.Length() << " <" << V->moment << ">");
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << " body bose: " << dataPtr->pose);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "    lift: " << I->lift);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "    drag: " << I->drag);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  normal: " << I->normal);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "   axial: " << I->axial);
-        // ROS_WARN_STREAM(" " << dataPtr->link->GetName() << "  moment: " << I->moment);
+
+        ROS_WARN_STREAM(" " << lk << "     sweep: " << dataPtr->sweep << "(Rad) -- " << dataPtr->sweep * 180/M_PI << "(Deg)");
+        ROS_WARN_STREAM(" " << lk << "   ctrlAng: " << dataPtr->controlAngle*M_PI/180 << "(Rad) -- " << dataPtr->controlAngle << "(Deg)");
+        ROS_WARN_STREAM(" " << lk << " ClDuectrl: " << C->rate_cl);
+        ROS_WARN_STREAM(" " << lk << "  velocity: " << V->velocity.Length());
+        ROS_WARN_STREAM(" " << lk << "     alpha: " << dataPtr->alpha*M_PI/180 << "(Rad) -- " << dataPtr->alpha << "(Deg)");
+        ROS_WARN_STREAM(" " << lk << "      mach: " << dataPtr->mach);
+        // ROS_WARN_STREAM(" " << lk << " dynamic_pressure\t" << dataPtr->q);
+        // ROS_WARN_STREAM(" " << lk << " cn_val\t: " << C->cn);
+        // ROS_WARN_STREAM(" " << lk << " ca_val\t: " << C->ca);
+        // ROS_WARN_STREAM(" " << lk << " cl_val\t: " << C->cl);
+        // ROS_WARN_STREAM(" " << lk << " cd_val\t: " << C->cd);
+        // ROS_WARN_STREAM(" " << lk << " cm_val\t: " << C->cm);
+        ROS_WARN_STREAM(" " << lk << "     lift: " << V->lift.Length() << " <" << V->lift << ">");
+        ROS_WARN_STREAM(" " << lk << "     drag: " << V->drag.Length() << " <" << V->drag << ">");
+        ROS_WARN_STREAM(" " << lk << "   normal: " << V->normal.Length() << " <" << V->normal << ">");
+        ROS_WARN_STREAM(" " << lk << "    axial: " << V->axial.Length() << " <" << V->axial << ">");
+        ROS_WARN_STREAM(" " << lk << "   moment: " << V->moment.Length() << " <" << V->moment << ">");
+        // ROS_WARN_STREAM(" " << lk << " body bose: " << dataPtr->pose);
+        // ROS_WARN_STREAM(" " << lk << "    lift: " << I->lift);
+        // ROS_WARN_STREAM(" " << lk << "    drag: " << I->drag);
+        // ROS_WARN_STREAM(" " << lk << "  normal: " << I->normal);
+        // ROS_WARN_STREAM(" " << lk << "   axial: " << I->axial);
+        ROS_WARN_STREAM(" " << lk << "  momentDir: " << I->moment);
         ROS_WARN("\n");      
     }
 }
@@ -841,34 +848,45 @@ void Aerodynamic::PublishAeroForces()
 {
     if (dataPtr->sdf->HasElement("topic_name"))
     {
-        ignition::math::Vector3d rel_center = dataPtr->link->RelativePose().Pos() + dataPtr->cp;
+        ignition::math::Vector3d offset;
+        
+        if (dataPtr->link_ref)
+        {
+            auto rel_pos = dataPtr->link_ref->RelativePose();
+            offset = dataPtr->cp + rel_pos.Pos();
+        }
+        else
+        {
+            offset = dataPtr->cp;
+        }        
+        ignition::math::Vector3d rel_center = dataPtr->link->RelativePose().Pos() + offset;
         rel_center.Correct();
 
-        ignition::math::Vector3d vel_vis = dataPtr->pose.Rot().RotateVectorReverse(V->vel_in_lift_drag_plane);
+        ignition::math::Vector3d vel_vis = dataPtr->pose.Rot().RotateVectorReverse(I->vel_in_lift_drag_plane);
         // vel_vis.Normalize();
         vel_vis = 1000 * vel_vis;
         msgs::Vector3d* vel_vector_msg = new msgs::Vector3d;
         msgs::Set(vel_vector_msg, vel_vis);
 
-        ignition::math::Vector3d lift_vis = dataPtr->pose.Rot().RotateVectorReverse(V->lift);
+        ignition::math::Vector3d lift_vis = dataPtr->pose.Rot().RotateVectorReverse(I->lift);
         // lift_vis.Normalize();
         lift_vis = 1000 * lift_vis;
         msgs::Vector3d* lift_vector_msg = new msgs::Vector3d;
         msgs::Set(lift_vector_msg, lift_vis);
 
-        ignition::math::Vector3d drag_vis = dataPtr->pose.Rot().RotateVectorReverse(V->drag);
+        ignition::math::Vector3d drag_vis = dataPtr->pose.Rot().RotateVectorReverse(I->drag);
         // drag_vis.Normalize();
         drag_vis = 1000 * drag_vis;
         msgs::Vector3d* drag_vector_msg = new msgs::Vector3d;
         msgs::Set(drag_vector_msg, drag_vis);
 
-        ignition::math::Vector3d normal_vis = dataPtr->pose.Rot().RotateVectorReverse(V->normal);
+        ignition::math::Vector3d normal_vis = dataPtr->pose.Rot().RotateVectorReverse(I->normal);
         // normal_vis.Normalize();
         normal_vis = 1000 * normal_vis;
         msgs::Vector3d* normal_vector_msg = new msgs::Vector3d;
         msgs::Set(normal_vector_msg, normal_vis);
 
-        ignition::math::Vector3d axial_vis = dataPtr->pose.Rot().RotateVectorReverse(V->axial);
+        ignition::math::Vector3d axial_vis = dataPtr->pose.Rot().RotateVectorReverse(I->axial);
         // axial_vis.Normalize();
         axial_vis = 1000 * axial_vis;
         msgs::Vector3d* axial_vector_msg = new msgs::Vector3d;
@@ -931,7 +949,7 @@ void Aerodynamic::OnCaseChange(const boost::shared_ptr<const gazebo::msgs::Int> 
     else
     {
         this->ucase = data;
-        ROS_WARN_STREAM("Use " << this->ucase);
+        // ROS_WARN_STREAM("Use " << this->ucase);
     }
     
 }

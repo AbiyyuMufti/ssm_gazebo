@@ -1,139 +1,352 @@
 <?xml version="1.0" ?>
-<robot name="missile" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<robot name="model_missile" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
-<xacro:property name="body_color" value="Gazebo/Silver" />
+<xacro:include filename="$(find missile_description)/urdf/model_missile_plugin.gazebo" />
 
-<gazebo>
-  <plugin name="missile_controller" filename="libgazebo_ros_control.so">
-    <robotNamespace>missile_controller</robotNamespace>
-    <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-  </plugin>
-</gazebo>
 <gazebo reference="base_link">
-  <material>${body_color}</material>
+  <material>Gazebo/White</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
   <gravity>true</gravity>
+
+  <visual>
+    <plugin name="LiftDragVisual" filename="libMultiplevectorVisual.so">
+      <topic_name vector_size="5">AeroVectors</topic_name>
+    </plugin>
+    <plugin name="VectoredThrustVisual" filename="libForceVisual.so">
+      <topic_name>thrust_visual</topic_name>
+      <color>Gazebo/Green</color>
+    </plugin>
+  </visual>
+  
+  <sensor name="camera_top_side" type="camera">
+    <pose>-2 0.0 2 0.0 ${30*3.1416/180} 0.0</pose>
+    <camera>
+      <horizontal_fov>1.347</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>100</far>
+      </clip>
+    </camera>
+    <always_on>1</always_on>
+    <update_rate>30</update_rate>
+    <!-- <visualize>true</visualize> -->
+  </sensor>
+
+  <sensor name="camera_deflection" type="camera">
+    <pose>-1.0 -1.0 0.0 0.0 0.0 ${135*3.1416/180}</pose>
+    <camera>
+      <horizontal_fov>1.347</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>1000</far>
+      </clip>
+    </camera>
+    <always_on>1</always_on>
+    <update_rate>30</update_rate>
+    <!-- <visualize>true</visualize> -->
+  </sensor>
+
+  <!-- <sensor name='imu_sensor' type='imu'>
+    <always_on>1</always_on>
+    <update_rate>30</update_rate>
+    <imu/>
+  </sensor> -->
+
+  <sensor name='touching_ground' type='contact'>
+    <contact>
+      <collision>base_link_collision</collision>
+    </contact>
+  </sensor>
+
 </gazebo>
+
+<xacro:if value="${use_booster}">
+  <gazebo reference="Booster_1">
+    <material>Gazebo/Gray</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <selfCollide>true</selfCollide>
+    <visual>
+      <plugin name="SimpleThrustVisual" filename="libForceVisual.so">
+          <topic_name>booster_visual</topic_name>
+          <color>Gazebo/Green</color>
+      </plugin>
+    </visual>
+  </gazebo>
+</xacro:if>
 
 <gazebo reference="FinHolder_1">
-  <material>${body_color}</material>
+  <material>Gazebo/Blue</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="FinHolder_4">
-  <material>${body_color}</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="FinHolder_3">
-  <material>${body_color}</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
+  <visual>
+    <plugin name="Fin1LiftDragVisual" filename="libMultiplevectorVisual.so">
+      <topic_name vector_size="5">AeroVectorsFin1</topic_name>
+    </plugin>
+  </visual>
 </gazebo>
 
 <gazebo reference="FinHolder_2">
-  <material>${body_color}</material>
+  <material>Gazebo/Blue</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
+  <visual>
+    <plugin name="Fin2LiftDragVisual" filename="libMultiplevectorVisual.so">
+      <topic_name vector_size="5">AeroVectorsFin2</topic_name>
+    </plugin>
+  </visual>  
 </gazebo>
+
+<gazebo reference="FinHolder_3">
+  <material>Gazebo/Blue</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+  <visual>
+    <plugin name="Fin3LiftDragVisual" filename="libMultiplevectorVisual.so">
+      <topic_name vector_size="5">AeroVectorsFin3</topic_name>
+    </plugin>
+  </visual>  
+</gazebo>
+
+<gazebo reference="FinHolder_4">
+  <material>Gazebo/Blue</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+  <visual>
+    <plugin name="Fin4LiftDragVisual" filename="libMultiplevectorVisual.so">
+      <topic_name vector_size="5">AeroVectorsFin4</topic_name>
+    </plugin>
+  </visual>  
+</gazebo>
+
 
 <gazebo reference="Wing1_1">
-  <material>${body_color}</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="Booster_1">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Wing1_2">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Wing1_3">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Wing1_4">
-  <material>${body_color}</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="Holder_1">
-  <material>${body_color}</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="Holder_2">
-  <material>${body_color}</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="Holder_3">
-  <material>${body_color}</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <selfCollide>true</selfCollide>
-</gazebo>
-
-<gazebo reference="Holder_4">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Fin_1">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Fin_2">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Fin_3">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
 </gazebo>
 
 <gazebo reference="Fin_4">
-  <material>${body_color}</material>
+  <material>Gazebo/Orange</material>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
+</gazebo>
+
+<xacro:if value="${use_holder}">
+  <gazebo reference="Holder_1">
+    <material>Gazebo/Grey</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <selfCollide>true</selfCollide>
+    <visual>
+      <plugin name="Holder1Visual" filename="libForceVisual.so">
+          <topic_name>holder1visual</topic_name>
+          <color>Gazebo/Purple</color>
+      </plugin>
+    </visual>
+  </gazebo>
+  
+  <gazebo reference="Holder_2">
+    <material>Gazebo/Grey</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <selfCollide>true</selfCollide>
+    <visual>
+      <plugin name="Holder2Visual" filename="libForceVisual.so">
+          <topic_name>holder2visual</topic_name>
+          <color>Gazebo/Purple</color>
+      </plugin>
+    </visual>
+  </gazebo>
+  
+  <gazebo reference="Holder_3">
+    <material>Gazebo/Grey</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <selfCollide>true</selfCollide>
+    <visual>
+      <plugin name="Holder3Visual" filename="libForceVisual.so">
+          <topic_name>holder3visual</topic_name>
+          <color>Gazebo/Purple</color>
+      </plugin>
+    </visual>
+  </gazebo>
+  
+  <gazebo reference="Holder_4">
+    <material>Gazebo/Grey</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <selfCollide>true</selfCollide>
+    <visual>
+      <plugin name="Holder4Visual" filename="libForceVisual.so">
+          <topic_name>holder4visual</topic_name>
+          <color>Gazebo/Purple</color>
+      </plugin>
+    </visual>
+  </gazebo>
+</xacro:if> -->
+
+<xacro:if value="${use_booster}">
+  <gazebo reference='booster_fixing'>
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+</xacro:if>
+
+<xacro:if value="${use_holder}">
+  <gazebo reference='HolderJoint1'>
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  
+  <gazebo reference='HolderJoint2'>
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  
+  <gazebo reference='HolderJoint3'>
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  
+  <gazebo reference='HolderJoint4'>
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+</xacro:if>
+
+
+<gazebo reference='fins_rev1'>
+  <spring_stiffness>10</spring_stiffness>
+  <spring_reference>10</spring_reference>
+  <!-- <preserveFixedJoint>true</preserveFixedJoint> -->
+  <!-- <dynamic> -->
+    <!-- <damping>5</damping> -->
+    <!-- <spring_stiffness>1</spring_stiffness> -->
+    <!-- <spring_reference>1</spring_reference> -->
+  <!-- </dynamic> -->
+  <!-- <physics> -->
+    <!-- <ode> -->
+      <!-- <cfm_damping>true</cfm_damping> -->
+      <!-- <limit> -->
+        <!-- <cfm>1</cfm> -->
+        <!-- <erf>1</erf> -->
+      <!-- </limit> -->
+    <!-- </ode> -->
+  <!-- </physics> -->
+</gazebo>
+
+<gazebo reference='fins_rev2'>
+  <spring_stiffness>10</spring_stiffness>
+  <spring_reference>10</spring_reference>  
+  <!-- <preserveFixedJoint>true</preserveFixedJoint> -->
+  <!-- <dynamic> -->
+    <!-- <damping>5</damping> -->
+    <!-- <spring_stiffness>1</spring_stiffness> -->
+    <!-- <spring_reference>1</spring_reference> -->
+  <!-- </dynamic> -->
+  <!-- <physics> -->
+    <!-- <ode> -->
+      <!-- <cfm_damping>true</cfm_damping> -->
+      <!-- <limit> -->
+        <!-- <cfm>1</cfm> -->
+        <!-- <erf>1</erf> -->
+      <!-- </limit> -->
+    <!-- </ode> -->
+  <!-- </physics> -->
+</gazebo>
+
+<gazebo reference='fins_rev3'>
+  <spring_stiffness>10</spring_stiffness>
+  <spring_reference>10</spring_reference>  
+  <!-- <preserveFixedJoint>true</preserveFixedJoint> -->
+  <!-- <dynamic> -->
+    <!-- <damping>5</damping> -->
+    <!-- <spring_stiffness>1</spring_stiffness> -->
+    <!-- <spring_reference>1</spring_reference> -->
+  <!-- </dynamic> -->
+  <!-- <physics> -->
+    <!-- <ode> -->
+      <!-- <cfm_damping>true</cfm_damping> -->
+      <!-- <limit> -->
+        <!-- <cfm>1</cfm> -->
+        <!-- <erf>1</erf> -->
+      <!-- </limit> -->
+    <!-- </ode> -->
+  <!-- </physics> -->
+</gazebo>
+
+<gazebo reference='fins_rev4'>
+  <spring_stiffness>10</spring_stiffness>
+  <spring_reference>10</spring_reference>
+  <!-- <preserveFixedJoint>true</preserveFixedJoint> -->
+  <!-- <dynamic> -->
+    <!-- <damping>5</damping> -->
+    <!-- <spring_stiffness>1</spring_stiffness> -->
+    <!-- <spring_reference>1</spring_reference> -->
+  <!-- </dynamic> -->
+  <!-- <physics> -->
+    <!-- <ode> -->
+      <!-- <cfm_damping>true</cfm_damping> -->
+      <!-- <limit> -->
+        <!-- <cfm>1</cfm> -->
+        <!-- <erf>1</erf> -->
+      <!-- </limit> -->
+    <!-- </ode> -->
+  <!-- </physics> -->
 </gazebo>
 
 </robot>

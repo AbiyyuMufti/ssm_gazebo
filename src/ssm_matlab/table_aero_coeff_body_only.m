@@ -62,7 +62,7 @@ legend_list = {'Mach 0.2', 'Mach 0.4', 'Mach 0.5', 'Mach 0.6', 'Mach 0.7', 'Mach
 
 for i = 1:8
     figure(1);
-    title("Lift Constants (CL) Diagram");
+    title("Lift Coefficient (CL) Diagram");
     hold on;
     grid on;
     plot(alpha_table, cl_table(i,:), 'DisplayName',legend_list{i});
@@ -71,7 +71,7 @@ for i = 1:8
     legend
 
     figure(2);
-    title("Drag Constants (CD) Diagram");
+    title("Drag Coefficient (CD) Diagram");
     hold on;
     grid on;
     plot(alpha_table, cd_table(i,:), 'DisplayName',legend_list{i});
@@ -80,7 +80,7 @@ for i = 1:8
     legend
 
     figure(3);
-    title("Pitching Moment Constants (CM) Diagram");
+    title("Pitching Moment Coefficient (CM) Diagram");
     hold on;
     grid on;
     plot(alpha_table, cm_table(i,:), 'DisplayName',legend_list{i});
@@ -89,7 +89,7 @@ for i = 1:8
     legend
 
     figure(4);
-    title("Normal Force Constants (CN) Diagram");
+    title("Normal Coefficient (CN) Diagram");
     hold on;
     grid on;
     plot(alpha_table, cn_table(i,:), 'DisplayName',legend_list{i});
@@ -98,7 +98,7 @@ for i = 1:8
     legend
 
     figure(5);
-    title("Axial Force Constants (CA) Diagram");
+    title("Axial Coefficient (CA) Diagram");
     hold on;
     grid on;
     plot(alpha_table, ca_table(i,:), 'DisplayName',legend_list{i});

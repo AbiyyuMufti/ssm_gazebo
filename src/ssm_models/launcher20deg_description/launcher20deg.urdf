@@ -31,7 +31,7 @@
   <material name="black">
     <color rgba="0 0 0 1"/>
   </material>
-  <transmission name="CupOpener_tran">
+  <!-- <transmission name="CupOpener_tran">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="CupOpener">
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
@@ -40,7 +40,7 @@
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
-  </transmission>
+  </transmission> -->
   <gazebo reference="base_link">
     <mu1>0.2</mu1>
     <mu2>0.2</mu2>
@@ -63,12 +63,12 @@
       <transparency>0.75</transparency>
     </visual>
   </gazebo>
-  <gazebo reference="Cup_3">
+  <!-- <gazebo reference="Cup_3">
     <material>Gazebo/DarkGrey</material>
     <mu1>0.2</mu1>
     <mu2>0.2</mu2>
     <selfCollide>true</selfCollide>
-  </gazebo>
+  </gazebo> -->
   <gazebo reference="Cup_1">
     <material>Gazebo/DarkGrey</material>
     <mu1>0.2</mu1>
@@ -133,7 +133,7 @@
       </geometry>
     </collision>
   </link>
-  <link name="Cup_3">
+  <!-- <link name="Cup_3">
     <inertial>
       <origin rpy="0 0 0" xyz="-0.1113901774930488 -2.4584670189393287e-09 0.29080423143479095"/>
       <mass value="132.23344015308516"/>
@@ -152,7 +152,7 @@
         <mesh filename="package://launcher20deg_description/meshes/Cup_3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
-  </link>
+  </link> -->
   <link name="Cup_1">
     <inertial>
       <origin rpy="0 0 0" xyz="0.18757809812498794 2.4584844637257807e-09 -0.6864021806271359"/>
@@ -218,13 +218,13 @@
     <parent link="CanisterHolder_2"/>
     <child link="Canister_1"/>
   </joint>
-  <joint name="CupOpener" type="revolute">
+  <!-- <joint name="CupOpener" type="revolute">
     <origin rpy="0 0 0" xyz="1.546373 0.0 0.232105"/>
     <parent link="Canister_1"/>
     <child link="Cup_3"/>
     <axis xyz="0.0 1.0 0.0"/>
     <limit effort="100" lower="0.0" upper="4.712389" velocity="100"/>
-  </joint>
+  </joint> -->
   <joint name="CupCloser" type="fixed">
     <origin rpy="0 0 0" xyz="-4.439955 0.0 -0.859884"/>
     <parent link="Canister_1"/>
@@ -241,4 +241,3 @@
     <child link="CanisterHolder_2"/>
   </joint>
 </robot>
-
