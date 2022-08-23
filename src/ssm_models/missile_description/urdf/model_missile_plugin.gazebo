@@ -30,7 +30,7 @@
         <forward_dir>1 0 0</forward_dir>
         <thrust_origin>-0.920 0 0</thrust_origin>
         <robotNamespace></robotNamespace>
-        <topic_name>booster_visual</topic_name>
+        <!-- <topic_name>booster_visual</topic_name> -->
         <thrust_topic>booster_force</thrust_topic>
         </plugin>
     </xacro:if>
@@ -203,48 +203,48 @@
             <parent_link>base_link</parent_link>
             <link_to_detach>Holder_1</link_to_detach>
             <joint_to_detach>HolderJoint1</joint_to_detach>
-            <detach_direction>0 1 1</detach_direction>
-            <!-- <detach_acc>10000</detach_acc> -->
+            <detach_direction>0 0 1</detach_direction>
+            <detach_acc>100</detach_acc>
             <detach_topic>holder1_detach</detach_topic>
             <robotNamespace></robotNamespace>
             <visual_offset></visual_offset>
-            <topic_name>holder1visual</topic_name>
+            <!-- <topic_name>holder1visual</topic_name> -->
         </plugin>
 
         <plugin name="DetachHolder2" filename="libDetachableJoint.so">
             <parent_link>base_link</parent_link>
             <link_to_detach>Holder_2</link_to_detach>
             <joint_to_detach>HolderJoint2</joint_to_detach>
-            <detach_direction>0 -1 1</detach_direction>
-            <detach_acc>10</detach_acc>
+            <detach_direction>0 -1 0</detach_direction>
+            <detach_acc>100</detach_acc>
             <detach_topic>holder2_detach</detach_topic>
             <robotNamespace></robotNamespace>
             <visual_offset></visual_offset>
-            <topic_name>holder2visual</topic_name>
+            <!-- <topic_name>holder2visual</topic_name> -->
         </plugin>
 
         <plugin name="DetachHolder3" filename="libDetachableJoint.so">
             <parent_link>base_link</parent_link>
             <link_to_detach>Holder_3</link_to_detach>
             <joint_to_detach>HolderJoint3</joint_to_detach>
-            <detach_direction>0 -1 -1</detach_direction>
-            <detach_acc>10</detach_acc>
+            <detach_direction>0 0 -1</detach_direction>
+            <detach_acc>100</detach_acc>
             <detach_topic>holder3_detach</detach_topic>
             <robotNamespace></robotNamespace>
             <visual_offset></visual_offset>
-            <topic_name>holder3visual</topic_name>
+            <!-- <topic_name>holder3visual</topic_name> -->
         </plugin>
         
         <plugin name="DetachHolder4" filename="libDetachableJoint.so">
             <parent_link>base_link</parent_link>
             <link_to_detach>Holder_4</link_to_detach>
             <joint_to_detach>HolderJoint4</joint_to_detach>
-            <detach_direction>0 1 -1</detach_direction>
+            <detach_direction>0 1 0</detach_direction>
             <detach_acc>100</detach_acc>
             <detach_topic>holder4_detach</detach_topic>
             <robotNamespace></robotNamespace>
             <visual_offset></visual_offset>
-            <topic_name>holder4visual</topic_name>
+            <!-- <topic_name>holder4visual</topic_name> -->
         </plugin>        
 
     </xacro:if>

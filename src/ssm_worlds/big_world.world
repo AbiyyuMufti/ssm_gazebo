@@ -116,8 +116,8 @@
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
         <track_visual>
-          <min_dist>3.0</min_dist>
-          <max_dist>5.0</max_dist>
+          <min_dist>2.0</min_dist>
+          <max_dist>10.0</max_dist>
           <!-- <static>true</static> -->
           <use_model_frame>true</use_model_frame>
           <xyz>-1 -4 1</xyz>
