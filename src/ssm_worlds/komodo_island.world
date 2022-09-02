@@ -10,7 +10,16 @@
             <min_dist>2.0</min_dist>
             <max_dist>20.0</max_dist>
             <static>1</static>
-            <xyz>-5 -10 0</xyz>
+
+            <!-- for sea monitoring fins -->
+            <xyz>1 -2 0</xyz>
+            
+            <!-- for sea skimming -->
+            <!-- <xyz>-5 -10 0</xyz> -->
+            
+            <!-- for propulsion simulation -->
+            <!-- <xyz>-5 -2 -1</xyz> -->
+            
             <use_model_frame>1</use_model_frame>
             <inherit_yaw>1</inherit_yaw>
           </track_visual>

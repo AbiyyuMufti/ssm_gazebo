@@ -118,9 +118,16 @@
         <track_visual>
           <min_dist>2.0</min_dist>
           <max_dist>10.0</max_dist>
-          <!-- <static>true</static> -->
+          <static>true</static>
+
+          <!-- for propulsion simulation -->
+          <xyz>-5 -2 -1</xyz>
+          
+          <!-- for launching with canister -->
+          <!-- <xyz>3 -5 1</xyz>  -->
+          
           <use_model_frame>true</use_model_frame>
-          <xyz>-1 -4 1</xyz>
+
           <inherit_yaw>true</inherit_yaw>
         </track_visual>
       </camera>
